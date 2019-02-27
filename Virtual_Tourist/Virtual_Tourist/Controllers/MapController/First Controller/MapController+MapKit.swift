@@ -22,7 +22,6 @@ extension MapController: MKMapViewDelegate {
             pinView!.tintColor = .blue
             pinView!.animatesDrop = true
             pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-            
         }
         else {
             pinView!.annotation = annotation
@@ -33,7 +32,6 @@ extension MapController: MKMapViewDelegate {
     
     func placeAnnotation(location: CLLocationCoordinate2D?){
         let annotation = MKPointAnnotation()
-        
         annotation.title = "Hello World" //Doesn't show when 'didSelect' function is utilized by app
         
         if let coordinate = location {
@@ -55,6 +53,4 @@ extension MapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         navigationController?.pushViewController(ShowingPicsController(), animated: true)
     }
-    
-    
 }
