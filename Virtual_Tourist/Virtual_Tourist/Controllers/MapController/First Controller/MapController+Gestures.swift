@@ -27,20 +27,20 @@ extension MapController {
                        completion: nil)
     }
     
-    func resetConstraintsOnBottomLabel(){
+    private func resetConstraintsOnBottomLabel(){
         mapViewTopAnchor_safeTop?.isActive = false
         mapViewTopAnchor_safeTop_EXTRA?.isActive = false
         mapViewBottomAnchor_viewBottom?.isActive = false
         mapViewBottomAnchor_viewBottom_EXTRA?.isActive = false
     }
     
-    func hideBottomlabel(){
+    func hideBottomlabel(){ //ViewDidLoad
         resetConstraintsOnBottomLabel()
         mapViewTopAnchor_safeTop?.isActive = true
         mapViewBottomAnchor_viewBottom?.isActive = true
     }
     
-    func showBottomlabel(){
+    private func showBottomlabel(){
         resetConstraintsOnBottomLabel()
         mapViewTopAnchor_safeTop_EXTRA?.isActive = true
         mapViewBottomAnchor_viewBottom_EXTRA?.isActive = true

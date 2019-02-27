@@ -54,8 +54,8 @@ class MapController: UIViewController {
         navigationItem.title = "Virtual Tourist"
         let editDoneButton: UIButton = {
             let button = UIButton()
-            button.setTitleColor(UIColor.blue, for: .normal)
             button.setTitle("Edit", for: .normal)
+            button.setTitleColor(UIColor.blue, for: .normal)
             button.setAttributedTitle(NSAttributedString(string: "Done", attributes: [NSAttributedString.Key.font :  UIFont.systemFont(ofSize: defaultFontSize)]), for: .selected)
             button.setTitle("Done", for: .selected)
             button.addTarget(self, action: #selector(handleRightBarButton), for: .touchUpInside)

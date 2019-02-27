@@ -15,13 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UINavigationBar.appearance().tintColor = UIColor.ghostWhite
+        // UINavigationBar.appearance().tintColor = UIColor.blue //doesn't help custom Button but will change normal barButtonItems
         UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().barTintColor = UIColor.ghostWhite
         
-
         window = UIWindow()
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: MapController())        
+        window?.rootViewController = UINavigationController(rootViewController: MapController())
         return true
     }
 

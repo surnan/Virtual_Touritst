@@ -32,8 +32,6 @@ extension MapController: MKMapViewDelegate {
     
     func placeAnnotation(location: CLLocationCoordinate2D?){
         let annotation = MKPointAnnotation()
-        annotation.title = "Hello World" //Doesn't show when 'didSelect' function is utilized by app
-        
         if let coordinate = location {
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
