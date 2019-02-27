@@ -9,10 +9,10 @@
 import UIKit
 import MapKit
 
-class MapController: UIViewController, MKMapViewDelegate {
+class MapController: UIViewController {
     
     var mapView = MKMapView()
-    
+    var annotations = [MKPointAnnotation]()
     
     lazy var myLongPressGesture: UILongPressGestureRecognizer = {
         var longGesture = UILongPressGestureRecognizer()
@@ -48,25 +48,6 @@ class MapController: UIViewController, MKMapViewDelegate {
         mapView.delegate = self
         setupUI()
         setupGestures()
-    }
-    
-    
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let reuseId = "pin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            //            pinView?.clusteringIdentifier = "identifier"
-            pinView?.displayPriority = .defaultHigh
-            pinView!.canShowCallout = true
-            pinView!.tintColor = .blue
-            pinView!.animatesDrop = true
-            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-        }
-        else {
-            pinView!.annotation = annotation
-        }
-        return pinView
     }
 }
 

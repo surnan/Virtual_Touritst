@@ -15,6 +15,7 @@
 		841A55C0222624170028A6E3 /* ShowingPicsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A55BF222624170028A6E3 /* ShowingPicsController.swift */; };
 		841A55C3222628AA0028A6E3 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A55C2222628AA0028A6E3 /* UIView+Extensions.swift */; };
 		841A55C5222629D10028A6E3 /* MapController+Gestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A55C4222629D10028A6E3 /* MapController+Gestures.swift */; };
+		841A55CB222655D90028A6E3 /* MapController+MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841A55CA222655D90028A6E3 /* MapController+MapKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		841A55BF222624170028A6E3 /* ShowingPicsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowingPicsController.swift; sourceTree = "<group>"; };
 		841A55C2222628AA0028A6E3 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		841A55C4222629D10028A6E3 /* MapController+Gestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+Gestures.swift"; sourceTree = "<group>"; };
+		841A55CA222655D90028A6E3 /* MapController+MapKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+MapKit.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 			children = (
 				841A55AB22261F230028A6E3 /* MapController.swift */,
 				841A55C4222629D10028A6E3 /* MapController+Gestures.swift */,
+				841A55CA222655D90028A6E3 /* MapController+MapKit.swift */,
 			);
 			path = "First Controller";
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				841A55C5222629D10028A6E3 /* MapController+Gestures.swift in Sources */,
 				841A55C3222628AA0028A6E3 /* UIView+Extensions.swift in Sources */,
 				841A55AC22261F230028A6E3 /* MapController.swift in Sources */,
+				841A55CB222655D90028A6E3 /* MapController+MapKit.swift in Sources */,
 				841A55AA22261F230028A6E3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
