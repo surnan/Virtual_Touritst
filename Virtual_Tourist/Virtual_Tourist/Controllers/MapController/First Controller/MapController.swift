@@ -11,32 +11,23 @@ import MapKit
 
 class MapController: UIViewController {
     
-    var mapView: MKMapView = {
-       let view = MKMapView()
-//        view.clipsToBounds = true
-        return view
-    }()
-        
     
+    var mapView = MKMapView()
     var annotations = [MKPointAnnotation]()
     
     lazy var myLongPressGesture: UILongPressGestureRecognizer = {
         var longGesture = UILongPressGestureRecognizer()
         longGesture.minimumPressDuration = 1
-        //        longGesture.allowableMovement = 0
         longGesture.addTarget(self, action: #selector(handleLongPress(sender:)))
         return longGesture
     }()
     
     let bottomUILabelHeight: CGFloat = 100
+    
     var mapViewTopAnchor_safeTop: NSLayoutConstraint?
     var mapViewTopAnchor_safeTop_EXTRA: NSLayoutConstraint?
-    var mapViewHeightAnchor: NSLayoutConstraint?
-    var mapViewHeightAnchor_EXTRA: NSLayoutConstraint?
-    
     var mapViewBottomAnchor_viewBottom: NSLayoutConstraint?
     var mapViewBottomAnchor_viewBottom_EXTRA: NSLayoutConstraint?
-    
     
     lazy var bottomUILabel: UILabel = {
        var label = UILabel()
@@ -54,11 +45,13 @@ class MapController: UIViewController {
     
 
     func setupNavigationBar(){
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 24)]
+        navigationItem.title = "Virtual Tourist"
         let editDoneButton: UIButton = {
             let button = UIButton()
             button.setTitleColor(UIColor.blue, for: .normal)
-            button.setTitleColor(UIColor.blue, for: .selected)
             button.setTitle("Edit", for: .normal)
+            button.setAttributedTitle(NSAttributedString(string: "Done", attributes: [NSAttributedString.Key.font :  UIFont.systemFont(ofSize: 18)   ]), for: .selected)
             button.setTitle("Done", for: .selected)
             button.addTarget(self, action: #selector(handleRightBarButton), for: .touchUpInside)
             button.isSelected = false
@@ -105,27 +98,6 @@ class MapController: UIViewController {
         mapView.delegate = self
         setupUI()
         setupGestures()
-    }
-    
-    func toggleBottomUILabel(show: Bool){
-        
-        mapViewTopAnchor_safeTop?.isActive = false
-        mapViewTopAnchor_safeTop_EXTRA?.isActive = false
-        mapViewBottomAnchor_viewBottom?.isActive = false
-        mapViewBottomAnchor_viewBottom_EXTRA?.isActive = false
-        
-        if show {
-            mapViewTopAnchor_safeTop_EXTRA?.isActive = true
-            mapViewBottomAnchor_viewBottom_EXTRA?.isActive = true
-        } else {
-            mapViewTopAnchor_safeTop?.isActive = true
-            mapViewBottomAnchor_viewBottom?.isActive = true
-        }
-        
-        UIView.animate(withDuration: 0.15,
-                       animations: {self.view.layoutIfNeeded()},
-                       completion: nil)
-
     }
 }
 

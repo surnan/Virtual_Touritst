@@ -19,4 +19,30 @@ extension MapController {
             return
         }
     }
+    
+    func toggleBottomUILabel(show: Bool){
+        resetConstraintsOnBottomLabel()
+        
+        if show {
+            mapViewTopAnchor_safeTop_EXTRA?.isActive = true
+            mapViewBottomAnchor_viewBottom_EXTRA?.isActive = true
+        } else {
+            mapViewTopAnchor_safeTop?.isActive = true
+            mapViewBottomAnchor_viewBottom?.isActive = true
+        }
+        
+        UIView.animate(withDuration: 0.15,
+                       animations: {self.view.layoutIfNeeded()},
+                       completion: nil)
+        
+    }
+    
+    func resetConstraintsOnBottomLabel(){
+        mapViewTopAnchor_safeTop?.isActive = false
+        mapViewTopAnchor_safeTop_EXTRA?.isActive = false
+        mapViewBottomAnchor_viewBottom?.isActive = false
+        mapViewBottomAnchor_viewBottom_EXTRA?.isActive = false
+    }
+    
+    
 }
