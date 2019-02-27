@@ -22,16 +22,31 @@ class MapController: UIViewController {
         return longGesture
     }()
     
+    
+    
+    
     func setupNavigationBar(){
-        let editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(handleEditBarButton))
-        navigationItem.rightBarButtonItem = editBarButton
+
+        let editDoneBarButton: UIButton = {
+            let button = UIButton()
+            button.setTitleColor(UIColor.blue, for: .normal)
+            button.setTitleColor(UIColor.red, for: .selected)
+            button.setTitle("Edit", for: .normal)
+            button.setTitle("Done", for: .selected)
+            button.addTarget(self, action: #selector(handleRightBarButton), for: .touchUpInside)
+            button.isSelected = false
+            button.translatesAutoresizingMaskIntoConstraints = false
+            return button
+        }()
+        let item1 = UIBarButtonItem(customView: editDoneBarButton)
+        self.navigationItem.setRightBarButton(item1, animated: true)
     }
     
     
-    @objc func handleEditBarButton(){
-        navigationController?.pushViewController(ShowingPicsController(), animated: true)
+    @objc func handleRightBarButton(sender: UIButton){
+        sender.isSelected = !sender.isSelected
     }
-    
+
     func setupUI(){
         setupNavigationBar()
         [mapView].forEach{view.addSubview($0)}
