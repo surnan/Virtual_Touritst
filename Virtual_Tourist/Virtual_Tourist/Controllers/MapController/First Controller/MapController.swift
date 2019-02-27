@@ -22,6 +22,22 @@ class MapController: UIViewController {
         return longGesture
     }()
     
+    let messageBottomHeightConstant: CGFloat = 50
+    
+    lazy var messageAtBottomLabel: UILabel = {
+       var label = UILabel()
+        label.backgroundColor = UIColor.red
+        label.textColor = UIColor.white
+        label.text = "Tap Pins to Delete"
+        label.textAlignment = .center
+        label.heightAnchor.constraint(equalToConstant: messageBottomHeightConstant).isActive = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+ 
+    
+    
     
     
     
@@ -48,8 +64,9 @@ class MapController: UIViewController {
 
     func setupUI(){
         setupNavigationBar()
-        [mapView].forEach{view.addSubview($0)}
+        [mapView, messageAtBottomLabel].forEach{view.addSubview($0)}
         mapView.fillSuperview()
+        messageAtBottomLabel.anchor(top: mapView.bottomAnchor, leading: mapView.leadingAnchor, trailing: mapView.trailingAnchor, bottom: nil)
     }
     
     func setupGestures(){
