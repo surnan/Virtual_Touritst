@@ -21,20 +21,10 @@ extension MapController {
     }
     
     func toggleBottomUILabel(show: Bool){
-        resetConstraintsOnBottomLabel()
-        
-        if show {
-            mapViewTopAnchor_safeTop_EXTRA?.isActive = true
-            mapViewBottomAnchor_viewBottom_EXTRA?.isActive = true
-        } else {
-            mapViewTopAnchor_safeTop?.isActive = true
-            mapViewBottomAnchor_viewBottom?.isActive = true
-        }
-        
+        show ? showBottomlabel() : hideBottomlabel()
         UIView.animate(withDuration: 0.15,
                        animations: {self.view.layoutIfNeeded()},
                        completion: nil)
-        
     }
     
     func resetConstraintsOnBottomLabel(){
@@ -44,5 +34,15 @@ extension MapController {
         mapViewBottomAnchor_viewBottom_EXTRA?.isActive = false
     }
     
+    func hideBottomlabel(){
+        resetConstraintsOnBottomLabel()
+        mapViewTopAnchor_safeTop?.isActive = true
+        mapViewBottomAnchor_viewBottom?.isActive = true
+    }
     
+    func showBottomlabel(){
+        resetConstraintsOnBottomLabel()
+        mapViewTopAnchor_safeTop_EXTRA?.isActive = true
+        mapViewBottomAnchor_viewBottom_EXTRA?.isActive = true
+    }
 }
