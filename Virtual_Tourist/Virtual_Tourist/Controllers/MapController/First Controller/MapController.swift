@@ -26,8 +26,7 @@ class MapController: UIViewController {
     
     
     func setupNavigationBar(){
-
-        let editDoneBarButton: UIButton = {
+        let editDoneButton: UIButton = {
             let button = UIButton()
             button.setTitleColor(UIColor.blue, for: .normal)
             button.setTitleColor(UIColor.red, for: .selected)
@@ -38,8 +37,8 @@ class MapController: UIViewController {
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
         }()
-        let item1 = UIBarButtonItem(customView: editDoneBarButton)
-        self.navigationItem.setRightBarButton(item1, animated: true)
+        let customBarButton = UIBarButtonItem(customView: editDoneButton)
+        self.navigationItem.setRightBarButton(customBarButton, animated: true)
     }
     
     
