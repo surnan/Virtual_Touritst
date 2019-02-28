@@ -9,7 +9,6 @@
 import UIKit
 import MapKit
 
-//var annotations = [MKPointAnnotation]()
 
 extension MapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -34,6 +33,7 @@ extension MapController: MKMapViewDelegate {
     func placeAnnotation(location: CLLocationCoordinate2D?){
         let annotation = MKPointAnnotation()
         if let coordinate = location {
+            print("lat = \(coordinate.latitude)  ..... lon = \(coordinate.longitude)")
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
         } else {
