@@ -10,6 +10,8 @@ import UIKit
 import MapKit
 
 class MapController: UIViewController {
+    
+    var selectedAnnotation: MKPointAnnotation?
 
     private let bottomUILabelHeight: CGFloat = 70
     private let defaultTitleFontSize: CGFloat = 22
@@ -20,13 +22,16 @@ class MapController: UIViewController {
     var mapViewBottomAnchor_viewBottom: NSLayoutConstraint?
     var mapViewBottomAnchor_viewBottom_EXTRA: NSLayoutConstraint?
     
-    var annotations = [MKPointAnnotation]()
     
     lazy var mapView: MKMapView = {
        let view = MKMapView()
         view.addGestureRecognizer(myLongPressGesture)
         return view
     }()
+    
+    
+    var deletePhase = false
+    
     
     lazy private var myLongPressGesture: UILongPressGestureRecognizer = {
         var longGesture = UILongPressGestureRecognizer()

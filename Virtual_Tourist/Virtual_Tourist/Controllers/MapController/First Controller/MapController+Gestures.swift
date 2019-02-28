@@ -10,12 +10,13 @@ import UIKit
 
 extension MapController {
     @objc func handleLongPress(sender: UILongPressGestureRecognizer){
-        if sender.state != .began {return}
+        if sender.state != .began || deletePhase {return}
+        
         if sender.state != .ended {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
             placeAnnotation(location: locationCoordinate)
-            print("Tapped at lat: \(locationCoordinate.latitude) long: \(locationCoordinate.longitude)")
+            // print("Tapped at lat: \(locationCoordinate.latitude) long: \(locationCoordinate.longitude)")
             return
         }
     }
@@ -38,11 +39,13 @@ extension MapController {
         resetConstraintsOnBottomLabel()
         mapViewTopAnchor_safeTop?.isActive = true
         mapViewBottomAnchor_viewBottom?.isActive = true
+        deletePhase = false
     }
     
     private func showBottomlabel(){
         resetConstraintsOnBottomLabel()
         mapViewTopAnchor_safeTop_EXTRA?.isActive = true
         mapViewBottomAnchor_viewBottom_EXTRA?.isActive = true
+        deletePhase = true
     }
 }

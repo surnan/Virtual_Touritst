@@ -9,8 +9,9 @@
 import UIKit
 import MapKit
 
+//var annotations = [MKPointAnnotation]()
+
 extension MapController: MKMapViewDelegate {
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseId = "pin"
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
@@ -35,20 +36,18 @@ extension MapController: MKMapViewDelegate {
         if let coordinate = location {
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
-            mapView.mapType = .standard
-            //            mapView.setCenter(coordinate, animated: true)
         } else {
-            print("Unable to obtain coordinate from delegate")
+            print("Unable to obtain coordinates")
         }
     }
     
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        print("pin tapped")
-        UIApplication.shared.open(URL(string: "https://www.google.com")!)
-    }
-    
-    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        navigationController?.pushViewController(ShowingPicsController(), animated: true)
+        if deletePhase {
+            self.selectedAnnotation = view.annotation as? MKPointAnnotation
+            mapView.removeAnnotation(view.annotation!)
+        } else {
+            navigationController?.pushViewController(ShowingPicsController(), animated: true)
+        }
     }
 }
+
