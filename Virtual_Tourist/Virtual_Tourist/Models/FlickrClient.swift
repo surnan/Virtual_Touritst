@@ -15,12 +15,12 @@ class FlickrClient {
     
     private enum Endpoints {
         static let base = "https://api.flickr.com/services/rest/?"
-        case getNearbyPictures(Double, Double, Int)
+        case getBulkPhotos(Double, Double, Int)
         case getOnePicture(Double , String)
 
         var toString: String {
             switch self {
-            case .getNearbyPictures(let latitude, let longitude, let maxPull): return Endpoints.base
+            case .getBulkPhotos(let latitude, let longitude, let maxPull): return Endpoints.base
                 + "method=flickr.photos.search"
                 + "&api_key=\(API_KEY)"
                 + "&lat=\(latitude)"
@@ -44,7 +44,7 @@ class FlickrClient {
     
     
     class func getBulkPictures(latitude: Double, longitude: Double, count: Int){
-        let url = Endpoints.getNearbyPictures(latitude, longitude, count).url
+        let url = Endpoints.getBulkPhotos(latitude, longitude, count).url
         print("getBulk")
         print(url)
     }
