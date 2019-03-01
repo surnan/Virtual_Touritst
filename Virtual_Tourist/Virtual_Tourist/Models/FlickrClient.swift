@@ -10,13 +10,11 @@
 import Foundation
 
 class FlickrClient {
-    var endPoint = "https://api.flickr.com/services/"
-    var restEndpointURL = "https://api.flickr.com/services/rest/"
     
     private enum Endpoints {
         static let base = "https://api.flickr.com/services/rest/?"
         case photosSearch(Double, Double, Int)
-        case getOnePicture(Double , String)
+        case getOnePicture(String , String)
         
         var toString: String {
             switch self {
@@ -43,62 +41,56 @@ class FlickrClient {
     }
     
     
-    class func searchPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ()->Void ){
+    class func searchPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ([[String: String]], Error?)->Void ){
         let url = Endpoints.photosSearch(latitude, longitude, count).url
         print(url)
-        let session = URLSession.shared
-        let task = session.dataTask(with: url) { data, response, error in
-            if error != nil { // Handle error...
+        
+        var answer = [[String: String]]()
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let dataObject = data, error == nil else {
+                completion([[:]], error)
                 return
             }
-            guard let dataObject = data else {return}
+            
             do {
                 let temp = try JSONDecoder().decode(PhotosSearch.self, from: dataObject)
-                
-                
-                temp.photos.photo.forEach{print("id = \($0.id)  ....  secret = \($0.secret)")}
-                
-                
-                print("hello")
-                print("hello")
-                
+                temp.photos.photo.forEach{
+                    let tempDict = [$0.id : $0.secret]
+                    answer.append(tempDict)
+                }
+                completion(answer, nil)
+                return
             } catch let conversionErr {
                 print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
+                completion([[:]], error)
+                return
             }
         }
         task.resume()
-        completion()
     }
     
-//    class func getOnePic(photoID: Double, secret: String){
-//        let url = Endpoints.getOnePicture(photoID, secret).url
-//        print("getOne")
-//        print(url)
-//    }
     
-    
-    class func SHOW_PHOTOS_GET_INFO(){
+    class func getPhotoURL(photoID: String, secret: String, completion: @escaping ([String])->Void){
         //flickr.photos.getInfo
         
-        let url2 = URL(string: "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=f5963392b48503b5e16b85a3cb31cf31&photo_id=33227389628.0&secret=28f5070254&format=json&nojsoncallback=1")!
+        let url = Endpoints.getOnePicture(photoID, secret).url
         
-        let session = URLSession.shared
-        let task = session.dataTask(with: url2) { data, response, error in
-            if error != nil { // Handle error...
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+    
+            guard let dataObject = data, error == nil else {
+                completion([])
                 return
             }
             
-            //    print(String(data: data!, encoding: .utf8)!)
             
             
-            guard let dataObject = data else {return}
+            
             
             do {
                 let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
                 //        print(temp.results)
-                
                 print("location = \(String(describing: temp.photo.urls.url.first?._content))")
-                
             } catch let conversionErr {
                 print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
             }
@@ -107,25 +99,25 @@ class FlickrClient {
     }
     
     
-    
-    class func SHOW_PHOTOS_SEARCH(){
-        //flickr.photos.search
-        let url = URL(string: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=f5963392b48503b5e16b85a3cb31cf31&lat=43.24242550936526&lon=-94.56005970000001&per_page=5&format=json&nojsoncallback=1")!
-        let session = URLSession.shared
-        let task = session.dataTask(with: url) { data, response, error in
-            if error != nil { // Handle error...
-                return
-            }
-            guard let dataObject = data else {return}
-            do {
-                let temp = try JSONDecoder().decode(PhotosSearch.self, from: dataObject)
-                temp.photos.photo.forEach{
-                    print("id = \($0.id)  ..... secret = \($0.secret)")
-                }
-            } catch let conversionErr {
-                print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
-            }
-        }
-        task.resume()    }
+    //    class func SHOW_PHOTOS_SEARCH(){
+    //        //flickr.photos.search
+    //        let url = URL(string: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=f5963392b48503b5e16b85a3cb31cf31&lat=43.24242550936526&lon=-94.56005970000001&per_page=5&format=json&nojsoncallback=1")!
+    //        let session = URLSession.shared
+    //        let task = session.dataTask(with: url) { data, response, error in
+    //            if error != nil { // Handle error...
+    //                return
+    //            }
+    //            guard let dataObject = data else {return}
+    //            do {
+    //                let temp = try JSONDecoder().decode(PhotosSearch.self, from: dataObject)
+    //                temp.photos.photo.forEach{
+    //                    print("id = \($0.id)  ..... secret = \($0.secret)")
+    //                }
+    //            } catch let conversionErr {
+    //                print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
+    //            }
+    //        }
+    //        task.resume()
+    //    }
 }
 

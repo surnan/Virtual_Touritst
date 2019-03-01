@@ -54,10 +54,27 @@ extension MapController: MKMapViewDelegate {
             let lat = Double(location!.latitude)
             
             
-            FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5) {
-                print("test")
+            FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5) {pictureList,err in
+                
+                if let err = err {
+                    print("Error in Handler: \(err)")
+                    return
+                }
+                
+
+                pictureList.forEach({ (test) in
+                    test.forEach{print("--> key ... \($0.key) value ... \($0.value)")}
+                })
+                
+                
+                
+                print("===========")
+                print("===========")
+                print("===========")
+                print("===========")
+                print(pictureList)
+                
             }
-//            FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5, completion: () -> Void)
         }
     }
 }
