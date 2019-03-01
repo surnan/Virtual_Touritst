@@ -82,11 +82,7 @@ class FlickrClient {
                 completion([])
                 return
             }
-            
-            
-            
-            
-            
+
             do {
                 let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
                 //        print(temp.results)
