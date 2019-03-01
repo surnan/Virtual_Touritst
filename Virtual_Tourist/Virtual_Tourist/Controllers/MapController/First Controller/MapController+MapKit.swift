@@ -53,7 +53,11 @@ extension MapController: MKMapViewDelegate {
             let lon = Double(location!.longitude)
             let lat = Double(location!.latitude)
             
-            FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5)
+            
+            FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5) {
+                print("test")
+            }
+//            FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5, completion: () -> Void)
         }
     }
 }

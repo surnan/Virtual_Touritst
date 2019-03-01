@@ -43,7 +43,7 @@ class FlickrClient {
     }
     
     
-    class func searchPhotos(latitude: Double, longitude: Double, count: Int){
+    class func searchPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ()->Void ){
         let url = Endpoints.photosSearch(latitude, longitude, count).url
         print(url)
         let session = URLSession.shared
@@ -53,20 +53,28 @@ class FlickrClient {
             }
             guard let dataObject = data else {return}
             do {
-                let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
-                print("location = \(String(describing: temp.photo.urls.url.first?._content))")
+                let temp = try JSONDecoder().decode(PhotosSearch.self, from: dataObject)
+                
+                
+                temp.photos.photo.forEach{print("id = \($0.id)  ....  secret = \($0.secret)")}
+                
+                
+                print("hello")
+                print("hello")
+                
             } catch let conversionErr {
                 print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
             }
         }
         task.resume()
+        completion()
     }
     
-    class func getOnePic(photoID: Double, secret: String){
-        let url = Endpoints.getOnePicture(photoID, secret).url
-        print("getOne")
-        print(url)
-    }
+//    class func getOnePic(photoID: Double, secret: String){
+//        let url = Endpoints.getOnePicture(photoID, secret).url
+//        print("getOne")
+//        print(url)
+//    }
     
     
     class func SHOW_PHOTOS_GET_INFO(){

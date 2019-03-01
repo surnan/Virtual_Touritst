@@ -23,15 +23,5 @@ class ShowingPicsController: UIViewController {
     
     override func viewDidLoad() {
         view.backgroundColor = UIColor.red
-        
-        
-        FlickrClient.getOnePic(photoID: 33227389628, secret: "28f5070254")
-        FlickrClient.searchPhotos(latitude: 42.25381312064496, longitude: -98.89378365942025, count: 5)
-        
-        
     }
-    
-    
-    
-    
 }
