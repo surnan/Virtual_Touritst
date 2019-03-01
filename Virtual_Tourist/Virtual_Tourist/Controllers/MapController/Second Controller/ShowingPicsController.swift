@@ -25,8 +25,8 @@ class ShowingPicsController: UIViewController {
         view.backgroundColor = UIColor.red
         
         
-        FlickrClient.getOnePicture(photoID: 33227389628, secret: "28f5070254")
-        FlickrClient.getBulkPictures(latitude: 42.25381312064496, longitude: -98.89378365942025, count: 5)
+        FlickrClient.getOnePic(photoID: 33227389628, secret: "28f5070254")
+        FlickrClient.searchPhotos(latitude: 42.25381312064496, longitude: -98.89378365942025, count: 5)
         
         
     }

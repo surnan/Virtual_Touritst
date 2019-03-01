@@ -47,6 +47,13 @@ extension MapController: MKMapViewDelegate {
             mapView.removeAnnotation(view.annotation!)
         } else {
             navigationController?.pushViewController(ShowingPicsController(), animated: true)
+            
+            self.selectedAnnotation = view.annotation as? MKPointAnnotation
+            let location = self.selectedAnnotation?.coordinate
+            let lon = Double(location!.longitude)
+            let lat = Double(location!.latitude)
+            
+            FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5)
         }
     }
 }

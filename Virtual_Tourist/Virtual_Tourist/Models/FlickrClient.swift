@@ -43,13 +43,26 @@ class FlickrClient {
     }
     
     
-    class func getBulkPictures(latitude: Double, longitude: Double, count: Int){
+    class func searchPhotos(latitude: Double, longitude: Double, count: Int){
         let url = Endpoints.photosSearch(latitude, longitude, count).url
-        print("getBulk")
         print(url)
+        let session = URLSession.shared
+        let task = session.dataTask(with: url) { data, response, error in
+            if error != nil { // Handle error...
+                return
+            }
+            guard let dataObject = data else {return}
+            do {
+                let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
+                print("location = \(String(describing: temp.photo.urls.url.first?._content))")
+            } catch let conversionErr {
+                print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
+            }
+        }
+        task.resume()
     }
     
-    class func getOnePicture(photoID: Double, secret: String){
+    class func getOnePic(photoID: Double, secret: String){
         let url = Endpoints.getOnePicture(photoID, secret).url
         print("getOne")
         print(url)
@@ -73,7 +86,7 @@ class FlickrClient {
             guard let dataObject = data else {return}
             
             do {
-                let temp = try JSONDecoder().decode(GetOnePicture.self, from: dataObject)
+                let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
                 //        print(temp.results)
                 
                 print("location = \(String(describing: temp.photo.urls.url.first?._content))")
@@ -89,32 +102,22 @@ class FlickrClient {
     
     class func SHOW_PHOTOS_SEARCH(){
         //flickr.photos.search
-        
         let url = URL(string: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=f5963392b48503b5e16b85a3cb31cf31&lat=43.24242550936526&lon=-94.56005970000001&per_page=5&format=json&nojsoncallback=1")!
-        
         let session = URLSession.shared
         let task = session.dataTask(with: url) { data, response, error in
             if error != nil { // Handle error...
                 return
             }
-            
-            //    print(String(data: data!, encoding: .utf8)!)
-            
-            
             guard let dataObject = data else {return}
-            
             do {
-                let temp = try JSONDecoder().decode(GetBulkPhotosResponse.self, from: dataObject)
-                
+                let temp = try JSONDecoder().decode(PhotosSearch.self, from: dataObject)
                 temp.photos.photo.forEach{
                     print("id = \($0.id)  ..... secret = \($0.secret)")
                 }
-                
             } catch let conversionErr {
                 print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
             }
         }
-        task.resume()
-    }
+        task.resume()    }
 }
 
