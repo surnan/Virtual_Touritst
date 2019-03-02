@@ -52,6 +52,7 @@ struct PhotosGetInfo: Codable {
         var raw: String
         var _content: String
         var machine_tag: Int
+//        var machine_tag: Bool
     }
     
     struct LocationStruct: Codable {

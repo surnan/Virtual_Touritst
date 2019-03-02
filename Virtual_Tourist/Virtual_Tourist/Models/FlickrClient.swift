@@ -15,6 +15,7 @@ class FlickrClient {
         static let base = "https://api.flickr.com/services/rest/?"
         case photosSearch(Double, Double, Int)
         case getOnePicture(String , String)
+        case getPhotosGetSizes(String)
         
         var toString: String {
             switch self {
@@ -33,12 +34,58 @@ class FlickrClient {
                 + "&secret=\(secret)"
                 + "&format=json"
                 + "&nojsoncallback=1"
+            case .getPhotosGetSizes(let photo_id): return Endpoints.base
+                + "method=flickr.photos.getSizes"
+                + "&api_key=\(API_KEY)"
+                + "&photo_id=\(photo_id)"
+                + "&format=json"
+                + "&nojsoncallback=1"
             }
         }
         var url: URL {
             return URL(string: toString)!
         }
     }
+    
+    
+    class func getPhotoSizeWithURL(photoId: String, completion: @escaping (URL?, Error?)-> Void){
+        let url = Endpoints.getPhotosGetSizes(photoId).url
+
+        let task = URLSession.shared.dataTask(with: url) { (data, response, err) in
+            print("\n\n\nGoing to URLSession with --> \(url)")
+            if let error = err {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    completion(nil, err)
+                }
+                return
+            }
+            
+            do {
+                let dataObject = try JSONDecoder().decode(Root.self, from: data)
+                let temp = dataObject.sizes.size.last?.url
+//                print(dataObject.sizes.size.last?.url)
+                DispatchQueue.main.async {
+                    completion(temp, nil)
+                }
+                return
+            } catch let conversionErr {
+                print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
+                DispatchQueue.main.async {
+                    completion(nil, conversionErr)
+                }
+                return
+            }
+        }
+        task.resume()
+    }
+    
     
     
     class func searchPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ([[String: String]], Error?)->Void ){
@@ -49,7 +96,9 @@ class FlickrClient {
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let dataObject = data, error == nil else {
-                completion([[:]], error)
+                DispatchQueue.main.async {
+                    completion([[:]], error)
+                }
                 return
             }
             
@@ -59,11 +108,15 @@ class FlickrClient {
                     let tempDict = [$0.id : $0.secret]
                     answer.append(tempDict)
                 }
-                completion(answer, nil)
+                DispatchQueue.main.async {
+                    completion(answer, nil)
+                }
                 return
             } catch let conversionErr {
                 print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
-                completion([[:]], error)
+                DispatchQueue.main.async {
+                    completion([[:]], conversionErr)
+                }
                 return
             }
         }
@@ -78,45 +131,28 @@ class FlickrClient {
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let dataObject = data, error == nil else {
-                completion(nil, error)
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
                 return
             }
             do {
                 let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
                 if let returnURL = URL(string: (temp.photo.urls.url.first?._content) ?? "") {
 //                    print("location = \(returnURL)")
-                    completion(returnURL, nil)
+                    DispatchQueue.main.async {
+                        completion(returnURL, nil)
+                    }
                     return
                 }
             } catch let conversionErr {
                 print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
-                completion(nil, error)
+                DispatchQueue.main.async {
+                    completion(nil, conversionErr)
+                }
                 return   
             }
         }
         task.resume()
     }
-    
-    
-    //    class func SHOW_PHOTOS_SEARCH(){
-    //        //flickr.photos.search
-    //        let url = URL(string: "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=f5963392b48503b5e16b85a3cb31cf31&lat=43.24242550936526&lon=-94.56005970000001&per_page=5&format=json&nojsoncallback=1")!
-    //        let session = URLSession.shared
-    //        let task = session.dataTask(with: url) { data, response, error in
-    //            if error != nil { // Handle error...
-    //                return
-    //            }
-    //            guard let dataObject = data else {return}
-    //            do {
-    //                let temp = try JSONDecoder().decode(PhotosSearch.self, from: dataObject)
-    //                temp.photos.photo.forEach{
-    //                    print("id = \($0.id)  ..... secret = \($0.secret)")
-    //                }
-    //            } catch let conversionErr {
-    //                print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
-    //            }
-    //        }
-    //        task.resume()
-    //    }
 }
-

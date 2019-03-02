@@ -69,17 +69,38 @@ extension MapController: MKMapViewDelegate {
         
         print("\n\n ========== \n\n")
         
-        pictureList.forEach({ (test) in
-            test.forEach{
-                FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (url, err) in
-                    if let myURL = url {
-                        print("IMAGE URL --> \(myURL)")
-                    } else {
-                        print("Error inside closure from GETPHOTOURL: \(String(describing: err))")
-                    }
-                })
-            }
-        })
+    
+        
+///*
+         pictureList.forEach({ (test) in
+         test.forEach{
+         //                FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (url, err) in
+         //                    if let myURL = url {
+         //                        print("IMAGE URL --> \(myURL)")
+         //                    } else {
+         //                        print("Error inside closure from GETPHOTOURL: \(String(describing: err))")
+         //                    }
+         //                })
+         FlickrClient.getPhotoSizeWithURL(photoId: $0.key, completion: { (urlString, error) in
+         if let urlString = urlString {
+         print("urlString = \(urlString)")
+         } else {
+         //                        print(error)
+         }
+         })
+         
+         }
+         })
+//         */
+    }
+    
+    
+    func handleFlickrClientGetPhotoURL(url: URL?, error: Error?){
+        if let myURL = url {
+            print("IMAGE URL --> \(myURL)")
+        } else {
+            print("Error inside closure from GETPHOTOURL: \(String(describing: error))")
+        }
     }
 }
 
