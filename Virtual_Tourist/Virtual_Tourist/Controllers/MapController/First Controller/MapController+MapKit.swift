@@ -16,8 +16,8 @@ extension MapController: MKMapViewDelegate {
         var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            //            pinView?.clusteringIdentifier = "identifier"
-            pinView?.displayPriority = .defaultHigh
+            pinView?.clusteringIdentifier = "identifier"
+            //            pinView?.displayPriority = .defaultHigh
             pinView!.canShowCallout = true
             pinView!.tintColor = .blue
             pinView!.animatesDrop = true
@@ -49,9 +49,13 @@ extension MapController: MKMapViewDelegate {
             navigationController?.pushViewController(ShowingPicsController(), animated: true)
             
             self.selectedAnnotation = view.annotation as? MKPointAnnotation
-            let location = self.selectedAnnotation?.coordinate
-            let lon = Double(location!.longitude)
-            let lat = Double(location!.latitude)
+            guard let location = self.selectedAnnotation?.coordinate else {
+                print("Annotation selected had coordingate = nil")
+                return
+            }
+            
+            let lon = Double(location.longitude)
+            let lat = Double(location.latitude)
             
             FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5, completion: handleFlickrClientSearchPhotos(pictureList:error:))
         }
@@ -63,16 +67,19 @@ extension MapController: MKMapViewDelegate {
             return
         }
         
-        pictureList.forEach({ (test) in
-            test.forEach{print("--> key ... \($0.key) value ... \($0.value)")}
-        })
-
-        print("===========")
-        print("===========")
-        print("===========")
-        print("===========")
-        print(pictureList)
+        print("\n\n ========== \n\n")
         
+        pictureList.forEach({ (test) in
+            test.forEach{
+                FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (url, err) in
+                    if let myURL = url {
+                        print("IMAGE URL --> \(myURL)")
+                    } else {
+                        print("Error inside closure from GETPHOTOURL: \(String(describing: err))")
+                    }
+                })
+            }
+        })
     }
 }
 

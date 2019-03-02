@@ -43,7 +43,7 @@ class FlickrClient {
     
     class func searchPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ([[String: String]], Error?)->Void ){
         let url = Endpoints.photosSearch(latitude, longitude, count).url
-        print(url)
+        print("Endpoints Photo-Search-URL = \(url)")
         
         var answer = [[String: String]]()
         
@@ -71,24 +71,27 @@ class FlickrClient {
     }
     
     
-    class func getPhotoURL(photoID: String, secret: String, completion: @escaping ([String])->Void){
+    class func getPhotoURL(photoID: String, secret: String, completion: @escaping (URL?, Error?)->Void){
         //flickr.photos.getInfo
-        
         let url = Endpoints.getOnePicture(photoID, secret).url
+        print("Endpoints Get-Photo-URL = \(url)")
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
-    
             guard let dataObject = data, error == nil else {
-                completion([])
+                completion(nil, error)
                 return
             }
-
             do {
                 let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
-                //        print(temp.results)
-                print("location = \(String(describing: temp.photo.urls.url.first?._content))")
+                if let returnURL = URL(string: (temp.photo.urls.url.first?._content) ?? "") {
+//                    print("location = \(returnURL)")
+                    completion(returnURL, nil)
+                    return
+                }
             } catch let conversionErr {
                 print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
+                completion(nil, error)
+                return   
             }
         }
         task.resume()

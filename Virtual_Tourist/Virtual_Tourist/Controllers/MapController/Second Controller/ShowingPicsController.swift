@@ -17,7 +17,6 @@ class ShowingPicsController: UIViewController {
     
     
     @objc func handleLeftBarButton(){
-        print("Button Clicked")
         navigationController?.popViewController(animated: true)
     }
     
