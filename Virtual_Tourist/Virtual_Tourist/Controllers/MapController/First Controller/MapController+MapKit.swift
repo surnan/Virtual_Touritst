@@ -57,7 +57,7 @@ extension MapController: MKMapViewDelegate {
             let lon = Double(location.longitude)
             let lat = Double(location.latitude)
             
-            FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
+            _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
         }
     }
     
@@ -73,36 +73,36 @@ extension MapController: MKMapViewDelegate {
         }
     }
     
-    
     func handleFlickrClientGetPhotoURL(url: URL?, error: Error?){
         if let myURL = url {
-            print("IMAGE URL --> \(myURL)")
+            downloadImageFromURL(myURL: myURL) {[weak self] (data, error) in
+                if let myImage = data {
+                    self?.imageArray.append(myImage)
+                    print("BREAK HERE")
+                } else {
+                    print("Unable to get Photo from downloadImageFromURL")
+                }
+            }
         } else {
             print("Error inside closure from GETPHOTOURL: \(String(describing: error))")
         }
     }
+    
+    
+    func downloadImageFromURL(myURL: URL, completion: @escaping (UIImage?, Error?)->Void){
+        URLSession.shared.dataTask(with: myURL) {(data, response, error) in
+            if let data = data, let tempImage = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    completion(tempImage, nil)
+                }
+                return
+            } else {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            }.resume()
+    }
 }
 
-/*
- pictureList.forEach({ (test) in
- test.forEach{
- //                FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (url, err) in
- //                    if let myURL = url {
- //                        print("IMAGE URL --> \(myURL)")
- //                    } else {
- //                        print("Error inside closure from GETPHOTOURL: \(String(describing: err))")
- //                    }
- //                })
- FlickrClient.getPhotoSizeWithURL(photoId: $0.key, completion: { (urlString, error) in
- if let urlString = urlString {
- print("urlString = \(urlString)")
- } else {
- //                        print(error)
- }
- })
- 
- }
- })
- //
- */
- 

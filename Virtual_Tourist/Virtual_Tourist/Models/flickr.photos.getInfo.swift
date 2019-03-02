@@ -17,9 +17,9 @@ struct PhotosGetInfo: Codable {
     
     struct PhotoStruct: Codable {
         var id: String
-//        var secret: String
-//        var server: String
-//        var farm: Double
+        var secret: String
+        var server: String
+        var farm: Int
 //        var dateuploaded: String
 //        var isfavorite: Double?
 //        var license: String?
@@ -43,7 +43,7 @@ struct PhotosGetInfo: Codable {
 //        var tags: [String: [TagStruct]]
 //        var location: LocationStruct
 //        var owner: OwnerStruct
-        var urls: URLSStruct    // +++++++
+//        var urls: URLSStruct    // +++++++
     }
     
     struct TagStruct: Codable {

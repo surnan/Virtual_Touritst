@@ -22,16 +22,14 @@ class MapController: UIViewController {
     var mapViewBottomAnchor_viewBottom: NSLayoutConstraint?
     var mapViewBottomAnchor_viewBottom_EXTRA: NSLayoutConstraint?
     
+    var imageArray = [UIImage]()
+    var deletePhase = false
     
     lazy var mapView: MKMapView = {
        let view = MKMapView()
         view.addGestureRecognizer(myLongPressGesture)
         return view
     }()
-    
-    
-    var deletePhase = false
-    
     
     lazy private var myLongPressGesture: UILongPressGestureRecognizer = {
         var longGesture = UILongPressGestureRecognizer()
@@ -82,12 +80,10 @@ class MapController: UIViewController {
         [mapView, bottomUILabel].forEach{view.addSubview($0)}
         mapView.anchor(top: nil, leading: bottomUILabel.leadingAnchor, trailing: bottomUILabel.trailingAnchor, bottom: nil)
         bottomUILabel.anchor(top: mapView.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, bottom: nil)
-    
         mapViewTopAnchor_safeTop =  mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         mapViewBottomAnchor_viewBottom =  mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         mapViewTopAnchor_safeTop_EXTRA = mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -bottomUILabelHeight)
         mapViewBottomAnchor_viewBottom_EXTRA = mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomUILabelHeight)
-    
         hideBottomlabel()
     }
 
