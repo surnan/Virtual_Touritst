@@ -127,26 +127,30 @@ class FlickrClient {
     class func getPhotoURL(photoID: String, secret: String, completion: @escaping (URL?, Error?)->Void){
         //flickr.photos.getInfo
         let url = Endpoints.getOnePicture(photoID, secret).url
-        print("Endpoints Get-Photo-URL = \(url)")
+        
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            //            print("Endpoints Get-Photo-URL = \(url)")
             guard let dataObject = data, error == nil else {
                 DispatchQueue.main.async {
                     completion(nil, error)
                 }
                 return
             }
+            
             do {
                 let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
-                if let returnURL = URL(string: (temp.photo.urls.url.first?._content) ?? "") {
-//                    print("location = \(returnURL)")
+//                if let returnURL = URL(string: (temp.photo.urls.url.first?._content) ?? "") {
+                
+                
+                 if let returnURL = temp.photo.urls.url.first?._content {
                     DispatchQueue.main.async {
                         completion(returnURL, nil)
                     }
                     return
                 }
             } catch let conversionErr {
-                print("\(conversionErr.localizedDescription)\n\n\(conversionErr)")
+                print("\(url) --> ERROR --> \n\(conversionErr)")
                 DispatchQueue.main.async {
                     completion(nil, conversionErr)
                 }
