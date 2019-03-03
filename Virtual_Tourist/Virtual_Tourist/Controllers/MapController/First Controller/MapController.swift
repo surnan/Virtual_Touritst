@@ -9,6 +9,10 @@
 import UIKit
 import MapKit
 
+
+var imageArray = [UIImage]()
+
+
 class MapController: UIViewController {
     
     var selectedAnnotation: MKPointAnnotation?
@@ -22,7 +26,7 @@ class MapController: UIViewController {
     var mapViewBottomAnchor_viewBottom: NSLayoutConstraint?
     var mapViewBottomAnchor_viewBottom_EXTRA: NSLayoutConstraint?
     
-    var imageArray = [UIImage]()
+//    var imageArray = [UIImage]()
     var deletePhase = false
     
     lazy var mapView: MKMapView = {

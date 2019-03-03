@@ -77,7 +77,8 @@ extension MapController: MKMapViewDelegate {
         if let myURL = url {
             downloadImageFromURL(myURL: myURL) {[weak self] (data, error) in
                 if let myImage = data {
-                    self?.imageArray.append(myImage)
+//                    self?.imageArray.append(myImage)
+                    imageArray.append(myImage)
                     print("BREAK HERE")
                 } else {
                     print("Unable to get Photo from downloadImageFromURL")
