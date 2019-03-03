@@ -46,11 +46,9 @@ extension MapController: MKMapViewDelegate {
             self.selectedAnnotation = view.annotation as? MKPointAnnotation
             mapView.removeAnnotation(view.annotation!)
         } else {
-//            navigationController?.pushViewController(FlickrCollectionController(), animated: true)
-            
-            navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
-            
-            
+
+//            navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+
             self.selectedAnnotation = view.annotation as? MKPointAnnotation
             guard let location = self.selectedAnnotation?.coordinate else {
                 print("Annotation selected had coordingate = nil")
@@ -61,6 +59,8 @@ extension MapController: MKMapViewDelegate {
             let lat = Double(location.latitude)
             
             _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
+            
+            navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         }
     }
     
