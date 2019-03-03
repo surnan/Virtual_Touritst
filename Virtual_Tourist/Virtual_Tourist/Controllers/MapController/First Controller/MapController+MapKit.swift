@@ -46,7 +46,10 @@ extension MapController: MKMapViewDelegate {
             self.selectedAnnotation = view.annotation as? MKPointAnnotation
             mapView.removeAnnotation(view.annotation!)
         } else {
-            navigationController?.pushViewController(ShowingPicsController(), animated: true)
+//            navigationController?.pushViewController(FlickrCollectionController(), animated: true)
+            
+            navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+            
             
             self.selectedAnnotation = view.annotation as? MKPointAnnotation
             guard let location = self.selectedAnnotation?.coordinate else {
