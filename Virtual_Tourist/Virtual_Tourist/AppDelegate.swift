@@ -12,16 +12,25 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var dataController = DataController(modelName: "Pin")
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // UINavigationBar.appearance().tintColor = UIColor.blue //doesn't help custom Button but will change normal barButtonItems
+        
+        
+        dataController.load()
+        
         UINavigationBar.appearance().isTranslucent = false
         UINavigationBar.appearance().barTintColor = UIColor.ghostWhite
         
+        
+        let myMapController = MapController()
+        myMapController.dataController = dataController
         window = UIWindow()
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: MapController())
+        window?.rootViewController = UINavigationController(rootViewController: myMapController)
+        
         return true
     }
 
@@ -31,8 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        saveViewContext()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -44,9 +52,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        saveViewContext()
     }
 
-
+    
+    //MARK:- My functions
+    func saveViewContext(){
+        try? dataController.viewContext.save()
+    }
 }
 

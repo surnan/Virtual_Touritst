@@ -15,6 +15,8 @@ var imageArray = [UIImage]()
 
 class MapController: UIViewController {
     
+    var dataController: DataController!
+    
     var selectedAnnotation: MKPointAnnotation?
 
     private let bottomUILabelHeight: CGFloat = 70

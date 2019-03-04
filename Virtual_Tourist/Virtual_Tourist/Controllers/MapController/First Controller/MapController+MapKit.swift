@@ -60,7 +60,7 @@ extension MapController: MKMapViewDelegate {
             
             _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
             
-            navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+//      GOOD -      navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         }
     }
     
@@ -78,7 +78,7 @@ extension MapController: MKMapViewDelegate {
     
     func handleFlickrClientGetPhotoURL(url: URL?, error: Error?){
         if let myURL = url {
-            downloadImageFromURL(myURL: myURL) {[weak self] (data, error) in
+            downloadImageFromURL(myURL: myURL) {(data, error) in
                 if let myImage = data {
 //                    self?.imageArray.append(myImage)
                     imageArray.append(myImage)
