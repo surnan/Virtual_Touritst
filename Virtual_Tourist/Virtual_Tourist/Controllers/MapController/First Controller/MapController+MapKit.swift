@@ -31,8 +31,14 @@ extension MapController: MKMapViewDelegate {
     
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
         if deletePhase {
-            guard let annotationToRemove = view.annotation as? MKPointAnnotation else {return}
+            
+//            guard let annotationToRemove = view.annotation as? MKPointAnnotation else {
+            guard let annotationToRemove = view.annotation as? MyAnnotation else {
+                print("did not convert 'view' into MKPoinAnnotation")
+                return
+            }
 
             let coord = annotationToRemove.coordinate
             getAllPins().forEach { (aPin) in

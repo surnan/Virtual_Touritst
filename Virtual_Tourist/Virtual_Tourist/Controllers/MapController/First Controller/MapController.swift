@@ -154,6 +154,9 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     func placeAnnotation(pin: Pin?) {
         let newAnnotation = MKPointAnnotation()
         guard let lat = pin?.latitude, let lon = pin?.longitude else {return}
+        
+        let myNewAnnotation = MyAnnotation(lat: lat, lon: lon)
+        
         newAnnotation.coordinate.latitude = lat
         newAnnotation.coordinate.longitude = lon
         
@@ -162,7 +165,12 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         
 //        newAnnotation.title =  "\(pin?.index ?? Int16(0)): \(latString) & \(lonString)"
 //        newAnnotation.title =  "\(pin?.index ?? Int16(0))"
-        mapView.addAnnotation(newAnnotation)
+        
+        
+//        mapView.addAnnotation(newAnnotation)
+mapView.addAnnotation(myNewAnnotation)
+        
+        
     }
 }
 
