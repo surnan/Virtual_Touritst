@@ -33,14 +33,13 @@ extension MapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if deletePhase {
             guard let annotationToRemove = view.annotation as? MKPointAnnotation else {return}
-//            guard let annotationToRemove = view.annotation as? MyAnnotation else {return}
-            
+
             let coord = annotationToRemove.coordinate
             getAllPins().forEach { (aPin) in
                 if aPin.longitude == coord.longitude && aPin.latitude == coord.latitude {
                     dataController.viewContext.delete(aPin)
                     try? dataController.viewContext.save()
-                    mapView.removeAnnotation(annotationToRemove)
+//                    mapView.removeAnnotation(annotationToRemove)
                 }
             }
         } else {
@@ -106,24 +105,43 @@ extension MapController: MKMapViewDelegate {
 //: NSFetchedResultsControllerDelegate
 extension MapController {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("test")
+        print("")
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("test")
+        print("")
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .delete:
-            break
 //            let temp = mapView.annotations[(indexPath?.row)!]
 //            mapView.removeAnnotation(temp)
+            
+            let newPin = anObject as? Pin
+            
+//            getAllPins().forEach { (aPin) in
+//                if aPin.longitude == coord.longitude && aPin.latitude == coord.latitude {
+//                    dataController.viewContext.delete(aPin)
+//                    try? dataController.viewContext.save()
+//                    //                    mapView.removeAnnotation(annotationToRemove)
+//                }
+//            }
+//
+//
+            mapView.annotations.forEach{
+                let coordinate = $0.coordinate
+                if newPin?.longitude == coordinate.longitude && newPin?.latitude == coordinate.latitude {
+                    mapView.removeAnnotation($0)
+                }
+            }
+            
+            
+            
         case .insert:
              guard let newPin = anObject as? Pin else {return}
              let newAnnotation = MyAnnotation(lat: newPin.latitude, lon: newPin.longitude)
              mapView.addAnnotation(newAnnotation)
-            break
         default:
             break
         }
