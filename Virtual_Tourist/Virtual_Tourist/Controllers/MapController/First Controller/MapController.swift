@@ -145,7 +145,14 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         setupUI()
         setupFetchController()
         myFetchController.delegate = self
+        
+//        mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: mapReuseID)
 
+        
+        mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        
+        
+        
         getAllPins().forEach{
             placeAnnotation(pin: $0)
         }
@@ -168,8 +175,10 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
 //        newAnnotation.title =  "\(pin?.index ?? Int16(0)): \(latString) & \(lonString)"
 //        newAnnotation.title =  "\(pin?.index ?? Int16(0))"
         
+        newAnnotation.title = "aaa"
         
-//        mapView.addAnnotation(newAnnotation)
+
+        
 mapView.addAnnotation(myNewAnnotation)
         
         

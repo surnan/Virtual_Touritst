@@ -10,19 +10,38 @@ import UIKit
 import MapKit
 import CoreData
 
-extension MapController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: mapReuseID) as? MKPinAnnotationView
-        if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: mapReuseID)
-            pinView!.animatesDrop = true
-        }
-        else {
-            pinView!.annotation = annotation
-        }
-        return pinView
+//class CustomAnnotationView: MKPinAnnotationView {
+class CustomAnnotationView: MKPinAnnotationView {
+
+
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        pinTintColor = .purple
+        isDraggable = true
+        animatesDrop = true
+        canShowCallout = true
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+extension MapController: MKMapViewDelegate {
+//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+//        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: mapReuseID) as? MKPinAnnotationView
+//        if pinView == nil {
+//            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: mapReuseID)
+//            pinView?.isDraggable = true
+//            pinView!.animatesDrop = true
+//        }
+//        else {
+//            pinView!.annotation = annotation
+//        }
+//        return pinView
+//    }
+//
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
