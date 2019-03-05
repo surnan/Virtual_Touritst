@@ -8,7 +8,7 @@
 
 import UIKit
 import MapKit
-
+import CoreData
 
 extension MapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -111,3 +111,51 @@ extension MapController: MKMapViewDelegate {
     }
 }
 
+//: NSFetchedResultsControllerDelegate
+extension MapController {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("test")
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("test")
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .delete:
+            //mapView.removeAnnotation(<#T##annotation: MKAnnotation##MKAnnotation#>)
+            
+            
+            //            var tempAnnotation = MKAnnotation(
+            let tempAnnotation = MKPointAnnotation()
+            
+            
+            
+            
+            
+            mapView.removeAnnotation(tempAnnotation)
+            
+            break
+        case .insert:
+            break
+        default:
+            break
+        }
+    }
+}
+
+
+/*
+ @objc func handleLongPress(sender: UILongPressGestureRecognizer){
+ if sender.state != .began || deletePhase {return}
+ 
+ if sender.state != .ended {
+ let touchLocation = sender.location(in: self.mapView)
+ let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
+ placeAnnotation(location: locationCoordinate)
+ // print("Tapped at lat: \(locationCoordinate.latitude) long: \(locationCoordinate.longitude)")
+ return
+ }
+ }
+ */
