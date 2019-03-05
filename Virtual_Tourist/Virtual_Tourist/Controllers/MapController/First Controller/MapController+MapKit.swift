@@ -77,19 +77,20 @@ extension MapController: MKMapViewDelegate {
     }
     
     func handleFlickrClientGetPhotoURL(url: URL?, error: Error?){
-        if let myURL = url {
-            downloadImageFromURL(myURL: myURL) {(data, error) in
-                if let myImage = data {
-//                    self?.imageArray.append(myImage)
-                    imageArray.append(myImage)
-                    print("BREAK HERE")
-                } else {
-                    print("Unable to get Photo from downloadImageFromURL")
-                }
-            }
-        } else {
-            print("Error inside closure from GETPHOTOURL: \(String(describing: error))")
-        }
+        print("hello world")
+//        if let myURL = url {
+//            downloadImageFromURL(myURL: myURL) {(data, error) in
+//                if let myImage = data {
+////                    self?.imageArray.append(myImage)
+////                    imageArray.append(myImage)
+//                    print("BREAK HERE")
+//                } else {
+//                    print("Unable to get Photo from downloadImageFromURL")
+//                }
+//            }
+//        } else {
+//            print("Error inside closure from GETPHOTOURL: \(String(describing: error))")
+//        }
     }
     
     

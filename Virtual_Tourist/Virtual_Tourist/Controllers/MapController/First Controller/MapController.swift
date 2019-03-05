@@ -8,14 +8,16 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 
-var imageArray = [UIImage]()
+//var imageArray = [UIImage]()
 
 
-class MapController: UIViewController {
+class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     var dataController: DataController!
+        var myFetchController: NSFetchedResultsController<Pin>!
     
     var selectedAnnotation: MKPointAnnotation?
 
@@ -30,6 +32,7 @@ class MapController: UIViewController {
     
 //    var imageArray = [UIImage]()
     var deletePhase = false
+    var bootUP = true
     
     lazy var mapView: MKMapView = {
        let view = MKMapView()
@@ -93,11 +96,42 @@ class MapController: UIViewController {
         hideBottomlabel()
     }
 
+    
+    func setupFetchController(){
+        let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true)]
+        myFetchController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                       managedObjectContext: dataController.viewContext,
+                                                       sectionNameKeyPath: nil,
+                                                       cacheName: nil)
+        do {
+            try myFetchController.performFetch()
+        } catch {
+            fatalError("Unable to setup Fetch Controller: \n\(error)")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.yellow
         mapView.delegate = self
         setupUI()
+        setupFetchController()
+        myFetchController.delegate = self
+        
+        
+        
+        guard let pins = myFetchController.fetchedObjects else {
+            self.bootUP = false
+            return
+        }
+        
+        pins.forEach{
+            let tempLocation = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+            placeAnnotation(location: tempLocation)
+        }
+        
+        bootUP = false
     }
 }
 
