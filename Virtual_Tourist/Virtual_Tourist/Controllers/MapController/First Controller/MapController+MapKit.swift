@@ -12,16 +12,10 @@ import CoreData
 
 extension MapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let reuseId = "pin"
-        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: mapReuseID) as? MKPinAnnotationView
         if pinView == nil {
-            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView?.clusteringIdentifier = "identifier"
-            //            pinView?.displayPriority = .defaultHigh
-            pinView!.canShowCallout = true
-            pinView!.tintColor = .blue
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: mapReuseID)
             pinView!.animatesDrop = true
-            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         }
         else {
             pinView!.annotation = annotation
@@ -34,31 +28,33 @@ extension MapController: MKMapViewDelegate {
         
         if deletePhase {
             
-//            guard let annotationToRemove = view.annotation as? MKPointAnnotation else {
+            //            guard let annotationToRemove = view.annotation as? MKPointAnnotation else {
             guard let annotationToRemove = view.annotation as? MyAnnotation else {
                 print("did not convert 'view' into MKPoinAnnotation")
                 return
             }
-
+            
             let coord = annotationToRemove.coordinate
             getAllPins().forEach { (aPin) in
                 if aPin.longitude == coord.longitude && aPin.latitude == coord.latitude {
                     dataController.viewContext.delete(aPin)
                     try? dataController.viewContext.save()
-//                    mapView.removeAnnotation(annotationToRemove)
+                    //                    mapView.removeAnnotation(annotationToRemove)
                 }
             }
-        } else {
-            self.selectedAnnotation = view.annotation as? MKPointAnnotation
-            guard let location = self.selectedAnnotation?.coordinate else {
-                print("Annotation selected had coordingate = nil")
-                return
-            }
-            let lon = Double(location.longitude)
-            let lat = Double(location.latitude)
-            _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
-//      GOOD -      navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+            return
         }
+        
+        self.selectedAnnotation = view.annotation as? MKPointAnnotation
+        guard let location = self.selectedAnnotation?.coordinate else {
+            print("Annotation selected had coordingate = nil")
+            return
+        }
+        let lon = Double(location.longitude)
+        let lat = Double(location.latitude)
+        _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
+        //      GOOD -      navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        
     }
     
     func handleFlickrClientSearchPhotos(pictureList: [[String: String]], error: Error?){
@@ -170,3 +166,23 @@ class MyAnnotation: NSObject, MKAnnotation {
         super.init()
     }
 }
+
+/*
+ func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+ let reuseId = "pin"
+ var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+ if pinView == nil {
+ pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+ pinView?.clusteringIdentifier = "identifier"
+ //            pinView?.displayPriority = .defaultHigh
+ pinView!.canShowCallout = true
+ pinView!.tintColor = .blue
+ pinView!.animatesDrop = true
+ pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+ }
+ else {
+ pinView!.annotation = annotation
+ }
+ return pinView
+ }
+ */

@@ -15,6 +15,8 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!
     
+    var mapReuseID = "aksdjfasjkd"
+    
     var selectedAnnotation: MKPointAnnotation?
 
     private let bottomUILabelHeight: CGFloat = 70
