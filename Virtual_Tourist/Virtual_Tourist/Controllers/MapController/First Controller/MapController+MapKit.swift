@@ -141,8 +141,8 @@ extension MapController {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .delete:
-            print("Going to Delete")
-            break
+            let temp = mapView.annotations[(indexPath?.row)!]
+            mapView.removeAnnotation(temp)
         case .insert:
             break
         default:
