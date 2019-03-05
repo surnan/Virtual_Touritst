@@ -41,10 +41,21 @@ extension MapController: MKMapViewDelegate {
         }
     }
     
+    
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if deletePhase {
-            self.selectedAnnotation = view.annotation as? MKPointAnnotation
-            mapView.removeAnnotation(view.annotation!)
+
+            
+            
+            
+            
+            guard let annotationToRemove = view.annotation as? MKPointAnnotation else {return}
+            mapView.removeAnnotation(annotationToRemove)
+            
+            
+            
+            
         } else {
 
 //            navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
@@ -77,7 +88,7 @@ extension MapController: MKMapViewDelegate {
     }
     
     func handleFlickrClientGetPhotoURL(url: URL?, error: Error?){
-        print("hello world")
+//        print("hello world")
 //        if let myURL = url {
 //            downloadImageFromURL(myURL: myURL) {(data, error) in
 //                if let myImage = data {
@@ -124,18 +135,6 @@ extension MapController {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .delete:
-            //mapView.removeAnnotation(<#T##annotation: MKAnnotation##MKAnnotation#>)
-            
-            
-            //            var tempAnnotation = MKAnnotation(
-            let tempAnnotation = MKPointAnnotation()
-            
-            
-            
-            
-            
-            mapView.removeAnnotation(tempAnnotation)
-            
             break
         case .insert:
             break

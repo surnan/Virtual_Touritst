@@ -111,6 +111,18 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         }
     }
     
+    
+    
+    
+    func getAllPins()->[Pin]{
+        guard let pins = myFetchController.fetchedObjects else {
+            self.bootUP = false
+            return []
+        }
+        return pins
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.yellow
@@ -118,19 +130,11 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         setupUI()
         setupFetchController()
         myFetchController.delegate = self
-        
-        
-        
-        guard let pins = myFetchController.fetchedObjects else {
-            self.bootUP = false
-            return
-        }
-        
-        pins.forEach{
+
+        getAllPins().forEach{
             let tempLocation = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
             placeAnnotation(location: tempLocation)
         }
-        
         bootUP = false
     }
 }
