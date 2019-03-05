@@ -118,24 +118,9 @@ extension MapController {
 //            let temp = mapView.annotations[(indexPath?.row)!]
 //            mapView.removeAnnotation(temp)
         case .insert:
-            
              guard let newPin = anObject as? Pin else {return}
-//             let newAnnotation = MKPointAnnotation()
-//             newAnnotation.coordinate.latitude = newPin.latitude
-//             newAnnotation.coordinate.longitude = newPin.longitude
-//             newAnnotation.title = "\(newPin.index)"
-
-             let newAnnotation = MKPointAnnotation()
-             newAnnotation.coordinate.latitude = newPin.latitude
-             newAnnotation.coordinate.longitude = newPin.longitude
-             newAnnotation.title = "\(newPin.index)"
-             
-             
-             
-             
-             
+             let newAnnotation = MyAnnotation(lat: newPin.latitude, lon: newPin.longitude)
              mapView.addAnnotation(newAnnotation)
-            
             print("Going to Add Annotation")
             break
         default:
@@ -145,16 +130,18 @@ extension MapController {
 }
 
 
-/*
- @objc func handleLongPress(sender: UILongPressGestureRecognizer){
- if sender.state != .began || deletePhase {return}
- 
- if sender.state != .ended {
- let touchLocation = sender.location(in: self.mapView)
- let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
- placeAnnotation(location: locationCoordinate)
- // print("Tapped at lat: \(locationCoordinate.latitude) long: \(locationCoordinate.longitude)")
- return
- }
- }
- */
+
+class MyAnnotation: NSObject, MKAnnotation {
+    dynamic var coordinate: CLLocationCoordinate2D
+    dynamic var title: String?
+    dynamic var subtitle: String?
+    
+//    var coordinate: CLLocationCoordinate2D
+//    var title: String?
+//    var subtitle: String?
+    
+    init(lat: Double, lon: Double){
+        self.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        super.init()
+    }
+}

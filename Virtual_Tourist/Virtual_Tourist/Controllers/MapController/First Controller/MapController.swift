@@ -143,7 +143,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
 //        let lonString = String(format: "%.1f", ceil(lon*100)/100)
         
 //        newAnnotation.title =  "\(pin?.index ?? Int16(0)): \(latString) & \(lonString)"
-        newAnnotation.title =  "\(pin?.index ?? Int16(0))"
+//        newAnnotation.title =  "\(pin?.index ?? Int16(0))"
         mapView.addAnnotation(newAnnotation)
     }
 }
