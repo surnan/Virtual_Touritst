@@ -26,7 +26,6 @@
 		8488F40E222DB71700DD8F92 /* Photo_Locations.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8488F40C222DB71700DD8F92 /* Photo_Locations.xcdatamodeld */; };
 		8488F413222DBF5A00DD8F92 /* EXTENSIONS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F412222DBF5A00DD8F92 /* EXTENSIONS.swift */; };
 		8488F415222DC08F00DD8F92 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F414222DC08F00DD8F92 /* DataController.swift */; };
-		8488F418222DF6DC00DD8F92 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F417222DF6DC00DD8F92 /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +50,6 @@
 		8488F40D222DB71700DD8F92 /* Photo_Locations.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Photo_Locations.xcdatamodel; sourceTree = "<group>"; };
 		8488F412222DBF5A00DD8F92 /* EXTENSIONS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EXTENSIONS.swift; sourceTree = "<group>"; };
 		8488F414222DC08F00DD8F92 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
-		8488F417222DF6DC00DD8F92 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +88,6 @@
 				841A55A922261F230028A6E3 /* AppDelegate.swift */,
 				841A55B522261F240028A6E3 /* Info.plist */,
 				84601E0E2227A35B00A77BAD /* UNSYNC.swift */,
-				8488F417222DF6DC00DD8F92 /* File.swift */,
 			);
 			path = Virtual_Tourist;
 			sourceTree = "<group>";
@@ -255,7 +252,6 @@
 				841A55AC22261F230028A6E3 /* MapController.swift in Sources */,
 				8488F40E222DB71700DD8F92 /* Photo_Locations.xcdatamodeld in Sources */,
 				841A55CB222655D90028A6E3 /* MapController+MapKit.swift in Sources */,
-				8488F418222DF6DC00DD8F92 /* File.swift in Sources */,
 				8441AE00222A6905002412E0 /* flickr.photos.getSizes.swift in Sources */,
 				8488F413222DBF5A00DD8F92 /* EXTENSIONS.swift in Sources */,
 				8488F415222DC08F00DD8F92 /* DataController.swift in Sources */,
