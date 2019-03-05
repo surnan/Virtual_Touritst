@@ -72,7 +72,32 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         }()
         let customBarButton = UIBarButtonItem(customView: editDoneButton)
         self.navigationItem.setRightBarButton(customBarButton, animated: true)
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Reset", style: .done, target: self, action: #selector(ResetBarButton))
+        
+        
     }
+    
+    
+    @objc func ResetBarButton(){
+        mapView.removeAnnotations(mapView.annotations)
+        
+        
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        
+        
+        
+        do {
+            try dataController.viewContext.execute(request)
+            try dataController.viewContext.save()
+        } catch {
+            print ("There was an error")
+        }
+        
+        
+    }
+    
     
     @objc private func handleRightBarButton(sender: UIButton){
         sender.isSelected = !sender.isSelected
