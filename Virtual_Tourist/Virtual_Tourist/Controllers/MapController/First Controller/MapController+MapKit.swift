@@ -135,6 +135,14 @@ extension MapController {
             let temp = mapView.annotations[(indexPath?.row)!]
             mapView.removeAnnotation(temp)
         case .insert:
+            
+             guard let newPin = anObject as? Pin else {return}
+             let newAnnotation = MKPointAnnotation()
+             newAnnotation.coordinate.latitude = newPin.latitude
+             newAnnotation.coordinate.longitude = newPin.longitude
+             mapView.addAnnotation(newAnnotation)
+            
+            print("Going to Add Annotation")
             break
         default:
             break

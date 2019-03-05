@@ -11,13 +11,9 @@ import MapKit
 import CoreData
 
 
-//var imageArray = [UIImage]()
-
-
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
-    
     var dataController: DataController!
-        var myFetchController: NSFetchedResultsController<Pin>!
+    var myFetchController: NSFetchedResultsController<Pin>!
     
     var selectedAnnotation: MKPointAnnotation?
 
@@ -30,7 +26,6 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var mapViewBottomAnchor_viewBottom: NSLayoutConstraint?
     var mapViewBottomAnchor_viewBottom_EXTRA: NSLayoutConstraint?
     
-//    var imageArray = [UIImage]()
     var deletePhase = false
     var bootUP = true
     
