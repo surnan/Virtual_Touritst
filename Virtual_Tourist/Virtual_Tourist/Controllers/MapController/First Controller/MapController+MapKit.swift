@@ -23,8 +23,9 @@ extension MapController: MKMapViewDelegate {
         return pinView
     }
     
-
+    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
         if deletePhase {
             guard let annotationToRemove = view.annotation as? MyAnnotation else { return }
             let coord = annotationToRemove.coordinate
@@ -37,17 +38,31 @@ extension MapController: MKMapViewDelegate {
             return
         }
         
-        self.selectedAnnotation = view.annotation as? MKPointAnnotation
-        guard let location = self.selectedAnnotation?.coordinate else {
-            print("Annotation selected had coordingate = nil")
-            return
-        }
-        let lon = Double(location.longitude)
-        let lat = Double(location.latitude)
-        _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
-        //      GOOD -      navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         
-    }
+        if let view = view as? MKPinAnnotationView {
+            view.pinTintColor = UIColor.blue
+        }
+        
+        
+        
+//        view.tintColor = UIColor.blue
+//
+//        self.selectedAnnotation = view.annotation as? MKPointAnnotation
+//        view.tintColor = UIColor.blue
+//
+//
+//
+//        guard let location = self.selectedAnnotation?.coordinate else {
+//            print("Annotation selected had coordingate = nil")
+//            return
+//        }
+//        let lon = Double(location.longitude)
+//        let lat = Double(location.latitude)
+//        _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
+//        //      GOOD -      navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+     }
+    
+    
     
     func handleFlickrClientSearchPhotos(pictureList: [[String: String]], error: Error?){
         if let err = error {
@@ -116,7 +131,6 @@ extension MapController {
                     mapView.removeAnnotation($0)
                 }
             }
-            
         case .insert:
              guard let newPin = anObject as? Pin else {return}
              let newAnnotation = MyAnnotation(lat: newPin.latitude, lon: newPin.longitude)
