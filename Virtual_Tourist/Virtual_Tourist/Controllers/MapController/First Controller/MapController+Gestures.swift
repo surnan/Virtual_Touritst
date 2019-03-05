@@ -16,17 +16,15 @@ extension MapController {
         if sender.state != .ended {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
-            
             let pinToAdd = Pin(context: dataController.viewContext)
             pinToAdd.latitude = locationCoordinate.latitude
             pinToAdd.longitude = locationCoordinate.longitude
             
-            try? dataController.viewContext.save()
+            let index = myFetchController.fetchedObjects?.count ?? 0
+            pinToAdd.index = Int16(index)
             
-            //            let touchLocation = sender.location(in: self.mapView)
-            //            let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
-            //            placeAnnotation(location: locationCoordinate)
-            // print("Tapped at lat: \(locationCoordinate.latitude) long: \(locationCoordinate.longitude)")
+            
+            try? dataController.viewContext.save()
             return
         }
     }

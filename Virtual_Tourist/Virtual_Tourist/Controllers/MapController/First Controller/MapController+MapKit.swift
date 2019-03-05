@@ -29,20 +29,7 @@ extension MapController: MKMapViewDelegate {
         return pinView
     }
     
-    
-    func placeAnnotation(location: CLLocationCoordinate2D?){
-        let annotation = MKPointAnnotation()
-        if let coordinate = location {
-            print("lat = \(coordinate.latitude)  ..... lon = \(coordinate.longitude)")
-            annotation.coordinate = coordinate
-            mapView.addAnnotation(annotation)
-        } else {
-            print("Unable to obtain coordinates")
-        }
-    }
-    
-    
-    
+
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if deletePhase {
             guard let annotationToRemove = view.annotation as? MKPointAnnotation else {return}
@@ -51,23 +38,18 @@ extension MapController: MKMapViewDelegate {
                 if aPin.longitude == coord.longitude && aPin.latitude == coord.latitude {
                     dataController.viewContext.delete(aPin)
                     try? dataController.viewContext.save()
+                    mapView.removeAnnotation(aPin)
                 }
             }
         } else {
-
-//            navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
-
             self.selectedAnnotation = view.annotation as? MKPointAnnotation
             guard let location = self.selectedAnnotation?.coordinate else {
                 print("Annotation selected had coordingate = nil")
                 return
             }
-            
             let lon = Double(location.longitude)
             let lat = Double(location.latitude)
-            
             _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
-            
 //      GOOD -      navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         }
     }
@@ -132,14 +114,26 @@ extension MapController {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .delete:
-            let temp = mapView.annotations[(indexPath?.row)!]
-            mapView.removeAnnotation(temp)
+            break
+//            let temp = mapView.annotations[(indexPath?.row)!]
+//            mapView.removeAnnotation(temp)
         case .insert:
             
              guard let newPin = anObject as? Pin else {return}
+//             let newAnnotation = MKPointAnnotation()
+//             newAnnotation.coordinate.latitude = newPin.latitude
+//             newAnnotation.coordinate.longitude = newPin.longitude
+//             newAnnotation.title = "\(newPin.index)"
+
              let newAnnotation = MKPointAnnotation()
              newAnnotation.coordinate.latitude = newPin.latitude
              newAnnotation.coordinate.longitude = newPin.longitude
+             newAnnotation.title = "\(newPin.index)"
+             
+             
+             
+             
+             
              mapView.addAnnotation(newAnnotation)
             
             print("Going to Add Annotation")

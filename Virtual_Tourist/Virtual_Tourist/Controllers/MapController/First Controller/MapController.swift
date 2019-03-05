@@ -94,7 +94,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     func setupFetchController(){
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
         myFetchController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                        managedObjectContext: dataController.viewContext,
                                                        sectionNameKeyPath: nil,
@@ -127,14 +127,55 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         myFetchController.delegate = self
 
         getAllPins().forEach{
-            let tempLocation = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
-            placeAnnotation(location: tempLocation)
+            placeAnnotation(pin: $0)
         }
         bootUP = false
+    }
+    
+
+    func placeAnnotation(pin: Pin?) {
+        let newAnnotation = MKPointAnnotation()
+        guard let lat = pin?.latitude, let lon = pin?.longitude else {return}
+        newAnnotation.coordinate.latitude = lat
+        newAnnotation.coordinate.longitude = lon
+        
+//        let latString = String(format: "%.1f", ceil(lat*100)/100)
+//        let lonString = String(format: "%.1f", ceil(lon*100)/100)
+        
+//        newAnnotation.title =  "\(pin?.index ?? Int16(0)): \(latString) & \(lonString)"
+        newAnnotation.title =  "\(pin?.index ?? Int16(0))"
+        mapView.addAnnotation(newAnnotation)
     }
 }
 
 
+/*
+ override func viewDidLoad() {
+ super.viewDidLoad()
+ view.backgroundColor = UIColor.yellow
+ mapView.delegate = self
+ setupUI()
+ setupFetchController()
+ myFetchController.delegate = self
+ 
+ getAllPins().forEach{
+ let tempLocation = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
+ placeAnnotation(location: tempLocation)
+ }
+ bootUP = false
+ }
+ 
+ func placeAnnotation(location: CLLocationCoordinate2D?){
+ let annotation = MKPointAnnotation()
+ if let coordinate = location {
+ print("lat = \(coordinate.latitude)  ..... lon = \(coordinate.longitude)")
+ annotation.coordinate = coordinate
+ mapView.addAnnotation(annotation)
+ } else {
+ print("Unable to obtain coordinates")
+ }
+ }
+ */
 
 
 
