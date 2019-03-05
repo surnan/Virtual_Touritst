@@ -76,6 +76,17 @@ extension MapController: MKMapViewDelegate {
         }
     }
     
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
+        switch (newState) {
+        case .starting:
+            view.dragState = .dragging
+        case .ending, .canceling:
+            view.dragState = .none
+        default: break
+        }
+    }
+    
     func handleFlickrClientGetPhotoURL(url: URL?, error: Error?){
 //        print("hello world")
 //        if let myURL = url {
