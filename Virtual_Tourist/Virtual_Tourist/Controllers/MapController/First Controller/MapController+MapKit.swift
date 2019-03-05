@@ -45,23 +45,14 @@ extension MapController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if deletePhase {
-
             guard let annotationToRemove = view.annotation as? MKPointAnnotation else {return}
-//            mapView.removeAnnotation(annotationToRemove)
-            
+            let coord = annotationToRemove.coordinate
             getAllPins().forEach { (aPin) in
-                if aPin.longitude == annotationToRemove.coordinate.longitude && aPin.latitude == annotationToRemove.coordinate.latitude {
+                if aPin.longitude == coord.longitude && aPin.latitude == coord.latitude {
                     dataController.viewContext.delete(aPin)
                     try? dataController.viewContext.save()
                 }
             }
-            
-            
-
-            
-            
-            
-            
         } else {
 
 //            navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
