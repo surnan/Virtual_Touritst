@@ -46,12 +46,18 @@ extension MapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if deletePhase {
 
-            
-            
-            
-            
             guard let annotationToRemove = view.annotation as? MKPointAnnotation else {return}
-            mapView.removeAnnotation(annotationToRemove)
+//            mapView.removeAnnotation(annotationToRemove)
+            
+            getAllPins().forEach { (aPin) in
+                if aPin.longitude == annotationToRemove.coordinate.longitude && aPin.latitude == annotationToRemove.coordinate.latitude {
+                    dataController.viewContext.delete(aPin)
+                    try? dataController.viewContext.save()
+                }
+            }
+            
+            
+
             
             
             
@@ -135,6 +141,7 @@ extension MapController {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .delete:
+            print("Going to Delete")
             break
         case .insert:
             break
