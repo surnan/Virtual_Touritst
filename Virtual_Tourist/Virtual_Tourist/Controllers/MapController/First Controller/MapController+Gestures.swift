@@ -19,11 +19,8 @@ extension MapController {
             let pinToAdd = Pin(context: dataController.viewContext)
             pinToAdd.latitude = locationCoordinate.latitude
             pinToAdd.longitude = locationCoordinate.longitude
-            
             let index = myFetchController.fetchedObjects?.count ?? 0
             pinToAdd.index = Int16(index)
-            
-            
             try? dataController.viewContext.save()
             return
         }

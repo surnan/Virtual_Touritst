@@ -15,10 +15,9 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!
     
-    var mapReuseID = "aksdjfasjkd"
-    
-    var selectedAnnotation: MKPointAnnotation?
 
+    var selectedAnnotation: MKPointAnnotation?
+    
     private let bottomUILabelHeight: CGFloat = 70
     private let defaultTitleFontSize: CGFloat = 22
     private let defaultFontSize: CGFloat = 18
@@ -32,7 +31,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var bootUP = true
     
     lazy var mapView: MKMapView = {
-       let view = MKMapView()
+        let view = MKMapView()
         view.addGestureRecognizer(myLongPressGesture)
         return view
     }()
@@ -67,21 +66,20 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
             button.setTitleColor(UIColor.blue, for: .normal)
             button.setAttributedTitle(NSAttributedString(string: "Done", attributes: [NSAttributedString.Key.font :  UIFont.systemFont(ofSize: defaultFontSize)]), for: .selected)
             button.setTitle("Done", for: .selected)
-            button.addTarget(self, action: #selector(handleRightBarButton), for: .touchUpInside)
+            button.addTarget(self, action: #selector(handleEditButton), for: .touchUpInside)
             button.isSelected = false
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
         }()
         let customBarButton = UIBarButtonItem(customView: editDoneButton)
         self.navigationItem.setRightBarButton(customBarButton, animated: true)
-        
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Reset", style: .done, target: self, action: #selector(ResetBarButton))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Delete ALL", style: .done, target: self, action: #selector(handleDeleteALLButton))
         
         
     }
     
     
-    @objc func ResetBarButton(){
+    @objc func handleDeleteALLButton(){
         mapView.removeAnnotations(mapView.annotations)
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
@@ -94,7 +92,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     }
     
     
-    @objc private func handleRightBarButton(sender: UIButton){
+    @objc private func handleEditButton(sender: UIButton){
         sender.isSelected = !sender.isSelected
         toggleBottomUILabel(show: sender.isSelected)
     }
@@ -110,7 +108,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         mapViewBottomAnchor_viewBottom_EXTRA = mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomUILabelHeight)
         hideBottomlabel()
     }
-
+    
     
     func setupFetchController(){
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
@@ -145,74 +143,29 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         setupUI()
         setupFetchController()
         myFetchController.delegate = self
-        
-//        mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: mapReuseID)
-
-        
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-        
-        
-        
         getAllPins().forEach{
             placeAnnotation(pin: $0)
         }
         bootUP = false
     }
     
-
+    
     func placeAnnotation(pin: Pin?) {
         let newAnnotation = MKPointAnnotation()
         guard let lat = pin?.latitude, let lon = pin?.longitude else {return}
-        
         let myNewAnnotation = MyAnnotation(lat: lat, lon: lon)
-        
         newAnnotation.coordinate.latitude = lat
         newAnnotation.coordinate.longitude = lon
-        
-//        let latString = String(format: "%.1f", ceil(lat*100)/100)
-//        let lonString = String(format: "%.1f", ceil(lon*100)/100)
-        
-//        newAnnotation.title =  "\(pin?.index ?? Int16(0)): \(latString) & \(lonString)"
-//        newAnnotation.title =  "\(pin?.index ?? Int16(0))"
-        
+        //        let latString = String(format: "%.1f", ceil(lat*100)/100)
+        //        let lonString = String(format: "%.1f", ceil(lon*100)/100)
+        //        newAnnotation.title =  "\(pin?.index ?? Int16(0)): \(latString) & \(lonString)"
+        //        newAnnotation.title =  "\(pin?.index ?? Int16(0))"
         newAnnotation.title = "aaa"
-        
-
-        
-mapView.addAnnotation(myNewAnnotation)
-        
-        
+        newAnnotation.subtitle = "bbbb"
+        mapView.addAnnotation(myNewAnnotation)
     }
 }
-
-
-/*
- override func viewDidLoad() {
- super.viewDidLoad()
- view.backgroundColor = UIColor.yellow
- mapView.delegate = self
- setupUI()
- setupFetchController()
- myFetchController.delegate = self
- 
- getAllPins().forEach{
- let tempLocation = CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude)
- placeAnnotation(location: tempLocation)
- }
- bootUP = false
- }
- 
- func placeAnnotation(location: CLLocationCoordinate2D?){
- let annotation = MKPointAnnotation()
- if let coordinate = location {
- print("lat = \(coordinate.latitude)  ..... lon = \(coordinate.longitude)")
- annotation.coordinate = coordinate
- mapView.addAnnotation(annotation)
- } else {
- print("Unable to obtain coordinates")
- }
- }
- */
 
 
 
