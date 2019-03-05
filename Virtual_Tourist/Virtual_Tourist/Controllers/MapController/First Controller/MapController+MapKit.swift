@@ -33,12 +33,14 @@ extension MapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if deletePhase {
             guard let annotationToRemove = view.annotation as? MKPointAnnotation else {return}
+//            guard let annotationToRemove = view.annotation as? MyAnnotation else {return}
+            
             let coord = annotationToRemove.coordinate
             getAllPins().forEach { (aPin) in
                 if aPin.longitude == coord.longitude && aPin.latitude == coord.latitude {
                     dataController.viewContext.delete(aPin)
                     try? dataController.viewContext.save()
-                    mapView.removeAnnotation(aPin)
+                    mapView.removeAnnotation(annotationToRemove)
                 }
             }
         } else {
@@ -121,7 +123,6 @@ extension MapController {
              guard let newPin = anObject as? Pin else {return}
              let newAnnotation = MyAnnotation(lat: newPin.latitude, lon: newPin.longitude)
              mapView.addAnnotation(newAnnotation)
-            print("Going to Add Annotation")
             break
         default:
             break
