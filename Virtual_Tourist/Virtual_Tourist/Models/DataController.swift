@@ -13,19 +13,12 @@ import CoreData
 class DataController {
     
     let persistentContainer: NSPersistentContainer
-
     init(modelName: String) {
         persistentContainer = NSPersistentContainer.init(name: modelName)
     }
-
-
     
-    var viewContext: NSManagedObjectContext {
-        return persistentContainer.viewContext
-    }
+    var viewContext: NSManagedObjectContext { return persistentContainer.viewContext }
     var backGroundContext: NSManagedObjectContext!
-    
-    
     
     func configureContexts(){
         backGroundContext = persistentContainer.newBackgroundContext()

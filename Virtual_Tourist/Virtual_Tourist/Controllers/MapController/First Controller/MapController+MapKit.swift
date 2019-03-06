@@ -30,7 +30,7 @@ class CustomAnnotationView: MKPinAnnotationView {
 extension MapController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
-        if deletePhase {
+        if tapDeletesPin {
             guard let annotationToRemove = view.annotation as? MyAnnotation else { return }
             let coord = annotationToRemove.coordinate
             getAllPins().forEach { (aPin) in
@@ -68,9 +68,7 @@ extension MapController: MKMapViewDelegate {
     }
     */
     
-    
-//    var oldLat: Double?
-//    var oldLon: Double?
+
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
         
@@ -83,10 +81,11 @@ extension MapController: MKMapViewDelegate {
         switch (newState) {
         case .starting:
             view.dragState = .dragging
-            if let view = view as? MKPinAnnotationView { view.pinTintColor = UIColor.green}
+            if let view = view as? MKPinAnnotationView {
+                view.pinTintColor = UIColor.green
+                oldCoordinates = coord
+            }
             
-            oldLat = coord.latitude
-            oldLon = coord.longitude
             
             
         case .ending:
@@ -94,12 +93,12 @@ extension MapController: MKMapViewDelegate {
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
             
             getAllPins().forEach { (aPin) in
-                if aPin.longitude == oldLon && aPin.latitude == oldLat {
+                if aPin.longitude == oldCoordinates?.longitude && aPin.latitude == oldCoordinates?.latitude {
                     aPin.latitude = coord.latitude
                     aPin.longitude = coord.longitude
+                    
                     try? dataController.viewContext.save()
-                    oldLat = nil
-                    oldLon = nil
+                    oldCoordinates = nil
                 }
             }
             
@@ -143,37 +142,18 @@ extension MapController: MKMapViewDelegate {
             }
             }.resume()
     }
+    
+    
+    func placeAnnotation(pin: Pin?) {
+        let newAnnotation = MKPointAnnotation()
+        guard let lat = pin?.latitude, let lon = pin?.longitude else {return}
+        let myNewAnnotation = MyAnnotation(lat: lat, lon: lon)
+        newAnnotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        mapView.addAnnotation(myNewAnnotation)
+    }
 }
 
-//: NSFetchedResultsControllerDelegate
-extension MapController {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("")
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("")
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .delete:
-            let newPin = anObject as? Pin
-            mapView.annotations.forEach{
-                let coordinate = $0.coordinate
-                if newPin?.longitude == coordinate.longitude && newPin?.latitude == coordinate.latitude {
-                    mapView.removeAnnotation($0)
-                }
-            }
-        case .insert:
-            guard let newPin = anObject as? Pin else {return}
-            let newAnnotation = MyAnnotation(lat: newPin.latitude, lon: newPin.longitude)
-            mapView.addAnnotation(newAnnotation)
-        default:
-            break
-        }
-    }
-}
+
 
 
 

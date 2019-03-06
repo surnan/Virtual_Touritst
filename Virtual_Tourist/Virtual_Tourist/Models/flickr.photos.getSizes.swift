@@ -8,29 +8,8 @@
 
 import Foundation
 
-//struct PhotosGetSizes: Codable {
-//
-//    var sizes: SizesStruct
-//    var stat: String
-//
-//    struct  SizesStruct: Codable {
-//        var canblog: Int
-//        var canprint: Int
-//        var candownload: Int
-//        var size: [SizeStruct]
-//    }
-//
-//    struct SizeStruct: Codable {
-//        var source: String
-//        var url: String
-//        var media: String
-//        var label: String
-//        var height: String
-//        var width: String
-//    }
-//}
-
-struct Root: Codable {
+//struct PhotosGetInfo: Codable
+struct PhotosGetSizes: Codable {
     let sizes: Sizes
     let stat: String
 }
@@ -42,11 +21,11 @@ struct Sizes: Codable {
 
 struct Size: Codable {
     let label,media,source: String
-    let width, height: Height
+    let width, String_or_INT: String_or_INT
     let url:URL
 }
 
-enum Height: Codable {
+enum String_or_INT: Codable {
     case integer(Int)
     case string(String)
     
@@ -60,7 +39,7 @@ enum Height: Codable {
             self = .string(x)
             return
         }
-        throw DecodingError.typeMismatch(Height.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for Height"))
+        throw DecodingError.typeMismatch(String_or_INT.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for String_or_INT"))
     }
     
     func encode(to encoder: Encoder) throws {

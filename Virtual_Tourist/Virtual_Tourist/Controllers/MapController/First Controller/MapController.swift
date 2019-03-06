@@ -10,34 +10,24 @@ import UIKit
 import MapKit
 import CoreData
 
-
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
+    //MARK:- UI Constraints - CONSTANTS
+    let bottomUILabelHeight: CGFloat = 70
+    let defaultTitleFontSize: CGFloat = 22
+    let defaultFontSize: CGFloat = 18
+    
+    //MARK:- UI Constraints - SHIFT MapView/DeleteLabel Up/Down
+    var anchorMapTop_SafeAreaTop: NSLayoutConstraint?
+    var anchorMapTop_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
+    var anchorMapBottom_ViewBottom: NSLayoutConstraint?
+    var anchorMapBottom_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
+    
+    //MARK:- Var not used for Constraints
+    var tapDeletesPin = false
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!
-    
-
-    var selectedAnnotation: MKPointAnnotation?
-    
-    private let bottomUILabelHeight: CGFloat = 70
-    private let defaultTitleFontSize: CGFloat = 22
-    private let defaultFontSize: CGFloat = 18
-    
-    var mapViewTopAnchor_safeTop: NSLayoutConstraint?
-    var mapViewTopAnchor_safeTop_EXTRA: NSLayoutConstraint?
-    var mapViewBottomAnchor_viewBottom: NSLayoutConstraint?
-    var mapViewBottomAnchor_viewBottom_EXTRA: NSLayoutConstraint?
-    
-    var deletePhase = false
-    var bootUP = true
-    
-    var oldLat: Double?
-    var oldLon: Double?
-    
-    lazy var mapView: MKMapView = {
-        let view = MKMapView()
-        view.addGestureRecognizer(myLongPressGesture)
-        return view
-    }()
+    var oldCoordinates: CLLocationCoordinate2D? //Updating Pin Entity after dragging
+    var mapView = MKMapView()
     
     lazy private var myLongPressGesture: UILongPressGestureRecognizer = {
         var longGesture = UILongPressGestureRecognizer()
@@ -46,7 +36,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         return longGesture
     }()
     
-    lazy private var bottomUILabel: UILabel = {
+    lazy var bottomUILabel: UILabel = {
         var label = UILabel()
         label.backgroundColor = UIColor.red
         let attributes: [NSAttributedString.Key:Any] = [
@@ -60,89 +50,11 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         return label
     }()
     
-    private func setupNavigationBar(){
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: defaultTitleFontSize)]
-        navigationItem.title = "Virtual Tourist"
-        let editDoneButton: UIButton = {
-            let button = UIButton()
-            button.setTitle("Edit", for: .normal)
-            button.setTitleColor(UIColor.blue, for: .normal)
-            button.setAttributedTitle(NSAttributedString(string: "Done", attributes: [NSAttributedString.Key.font :  UIFont.systemFont(ofSize: defaultFontSize)]), for: .selected)
-            button.setTitle("Done", for: .selected)
-            button.addTarget(self, action: #selector(handleEditButton), for: .touchUpInside)
-            button.isSelected = false
-            button.translatesAutoresizingMaskIntoConstraints = false
-            return button
-        }()
-        let customBarButton = UIBarButtonItem(customView: editDoneButton)
-        self.navigationItem.setRightBarButton(customBarButton, animated: true)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Delete ALL", style: .done, target: self, action: #selector(handleDeleteALLButton))
-        
-        
-    }
-    
-    
-    @objc func handleDeleteALLButton(){
-        mapView.removeAnnotations(mapView.annotations)
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
-        let request = NSBatchDeleteRequest(fetchRequest: fetch)
-        do {
-            try dataController.viewContext.execute(request)
-            try dataController.viewContext.save()
-        } catch {
-            print ("There was an error")
-        }
-    }
-    
-    
-    @objc private func handleEditButton(sender: UIButton){
-        sender.isSelected = !sender.isSelected
-        toggleBottomUILabel(show: sender.isSelected)
-    }
-    
-    private func setupUI(){
-        setupNavigationBar()
-        [mapView, bottomUILabel].forEach{view.addSubview($0)}
-        mapView.anchor(top: nil, leading: bottomUILabel.leadingAnchor, trailing: bottomUILabel.trailingAnchor, bottom: nil)
-        bottomUILabel.anchor(top: mapView.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, bottom: nil)
-        mapViewTopAnchor_safeTop =  mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        mapViewBottomAnchor_viewBottom =  mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        mapViewTopAnchor_safeTop_EXTRA = mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -bottomUILabelHeight)
-        mapViewBottomAnchor_viewBottom_EXTRA = mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomUILabelHeight)
-        hideBottomlabel()
-    }
-    
-    
-    func setupFetchController(){
-        let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
-        myFetchController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                       managedObjectContext: dataController.viewContext,
-                                                       sectionNameKeyPath: nil,
-                                                       cacheName: nil)
-        do {
-            try myFetchController.performFetch()
-        } catch {
-            fatalError("Unable to setup Fetch Controller: \n\(error)")
-        }
-    }
-    
-    
-    
-    
-    func getAllPins()->[Pin]{
-        guard let pins = myFetchController.fetchedObjects else {
-            self.bootUP = false
-            return []
-        }
-        return pins
-    }
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.yellow
         mapView.delegate = self
+        mapView.addGestureRecognizer(myLongPressGesture)
         setupUI()
         setupFetchController()
         myFetchController.delegate = self
@@ -150,23 +62,6 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         getAllPins().forEach{
             placeAnnotation(pin: $0)
         }
-        bootUP = false
-    }
-    
-    
-    func placeAnnotation(pin: Pin?) {
-        let newAnnotation = MKPointAnnotation()
-        guard let lat = pin?.latitude, let lon = pin?.longitude else {return}
-        let myNewAnnotation = MyAnnotation(lat: lat, lon: lon)
-        newAnnotation.coordinate.latitude = lat
-        newAnnotation.coordinate.longitude = lon
-        //        let latString = String(format: "%.1f", ceil(lat*100)/100)
-        //        let lonString = String(format: "%.1f", ceil(lon*100)/100)
-        //        newAnnotation.title =  "\(pin?.index ?? Int16(0)): \(latString) & \(lonString)"
-        //        newAnnotation.title =  "\(pin?.index ?? Int16(0))"
-        newAnnotation.title = "aaa"
-        newAnnotation.subtitle = "bbbb"
-        mapView.addAnnotation(myNewAnnotation)
     }
 }
 

@@ -19,19 +19,3 @@ extension Pin: MKAnnotation {
 }
 
 
-
-/*
- extension Point: MKAnnotation {
- public var coordinate: CLLocationCoordinate2D {
- // latitude and longitude are optional NSNumbers
- guard let latitude = latitude, let longitude = longitude else {
- return kCLLocationCoordinate2DInvalid
- }
- 
- let latDegrees = CLLocationDegrees(latitude.doubleValue)
- let longDegrees = CLLocationDegrees(longitude.doubleValue)
- return CLLocationCoordinate2D(latitude: latDegrees, longitude: longDegrees)
- }
- }
- */
-

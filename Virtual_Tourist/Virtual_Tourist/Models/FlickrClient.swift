@@ -167,7 +167,7 @@ class FlickrClient {
                 return
             }
             do {
-                let dataObject = try JSONDecoder().decode(Root.self, from: data)
+                let dataObject = try JSONDecoder().decode(PhotosGetSizes.self, from: data)
                 let temp = dataObject.sizes.size.last?.url
                 //                print(dataObject.sizes.size.last?.url)
                 DispatchQueue.main.async {
