@@ -30,8 +30,6 @@ extension MapController {
     }
     
 
-    
-    
     func setupUI(){
         setupNavigationBar()
         [mapView, bottomUILabel].forEach{view.addSubview($0)}

@@ -46,7 +46,7 @@ extension MapController {
             }
         case .insert:
             guard let newPin = anObject as? Pin else {return}
-            let newAnnotation = MyAnnotation(lat: newPin.latitude, lon: newPin.longitude)
+            let newAnnotation = CustomAnnotation(lat: newPin.latitude, lon: newPin.longitude)
             mapView.addAnnotation(newAnnotation)
         default:
             break

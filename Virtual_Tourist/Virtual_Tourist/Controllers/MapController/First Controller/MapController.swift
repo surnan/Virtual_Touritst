@@ -16,7 +16,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     let defaultTitleFontSize: CGFloat = 22
     let defaultFontSize: CGFloat = 18
     
-    //MARK:- UI Constraints - SHIFT MapView/DeleteLabel Up/Down
+    //MARK:- UI Constraints - DYNAMIC
     var anchorMapTop_SafeAreaTop: NSLayoutConstraint?
     var anchorMapTop_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
     var anchorMapBottom_ViewBottom: NSLayoutConstraint?
@@ -64,7 +64,3 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         }
     }
 }
-
-
-
-
