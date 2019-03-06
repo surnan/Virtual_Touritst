@@ -30,6 +30,9 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var deletePhase = false
     var bootUP = true
     
+    var oldLat: Double?
+    var oldLon: Double?
+    
     lazy var mapView: MKMapView = {
         let view = MKMapView()
         view.addGestureRecognizer(myLongPressGesture)

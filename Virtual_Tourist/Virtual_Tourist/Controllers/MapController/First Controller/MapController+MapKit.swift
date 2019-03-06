@@ -68,13 +68,42 @@ extension MapController: MKMapViewDelegate {
     }
     */
     
+    
+//    var oldLat: Double?
+//    var oldLon: Double?
+    
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
+        
+        
+        guard let myAnnotation = view.annotation else {return}
+        
+        let coord = myAnnotation.coordinate
+        print("Lat = \(coord.latitude)  ...   Lon = \(coord.longitude)")
+        
         switch (newState) {
         case .starting:
             view.dragState = .dragging
             if let view = view as? MKPinAnnotationView { view.pinTintColor = UIColor.green}
-        case .ending, .canceling:
+            
+            oldLat = coord.latitude
+            oldLon = coord.longitude
+            
+            
+        case .ending:
             view.dragState = .none
+            if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
+            
+            getAllPins().forEach { (aPin) in
+                if aPin.longitude == oldLon && aPin.latitude == oldLat {
+                    aPin.latitude = coord.latitude
+                    aPin.longitude = coord.longitude
+                    try? dataController.viewContext.save()
+                    oldLat = nil
+                    oldLon = nil
+                }
+            }
+            
+        case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
         default: break
         }
