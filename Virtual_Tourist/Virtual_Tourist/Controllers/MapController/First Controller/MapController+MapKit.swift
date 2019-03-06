@@ -15,10 +15,10 @@ class CustomAnnotationView: MKPinAnnotationView {
     
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        pinTintColor = .red
+        pinTintColor = .black
         isDraggable = true
         animatesDrop = true
-        canShowCallout = true
+        canShowCallout = false
     }
     
     required init?(coder aDecoder: NSCoder) {
