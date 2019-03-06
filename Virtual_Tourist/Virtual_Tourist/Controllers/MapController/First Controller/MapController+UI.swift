@@ -28,7 +28,6 @@ extension MapController {
         self.navigationItem.setRightBarButton(customBarButton, animated: true)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Delete ALL", style: .done, target: self, action: #selector(handleDeleteALLButton))
     }
-    
 
     func setupUI(){
         setupNavigationBar()
@@ -42,7 +41,6 @@ extension MapController {
         anchorMapBottom_ShiftMapToShowDeletionLabel = mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -bottomUILabelHeight)
         hideBottomlabel()
     }
-    
     
     private func resetConstraintsOnBottomLabel(){
         anchorMapTop_SafeAreaTop?.isActive = false

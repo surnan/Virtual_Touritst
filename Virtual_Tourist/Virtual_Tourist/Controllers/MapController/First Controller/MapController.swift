@@ -11,6 +11,10 @@ import MapKit
 import CoreData
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
+    
+    var imageArray = [UIImage]()
+
+    
     //MARK:- UI Constraints - CONSTANTS
     let bottomUILabelHeight: CGFloat = 70
     let defaultTitleFontSize: CGFloat = 22
