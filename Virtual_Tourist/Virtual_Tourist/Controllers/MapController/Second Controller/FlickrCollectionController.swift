@@ -9,11 +9,9 @@
 import UIKit
 import MapKit
 
+var imageArray = [UIImage]()
 
 class FlickrCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    
-    
-    var imageArray = [UIImage]()
     
     let reuseID = "alksdjfhaskdjhf"
     
@@ -34,13 +32,6 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageArray.count
-        //        if imageArray.count == 0 {
-        //            return 9
-        //        } else {
-        //            return imageArray.count
-        //        }
-        
-        
     }
     
     
@@ -54,13 +45,9 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
         super.viewDidDisappear(animated)
     }
     
-    
-    
-    
     func showNavigationController(){
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "OK", style: .done, target: self, action: #selector(handleLeftBarButton))
     }
-    
     
     @objc func handleLeftBarButton(){
         navigationController?.popViewController(animated: true)
