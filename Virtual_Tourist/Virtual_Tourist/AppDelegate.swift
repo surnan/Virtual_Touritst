@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // UINavigationBar.appearance().tintColor = UIColor.blue //doesn't help custom Button but will change normal barButtonItems
         
         
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print(urls[urls.count-1] as URL)
+        
+        
         dataController.load()
         
         UINavigationBar.appearance().isTranslucent = false
