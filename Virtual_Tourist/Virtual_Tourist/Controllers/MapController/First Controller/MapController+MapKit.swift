@@ -86,7 +86,7 @@ extension MapController: MKMapViewDelegate {
                     })
                 }
             })
-            
+            self.navigationController?.pushViewController(FlickrCollectionController(), animated: true)
         })
     }
 }
