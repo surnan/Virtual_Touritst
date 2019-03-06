@@ -8,6 +8,7 @@
 //
 import UIKit
 import MapKit
+import CoreData
 
 var imageArray = [UIImage]()
 
@@ -15,29 +16,19 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     let reuseID = "alksdjfhaskdjhf"
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 100)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    }
+    var Pin: Pin!
+    var dataController: DataController!
+    var fetchedResultsController: NSFetchedResultsController<Photo>!
     
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell
-        cell.flickrImage = imageArray[indexPath.row]
-        return cell
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("test")
     }
     
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.popViewController(animated: true)
-    }
+    
+   
     
     
     
