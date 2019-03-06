@@ -25,6 +25,9 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var anchorMapBottom_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
     
     //MARK:- Var not used for Constraints
+    
+    var task: URLSessionTask?
+    
     var tapDeletesPin = false
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!

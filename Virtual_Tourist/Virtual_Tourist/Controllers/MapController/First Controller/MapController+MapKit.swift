@@ -53,14 +53,40 @@ extension MapController: MKMapViewDelegate {
             }
             return
         }
+        
+        
+        let myImageArray = imageArray
+        
         guard let annotationToRemove = view.annotation as? CustomAnnotation else { return }
         let location = annotationToRemove.coordinate
         let lon = Double(location.longitude)
         let lat = Double(location.latitude)
-        _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
-        navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        //        _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
+        //        navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        
+        
+        _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5, completion: { (data, err) in
+            
+            data.forEach({ (temp) in
+                temp.forEach{
+                    FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (url, err) in
+                        if let myURL = url {
+                            self.downloadImageFromURL(myURL: myURL) {(data, error) in
+                                if let myImage = data {
+                                    imageArray.append(myImage)
+                                    imageArray.append(myImage)
+                                    print("BREAK HERE")
+                                } else {
+                                    print("Unable to get Photo from downloadImageFromURL")
+                                }
+                            }
+                        } else {
+                            print("Error inside closure from GETPHOTOURL: \(String(describing: err))")
+                        }
+                    })
+                }
+            })
+            
+        })
     }
-    
-
-
 }

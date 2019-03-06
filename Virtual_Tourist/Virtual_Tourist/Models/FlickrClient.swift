@@ -81,7 +81,7 @@ class FlickrClient {
     
     ////////////////////////
     
-    class func searchPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionDataTask{
+    class func searchPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
         let url = Endpoints.photosSearch(latitude, longitude, count).url
         //        print("Endpoints Photo-Search-URL = \(url)")
         var answer = [[String: String]]()
