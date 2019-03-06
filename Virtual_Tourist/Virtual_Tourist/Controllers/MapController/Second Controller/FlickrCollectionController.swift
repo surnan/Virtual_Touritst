@@ -45,7 +45,7 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     }
     
     override func viewDidLoad() {
-        collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: reuseID)
+        collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID)
         view.backgroundColor = UIColor.red
     }
 }

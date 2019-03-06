@@ -21,13 +21,20 @@ extension FlickrCollectionController {
     
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell
-        cell.flickrImage = imageArray[indexPath.row]
+        
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell
+//        cell.flickrImage = imageArray[indexPath.row]
+
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell2
+        cell.message = "asdfasdf"
+        
+//        let cell = UICollectionViewCell()
+//        cell.backgroundColor = UIColor.yellow
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
+        return 1
     }
     
     
