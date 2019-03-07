@@ -21,44 +21,17 @@ extension FlickrCollectionController {
     
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-//        let aPhoto = fetchedResultsController.object(at: indexPath)
-//
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell
-//
-//        if let imageData = aPhoto.imageData, let myImage = UIImage(data: imageData){
-//            cell.flickrImage = myImage
-//        }
-        
-//        cell.flickrImage = imageArray[indexPath.row]
-        
-  //////////////////////////////////////////////////////////////////////
-        
-        //        let cell = UICollectionViewCell()
-        //        cell.backgroundColor = UIColor.yellow
-        
-    //////////////////////////////////////////////////////////////////////
-        
-
-        
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell2
-//        cell.message = "asdfasdf"
-
-        
-        
+        //        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell2
+        //        cell.message = "asdfasdf"
         
         let myPhoto = fetchedResultsController.object(at: indexPath)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell3
-        
         cell.myPhoto = myPhoto
-        
-        
-        
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return photoID_Secret_Dict.count
+        //        return photoID_Secret_Dict.count
         return fetchedResultsController.sections?[0].numberOfObjects ?? 0
     }
     

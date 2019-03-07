@@ -10,7 +10,6 @@ import UIKit
 import MapKit
 import CoreData
 
-//var imageArray = [UIImage]()
 
 class FlickrCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
