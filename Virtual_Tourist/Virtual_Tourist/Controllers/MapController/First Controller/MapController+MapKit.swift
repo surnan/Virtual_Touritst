@@ -98,6 +98,9 @@ extension MapController: MKMapViewDelegate {
         tempPhoto.urlString = urlString
         tempPhoto.index = Int32(718212)
         tempPhoto.pin = pin
+        
+        let testImage = UIImage(data: tempPhoto.imageData!)
+        
         try? dataController.viewContext.save()
     }
 }

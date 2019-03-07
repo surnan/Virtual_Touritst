@@ -23,7 +23,7 @@ extension MapController {
         pinToAdd.latitude = locationCoordinate.latitude
         pinToAdd.longitude = locationCoordinate.longitude
         let index = myFetchController.fetchedObjects?.count ?? 0
-        pinToAdd.index = Int32(index)
+        pinToAdd.pageNumber = Int32(index)
         try? dataController.viewContext.save()
     }
     
