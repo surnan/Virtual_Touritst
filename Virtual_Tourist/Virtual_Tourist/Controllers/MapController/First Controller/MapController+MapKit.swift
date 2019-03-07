@@ -61,16 +61,16 @@ extension MapController: MKMapViewDelegate {
         
         let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
         
-//        var currentPin: Pin?
-//        self.getAllPins().forEach { (aPin) in
-//            if aPin.longitude == lon && aPin.latitude == lat {
-//                currentPin = aPin
-//            }
-//        }
-//
-//        newController.dataController = dataController
-//        newController.Pin = currentPin!
-    
+        //        var currentPin: Pin?
+        //        self.getAllPins().forEach { (aPin) in
+        //            if aPin.longitude == lon && aPin.latitude == lat {
+        //                currentPin = aPin
+        //            }
+        //        }
+        //
+        //        newController.dataController = dataController
+        //        newController.Pin = currentPin!
+        
         _ = FlickrClient.searchNearbyForPhotos(latitude: lat, longitude: lon, count: 3, completion: { (data, err) in
             var currentPin: Pin?
             self.getAllPins().forEach { (aPin) in
@@ -79,7 +79,7 @@ extension MapController: MKMapViewDelegate {
                 }
             }
             newController.dataController = self.dataController
-            newController.Pin = currentPin!
+            newController.pin = currentPin!
             data.forEach({ (photo_secret) in
                 photo_secret.forEach{
                     
@@ -89,11 +89,6 @@ extension MapController: MKMapViewDelegate {
                         URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                             guard let data = data else {return}
                             self.connectPhotoAndPin(dataController: self.dataController, pin:  currentPin! , data: data, urlString: _urlString)
-                            
-                            
-                            
-                            
-                            
                         }).resume()
                     })
                 }
@@ -115,6 +110,14 @@ extension MapController: MKMapViewDelegate {
         try? dataController.viewContext.save()
     }
 }
+
+
+
+
+func checkIfRefreshNeeded(){
+    
+}
+
 
 
 //GLOBAL FUNCTIONS

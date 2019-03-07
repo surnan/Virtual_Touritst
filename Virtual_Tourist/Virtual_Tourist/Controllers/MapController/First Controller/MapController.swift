@@ -60,12 +60,29 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         view.backgroundColor = UIColor.yellow
         mapView.delegate = self
         mapView.addGestureRecognizer(myLongPressGesture)
+        mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        
         setupUI()
+        
         setupFetchController()
         myFetchController.delegate = self
-        mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
         getAllPins().forEach{
             placeAnnotation(pin: $0)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        setupFetchController()
+//        myFetchController.delegate = self
+//
+//        getAllPins().forEach{
+//            placeAnnotation(pin: $0)
+//        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+//        myFetchController = nil
     }
 }
