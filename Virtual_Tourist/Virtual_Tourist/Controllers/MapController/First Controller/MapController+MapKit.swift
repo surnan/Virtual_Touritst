@@ -54,48 +54,46 @@ extension MapController: MKMapViewDelegate {
             return
         }
         
-        
-//        let myImageArray = imageArray
-        
         guard let annotationToCheck = view.annotation as? CustomAnnotation else { return }
         let location = annotationToCheck.coordinate
         let lon = Double(location.longitude)
         let lat = Double(location.latitude)
-        //        _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 10, completion: handleFlickrClientSearchPhotos(pictureList:error:))
-        //        navigationController?.pushViewController(FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        
+        let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        var currentPin: Pin?
+        self.getAllPins().forEach { (aPin) in
+            if aPin.longitude == lon && aPin.latitude == lat {
+                currentPin = aPin
+            }
+        }
+        
+        newController.dataController = dataController
+        newController.Pin = currentPin!
         
         
-        _ = FlickrClient.searchPhotos(latitude: lat, longitude: lon, count: 5, completion: { (data, err) in
-            data.forEach({ (temp) in
-                temp.forEach{
-                    FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (url, err) in
-                        if let myURL = url {
-                            self.downloadImageFromURL(myURL: myURL) {(data, error) in
-                                if let myImage = data {
-                                    imageArray.append(myImage)
-                                    imageArray.append(myImage)
-                                    print("BREAK HERE")
-                                } else {
-                                    print("Unable to get Photo from downloadImageFromURL")
-                                }
-                            }
-                        } else {
-                            print("Error inside closure from GETPHOTOURL: \(String(describing: err))")
+        let tempPhoto = Photo(context: dataController.viewContext)
+        
+        _ = FlickrClient.searchNearbyForPhotos(latitude: lat, longitude: lon, count: 3, completion: { (data, error) in
+            data.forEach{ (element) in
+                element.forEach{
+                    FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, error) in
+                        guard let newURLString = urlString, let url = URL(string: newURLString) else {
+                            return
                         }
+                        URLSession.shared.dataTask(with: url, completionHandler: { (data, resp, err) in
+                            if let data = data {
+                                tempPhoto.image = data
+                                tempPhoto.index = 347.855
+                                tempPhoto.pin = currentPin
+                                tempPhoto.urlString = urlString!
+                                try? self.dataController.viewContext.save()
+                                self.navigationController?.pushViewController(newController, animated: true)
+                            }
+                        }).resume()
                     })
                 }
-            })
-            
-            let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
-            newController.dataController = self.dataController
-            var currentPin: Pin?
-            self.getAllPins().forEach { (aPin) in
-                if aPin.longitude == lon && aPin.latitude == lat {
-                    currentPin = aPin
-                }
             }
-            newController.Pin = currentPin!
-            self.navigationController?.pushViewController(newController, animated: true)
         })
     }
 }

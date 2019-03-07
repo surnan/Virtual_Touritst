@@ -49,7 +49,8 @@ class FlickrClient {
         }
     }
 
-    class func getPhotoURL(photoID: String, secret: String, completion: @escaping (URL?, Error?)->Void){
+//    class func getPhotoURL(photoID: String, secret: String, completion: @escaping (URL?, Error?)->Void){
+    class func getPhotoURL(photoID: String, secret: String, completion: @escaping (String?, Error?)->Void){
         let url = Endpoints.getOnePicture(photoID, secret).url
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let dataObject = data, error == nil else {
@@ -62,11 +63,14 @@ class FlickrClient {
                 let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
                 DispatchQueue.main.async {
                     let urlString = "https://farm\(temp.photo.farm).staticflickr.com/\(temp.photo.server)/\(temp.photo.id)_\(temp.photo.secret)_m.jpg"
-                    if let myURL = URL(string: urlString) {
-                            completion(myURL, nil)
-                    } else {
-                        completion(nil, error)
-                    }
+                    
+                    completion(urlString, nil)
+                    
+//                    if let myURL = URL(string: urlString) {
+//                            completion(myURL, nil)
+//                    } else {
+//                        completion(nil, error)
+//                    }
                 }
                 return
             } catch let conversionErr {
@@ -81,7 +85,7 @@ class FlickrClient {
     
     ////////////////////////
     
-    class func searchPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
+    class func searchNearbyForPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
         let url = Endpoints.photosSearch(latitude, longitude, count).url
         //        print("Endpoints Photo-Search-URL = \(url)")
         var answer = [[String: String]]()
