@@ -34,7 +34,7 @@ extension FlickrCollectionController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return photoID_Secret_Dict.count
     }
     
     

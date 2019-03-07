@@ -156,9 +156,9 @@
 			isa = PBXGroup;
 			children = (
 				841A55BF222624170028A6E3 /* FlickrCollectionController.swift */,
-				8441AE03222B6E75002412E0 /* CollectionCell.swift */,
 				84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */,
 				8467393B223066160047C3F1 /* CollectionCell2.swift */,
+				8441AE03222B6E75002412E0 /* CollectionCell.swift */,
 			);
 			path = "Second Controller";
 			sourceTree = "<group>";

@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-var imageArray = [UIImage]()
+//var imageArray = [UIImage]()
 
 class FlickrCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -19,18 +19,13 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     var Pin: Pin!
     var dataController: DataController!
     var fetchedResultsController: NSFetchedResultsController<Photo>!
+    var photoID_Secret_Dict = [[String: String]]()
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("test")
     }
-    
-    
-    
-   
-    
-    
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -47,5 +42,16 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     override func viewDidLoad() {
         collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID)
         view.backgroundColor = UIColor.red
+        
+        
     }
+    
+    func reload(){
+        collectionView.reloadData()
+    }
+    
+    
 }
+
+
+

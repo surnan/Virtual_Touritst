@@ -61,39 +61,99 @@ extension MapController: MKMapViewDelegate {
         
         let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
         
-        var currentPin: Pin?
-        self.getAllPins().forEach { (aPin) in
-            if aPin.longitude == lon && aPin.latitude == lat {
-                currentPin = aPin
+//        var currentPin: Pin?
+//        self.getAllPins().forEach { (aPin) in
+//            if aPin.longitude == lon && aPin.latitude == lat {
+//                currentPin = aPin
+//            }
+//        }
+//
+//        newController.dataController = dataController
+//        newController.Pin = currentPin!
+    
+        _ = FlickrClient.searchNearbyForPhotos(latitude: lat, longitude: lon, count: 3, completion: { (data, err) in
+            var currentPin: Pin?
+            self.getAllPins().forEach { (aPin) in
+                if aPin.longitude == lon && aPin.latitude == lat {
+                    currentPin = aPin
+                }
             }
-        }
-        
-        newController.dataController = dataController
-        newController.Pin = currentPin!
-        
-        
-        let tempPhoto = Photo(context: dataController.viewContext)
-        
-        _ = FlickrClient.searchNearbyForPhotos(latitude: lat, longitude: lon, count: 3, completion: { (data, error) in
-            data.forEach{ (element) in
-                element.forEach{
-                    FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, error) in
-                        guard let newURLString = urlString, let url = URL(string: newURLString) else {
-                            return
-                        }
-                        URLSession.shared.dataTask(with: url, completionHandler: { (data, resp, err) in
-                            if let data = data {
-                                tempPhoto.image = data
-                                tempPhoto.index = 347.855
-                                tempPhoto.pin = currentPin
-                                tempPhoto.urlString = urlString!
-                                try? self.dataController.viewContext.save()
-                                self.navigationController?.pushViewController(newController, animated: true)
-                            }
+            newController.dataController = self.dataController
+            newController.Pin = currentPin!
+            data.forEach({ (photo_secret) in
+                photo_secret.forEach{
+                    
+                    FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, err) in
+                        guard let _urlString = urlString, let url = URL(string: _urlString) else {return}
+                        print("url = \(url)")
+                        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                            guard let data = data else {return}
+                            self.connectPhotoAndPin(dataController: self.dataController, pin:  currentPin! , data: data, urlString: _urlString)
+                            
+                            
+                            
+                            
+                            
                         }).resume()
                     })
                 }
+            })
+            DispatchQueue.main.async {
+                newController.photoID_Secret_Dict = data
+                self.navigationController?.pushViewController(newController, animated: true)
             }
         })
+    }
+    
+    
+    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
+        let tempPhoto = Photo(context: dataController.viewContext)
+        tempPhoto.imageData = data
+        tempPhoto.urlString = urlString
+        tempPhoto.index = Int32(718212)
+        tempPhoto.pin = pin
+        try? dataController.viewContext.save()
+    }
+}
+
+
+//GLOBAL FUNCTIONS
+
+func getCurrentViewController(_ vc: UIViewController) -> UIViewController? {
+    if let pvc = vc.presentedViewController {
+        return getCurrentViewController(pvc)
+    }
+    else if let svc = vc as? UISplitViewController, svc.viewControllers.count > 0 {
+        return getCurrentViewController(svc.viewControllers.last!)
+    }
+    else if let nc = vc as? UINavigationController, nc.viewControllers.count > 0 {
+        return getCurrentViewController(nc.topViewController!)
+    }
+    else if let tbc = vc as? UITabBarController {
+        if let svc = tbc.selectedViewController {
+            return getCurrentViewController(svc)
+        }
+    }
+    return vc
+}
+
+
+//EXTENSIONS
+extension UIApplication {
+    var visibleViewController : UIViewController? {
+        return keyWindow?.rootViewController?.topViewController
+    }
+}
+
+extension UIViewController {
+    fileprivate var topViewController: UIViewController {
+        switch self {
+        case is UINavigationController:
+            return (self as! UINavigationController).visibleViewController?.topViewController ?? self
+        case is UITabBarController:
+            return (self as! UITabBarController).selectedViewController?.topViewController ?? self
+        default:
+            return presentedViewController?.topViewController ?? self
+        }
     }
 }
