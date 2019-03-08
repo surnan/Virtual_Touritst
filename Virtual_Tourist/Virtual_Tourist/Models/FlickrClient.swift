@@ -13,19 +13,20 @@ class FlickrClient {
     
     private enum Endpoints {
         static let base = "https://api.flickr.com/services/rest/?"
-        case photosSearch(Double, Double, Int)
+        case photosSearch(Double, Double, Int, Int32)   //Int32 because it's from core data and no need to convert types
         case getOnePicture(String , String)
         case getPhotosGetSizes(String)
         case photoDownloadURL()
         
         var toString: String {
             switch self {
-            case .photosSearch(let latitude, let longitude, let maxPull): return Endpoints.base
+            case .photosSearch(let latitude, let longitude, let maxPull, let page): return Endpoints.base
                 + "method=flickr.photos.search"
                 + "&api_key=\(API_KEY)"
                 + "&lat=\(latitude)"
                 + "&lon=\(longitude)"
                 + "&per_page=\(maxPull)"
+                + "&page=\(page)"
                 + "&format=json"
                 + "&nojsoncallback=1"
             case .getOnePicture(let photoID, let secret): return Endpoints.base
@@ -85,8 +86,8 @@ class FlickrClient {
     
     ////////////////////////
     
-    class func searchNearbyForPhotos(latitude: Double, longitude: Double, count: Int, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
-        let url = Endpoints.photosSearch(latitude, longitude, count).url
+    class func searchNearbyForPhotos(latitude: Double, longitude: Double, count: Int, pageNumber: Int32, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
+        let url = Endpoints.photosSearch(latitude, longitude, count, pageNumber).url
         //        print("Endpoints Photo-Search-URL = \(url)")
         var answer = [[String: String]]()
         let task = URLSession.shared.dataTask(with: url) { data, response, error in

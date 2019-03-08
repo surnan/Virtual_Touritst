@@ -56,9 +56,20 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "<custom back", style: .done, target: self, action: #selector(handleLeftBarButton))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "refresh", style: .done, target: self, action: #selector(handleReload)),
-            UIBarButtonItem(title: "Update_Page", style: .done, target: self, action: #selector(handleReload)),
+            UIBarButtonItem(title: "Update_Page", style: .done, target: self, action: #selector(handleUpdate)),
         ]
     }
+    
+    
+    @objc func handleUpdate(){
+        
+        
+        
+        
+        
+    }
+    
+    
     
     @objc func handleLeftBarButton(){
         navigationController?.popViewController(animated: true)

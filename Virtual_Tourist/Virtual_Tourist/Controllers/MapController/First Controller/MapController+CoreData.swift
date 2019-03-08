@@ -31,6 +31,19 @@ extension MapController {
         }
     }
     
+//    //get & update page
+//    func matchPinToLocation2(location: CLLocationCoordinate2D) -> Pin?{
+//        let context = dataController.viewContext
+//        let fetch = NSFetchRequest<Pin>(entityName: "Pin")
+//        let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [location.latitude, location.longitude])
+//        fetch.predicate = predicate
+//        do {
+//            let result = try context.fetch(fetch)
+//            return result.first
+//        } catch {
+//            return nil
+//        }
+//    }
     
     //CLLocationCoordinate2D
     func matchPinToLocation2(location: CLLocationCoordinate2D) -> Pin?{
