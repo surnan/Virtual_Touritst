@@ -18,59 +18,18 @@ extension MapController {
         return pins
     }
     
-    func matchPinToLocation(latitude: Double, longitude: Double) -> Pin?{
+    func matchPinToLocation2(latitude: Double, longitude: Double) -> Pin?{
         let context = dataController.viewContext
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
+        let fetch = NSFetchRequest<Pin>(entityName: "Pin")
         let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [latitude, longitude])
         fetch.predicate = predicate
         do {
             let result = try context.fetch(fetch)
-            for data in result as! [NSManagedObject] {
-                print(data.value(forKey: "latitude") as! Double)
-                print(data.value(forKey: "longitude") as! Double)
-                let myPin = data as! Pin
-                return myPin
-            }
+            return result.first
         } catch {
             return nil
         }
-        return nil
     }
-    
-    
-//    func matchPinToLocation2(latitude: Double, longitude: Double) -> Pin?{
-//        let context = dataController.viewContext
-//        let fetch = NSFetchRequest<Pin>(entityName: "Pin")
-//        let predicate = NSPredicate(format: "latitude = %@", argumentArray: [latitude])
-//        fetch.predicate = predicate
-//        do {
-//            let result = try context.fetch(fetch)
-//
-//            }
-//        } catch {
-//            return nil
-//        }
-//        return nil
-//    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     func addNewPin(_ locationCoordinate: CLLocationCoordinate2D) {
         let pinToAdd = Pin(context: dataController.viewContext)
@@ -97,7 +56,7 @@ extension MapController {
  func matchPinToLocation(latitude: Double, longitude: Double) -> Pin?{
  let context = dataController.viewContext
  let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
- let predicate = NSPredicate(format: "latitude = %@", argumentArray: [latitude])
+ let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [latitude, longitude])
  fetch.predicate = predicate
  do {
  let result = try context.fetch(fetch)
@@ -111,5 +70,26 @@ extension MapController {
  return nil
  }
  return nil
+ }
+ 
+ func matchPinToLocation2(latitude: Double, longitude: Double) -> Pin?{
+ let context = dataController.viewContext
+ let fetch = NSFetchRequest<Pin>(entityName: "Pin")
+ let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [latitude, longitude])
+ fetch.predicate = predicate
+ 
+ do {
+ let result = try context.fetch(fetch)
+ //            print("latitude = \(result.first?.latitude)")
+ //            print("longitude = \(result.first?.longitude)")
+ //            for data in result as! [Pin] {
+ //                print(data.value(forKey: "latitude") as! Double)
+ //                print(data.value(forKey: "longitude") as! Double)
+ //                let myPin = data as! Pin
+ //                return myPin
+ return result.first
+ } catch {
+ return nil
+ }
  }
  */
