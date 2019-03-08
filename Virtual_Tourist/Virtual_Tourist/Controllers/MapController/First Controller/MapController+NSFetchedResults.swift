@@ -14,7 +14,7 @@ extension MapController {
     
     func setupFetchController(){
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true)]
         myFetchController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                        managedObjectContext: dataController.viewContext,
                                                        sectionNameKeyPath: nil,
