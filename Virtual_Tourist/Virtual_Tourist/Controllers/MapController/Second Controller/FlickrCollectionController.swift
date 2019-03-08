@@ -20,6 +20,7 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     func refresh() {
         do {
+            print("refresh ---- * INSIDE FLICKR-CONTROLLER * ")
             try fetchedResultsController.performFetch()
             collectionView.reloadData()
         } catch {
@@ -27,6 +28,14 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
         }
     }
     
+    @objc func handleReload(){
+        do {
+            try fetchedResultsController.performFetch()
+            collectionView.reloadData()
+        } catch {
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
+    }
     
     let reuseID = "alksdjfhaskdjhf"
     
@@ -68,14 +77,7 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     
     
-    @objc func handleReload(){
-        do {
-            try fetchedResultsController.performFetch()
-            collectionView.reloadData()
-        } catch {
-            fatalError("The fetch could not be performed: \(error.localizedDescription)")
-        }
-    }
+   
     
     
     deinit {

@@ -49,8 +49,12 @@ extension MapController {
             let newAnnotation = CustomAnnotation(lat: newPin.latitude, lon: newPin.longitude)
             mapView.addAnnotation(newAnnotation)
             
+            print("ADD-refresh ---- * INSIDE MAP-CONTROLLER * ")
             self.delegate?.refresh()
-            
+        
+        case .update:
+            print("UPDATE-refresh ---- * INSIDE MAP-CONTROLLER * ")
+            self.delegate?.refresh()
         default:
             break
         }

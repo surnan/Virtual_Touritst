@@ -60,6 +60,7 @@ extension MapController: MKMapViewDelegate {
             guard let apin = self.matchPinToLocation2(location: coord) else {return}
             newController.dataController = self.dataController
             newController.pin = apin
+            self.delegate = newController
             
             DispatchQueue.main.async {
                 self.navigationController?.pushViewController(newController, animated: true)
