@@ -11,13 +11,13 @@ import UIKit
 import MapKit
 import CoreData
 
-//extension Pin: MKAnnotation {
-//    public var coordinate: CLLocationCoordinate2D {
-//        let latDegrees = CLLocationDegrees(latitude)
-//        let longDegrees = CLLocationDegrees(longitude)
-//        return CLLocationCoordinate2D(latitude: latDegrees, longitude: longDegrees)
-//    }
-//}
+extension Pin: MKAnnotation {
+    public var coordinate: CLLocationCoordinate2D {
+        let latDegrees = CLLocationDegrees(latitude)
+        let longDegrees = CLLocationDegrees(longitude)
+        return CLLocationCoordinate2D(latitude: latDegrees, longitude: longDegrees)
+    }
+}
 
 
 extension Pin {

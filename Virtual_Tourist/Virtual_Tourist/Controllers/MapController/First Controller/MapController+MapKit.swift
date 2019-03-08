@@ -56,8 +56,6 @@ extension MapController: MKMapViewDelegate {
         
         
         let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
-        
-        
         let currentPin = matchPinToLocation2(location: coord)
         let temp = currentPin?.pageNumber ?? 5
         
@@ -79,17 +77,10 @@ extension MapController: MKMapViewDelegate {
                         URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                             guard let data = data else {return}
                             self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: data, urlString: _urlString)
-                            
-                            
-                            
                         }).resume()
                     })
                 }
             })
-//            DispatchQueue.main.async {
-//                newController.photoID_Secret_Dict = data
-//                self.navigationController?.pushViewController(newController, animated: true)
-//            }
         })
     }
     
@@ -108,9 +99,9 @@ extension MapController: MKMapViewDelegate {
 
 
 
-func checkIfRefreshNeeded(){
-    
-}
+
+
+
 
 
 
