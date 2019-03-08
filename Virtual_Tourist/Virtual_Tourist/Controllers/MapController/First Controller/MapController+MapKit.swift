@@ -42,28 +42,22 @@ extension MapController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+
+        guard let selectedAnnotation = view.annotation as? CustomAnnotation else { return }
+        let coord =  selectedAnnotation.coordinate
+        
         if tapDeletesPin {
-            guard let annotationToRemove = view.annotation as? CustomAnnotation else { return }
-            let coord = annotationToRemove.coordinate
-            getAllPins().forEach { (aPin) in
-                if aPin.longitude == coord.longitude && aPin.latitude == coord.latitude {
-                    dataController.viewContext.delete(aPin)
-                    try? dataController.viewContext.save()
-                }
+            if let pintToDelete = matchPinToLocation2(location: coord) {
+                dataController.viewContext.delete(pintToDelete)
+                try? dataController.viewContext.save()
             }
             return
         }
         
-        guard let annotationToCheck = view.annotation as? CustomAnnotation else { return }
-        let location = annotationToCheck.coordinate
-        let lon = Double(location.longitude)
-        let lat = Double(location.latitude)
         
         let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
-        
-
-        _ = FlickrClient.searchNearbyForPhotos(latitude: lat, longitude: lon, count: 3, completion: { (data, err) in
-            guard let apin = self.matchPinToLocation2(latitude: lat, longitude: lon) else {return}
+        _ = FlickrClient.searchNearbyForPhotos(latitude: coord.latitude, longitude: coord.longitude, count: 3, completion: { (data, err) in
+            guard let apin = self.matchPinToLocation2(location: coord) else {return}
             newController.dataController = self.dataController
             newController.pin = apin
             
