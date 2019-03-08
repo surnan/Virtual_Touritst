@@ -63,14 +63,29 @@ extension MapController: MKMapViewDelegate {
         
 
         _ = FlickrClient.searchNearbyForPhotos(latitude: lat, longitude: lon, count: 3, completion: { (data, err) in
+            
+            /*
             var currentPin: Pin?
+            
             self.getAllPins().forEach { (aPin) in
                 if aPin.longitude == lon && aPin.latitude == lat {
                     currentPin = aPin
                 }
             }
+            */
+            
+            //  func matchPinToLocation(location: CLLocationCoordinate2D) -> Pin?
+            
+            guard let apin = self.matchPinToLocation(latitude: lat, longitude: lon) else {return}
+            
             newController.dataController = self.dataController
-            newController.pin = currentPin!
+            
+            
+//            newController.pin = currentPin!
+            newController.pin = apin
+            
+            
+            
             data.forEach({ (photo_secret) in
                 photo_secret.forEach{
                     
@@ -79,7 +94,12 @@ extension MapController: MKMapViewDelegate {
                         print("url = \(url)")
                         URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                             guard let data = data else {return}
-                            self.connectPhotoAndPin(dataController: self.dataController, pin:  currentPin! , data: data, urlString: _urlString)
+                            
+                            
+//                            self.connectPhotoAndPin(dataController: self.dataController, pin:  currentPin! , data: data, urlString: _urlString)
+                            self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: data, urlString: _urlString)
+                            
+                            
                         }).resume()
                     })
                 }

@@ -30,7 +30,10 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     func showNavigationController(){
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "<custom back", style: .done, target: self, action: #selector(handleLeftBarButton))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "refresh", style: .done, target: self, action: #selector(reload))
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "refresh", style: .done, target: self, action: #selector(handleReload)),
+            UIBarButtonItem(title: "Update_Page", style: .done, target: self, action: #selector(handleReload)),
+        ]
     }
     
     @objc func handleLeftBarButton(){
@@ -48,7 +51,9 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
         
     }
     
-    @objc func reload(){
+    
+    
+    @objc func handleReload(){
         collectionView.reloadData()
     }
     

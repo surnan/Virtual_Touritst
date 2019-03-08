@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MapKit
+import CoreData
 
 extension Pin: MKAnnotation {
     public var coordinate: CLLocationCoordinate2D {
@@ -19,3 +20,9 @@ extension Pin: MKAnnotation {
 }
 
 
+extension Pin {
+    public override func awakeFromInsert() {
+        super.awakeFromInsert()
+        pageNumber = 1
+    }
+}

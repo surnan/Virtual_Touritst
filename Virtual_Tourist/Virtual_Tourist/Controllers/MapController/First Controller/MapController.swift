@@ -25,9 +25,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var anchorMapBottom_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
     
     //MARK:- Var not used for Constraints
-    
     var task: URLSessionTask?
-    
     var tapDeletesPin = false
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!
@@ -61,9 +59,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         mapView.delegate = self
         mapView.addGestureRecognizer(myLongPressGesture)
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-        
         setupUI()
-        
         setupFetchController()
         myFetchController.delegate = self
         getAllPins().forEach{
@@ -73,12 +69,6 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        setupFetchController()
-//        myFetchController.delegate = self
-//
-//        getAllPins().forEach{
-//            placeAnnotation(pin: $0)
-//        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
