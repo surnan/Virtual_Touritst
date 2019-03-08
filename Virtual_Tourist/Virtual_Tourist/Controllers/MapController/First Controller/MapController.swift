@@ -11,7 +11,6 @@ import MapKit
 import CoreData
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
-
     
     //MARK:- UI Constraints - CONSTANTS
     let bottomUILabelHeight: CGFloat = 70
@@ -26,6 +25,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     //MARK:- Var not used for Constraints
     var task: URLSessionTask?
+    var delegate: FlickrCollectionControllerDelegate?
     var tapDeletesPin = false
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!

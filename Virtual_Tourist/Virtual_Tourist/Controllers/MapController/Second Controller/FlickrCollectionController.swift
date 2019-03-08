@@ -11,7 +11,22 @@ import MapKit
 import CoreData
 
 
-class FlickrCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
+protocol FlickrCollectionControllerDelegate {
+    func refresh()
+}
+
+
+class FlickrCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, FlickrCollectionControllerDelegate {
+    
+    func refresh() {
+        do {
+            try fetchedResultsController.performFetch()
+            collectionView.reloadData()
+        } catch {
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
+    }
+    
     
     let reuseID = "alksdjfhaskdjhf"
     
@@ -54,7 +69,12 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     
     @objc func handleReload(){
-        collectionView.reloadData()
+        do {
+            try fetchedResultsController.performFetch()
+            collectionView.reloadData()
+        } catch {
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
     }
     
     

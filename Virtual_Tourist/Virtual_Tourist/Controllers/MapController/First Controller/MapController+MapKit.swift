@@ -61,6 +61,10 @@ extension MapController: MKMapViewDelegate {
             newController.dataController = self.dataController
             newController.pin = apin
             
+            DispatchQueue.main.async {
+                self.navigationController?.pushViewController(newController, animated: true)
+            }
+            
             data.forEach({ (photo_secret) in
                 photo_secret.forEach{
                     FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, err) in
@@ -69,14 +73,17 @@ extension MapController: MKMapViewDelegate {
                         URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                             guard let data = data else {return}
                             self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: data, urlString: _urlString)
+                            
+                            
+                            
                         }).resume()
                     })
                 }
             })
-            DispatchQueue.main.async {
-                newController.photoID_Secret_Dict = data
-                self.navigationController?.pushViewController(newController, animated: true)
-            }
+//            DispatchQueue.main.async {
+//                newController.photoID_Secret_Dict = data
+//                self.navigationController?.pushViewController(newController, animated: true)
+//            }
         })
     }
     
