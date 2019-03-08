@@ -56,17 +56,17 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "<custom back", style: .done, target: self, action: #selector(handleLeftBarButton))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "refresh", style: .done, target: self, action: #selector(handleReload)),
-            UIBarButtonItem(title: "Update_Page", style: .done, target: self, action: #selector(handleUpdate)),
+            UIBarButtonItem(title: "Update_Page", style: .done, target: self, action: #selector(handleUpdatePage)),
         ]
     }
     
     
-    @objc func handleUpdate(){
+    @objc func handleUpdatePage(){
         
-        
-        
-        
-        
+        print(pin.pageNumber)
+        pin.pageNumber = pin.pageNumber + 1
+        try? dataController.viewContext.save()
+        print(pin.pageNumber)
     }
     
     
@@ -76,7 +76,6 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     }
     
     override func viewDidLoad() {
-//        collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: reuseID)
         collectionView.register(CollectionCell3.self, forCellWithReuseIdentifier: reuseID)
         view.backgroundColor = UIColor.red
         showNavigationController()

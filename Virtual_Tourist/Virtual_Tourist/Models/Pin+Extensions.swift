@@ -26,8 +26,7 @@ extension Pin {
         pageNumber = 1
     }
     
-    
-    
-    
-    
+//    public func getPageNumber()-> Int32 {
+//        return pageNumber
+//    }
 }

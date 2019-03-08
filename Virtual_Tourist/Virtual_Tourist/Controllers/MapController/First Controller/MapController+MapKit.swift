@@ -58,8 +58,10 @@ extension MapController: MKMapViewDelegate {
         let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
         
         
+        let currentPin = matchPinToLocation2(location: coord)
+        let temp = currentPin?.pageNumber ?? 5
         
-        _ = FlickrClient.searchNearbyForPhotos(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: <#Int32#>, completion: { (data, err) in
+        _ = FlickrClient.searchNearbyForPhotos(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: temp, completion: { (data, err) in
             guard let apin = self.matchPinToLocation2(location: coord) else {return}
             newController.dataController = self.dataController
             newController.pin = apin
