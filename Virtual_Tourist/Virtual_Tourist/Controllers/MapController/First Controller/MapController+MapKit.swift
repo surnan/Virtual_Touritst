@@ -144,3 +144,59 @@ extension UIViewController {
         }
     }
 }
+
+/*
+ func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+ 
+ guard let selectedAnnotation = view.annotation as? CustomAnnotation else { return }
+ let coord =  selectedAnnotation.coordinate
+ 
+ if tapDeletesPin {
+ if let pintToDelete = matchPinToLocation2(location: coord) {
+ dataController.viewContext.delete(pintToDelete)
+ try? dataController.viewContext.save()
+ }
+ return
+ }
+ 
+ 
+ let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
+ let currentPin = matchPinToLocation2(location: coord)
+ let temp = currentPin?.pageNumber ?? 5
+ 
+ 
+ guard let apin = self.matchPinToLocation2(location: coord) else {return}
+ newController.dataController = self.dataController
+ newController.pin = apin
+ self.delegate = newController
+ navigationController?.pushViewController(newController, animated: true)
+ 
+ 
+ _ = FlickrClient.searchNearbyURLMetaData(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: temp, completion: { (data, err) in
+ data.forEach({ (photo_secret) in
+ photo_secret.forEach{
+ FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, err) in
+ guard let _urlString = urlString, let url = URL(string: _urlString) else {return}
+ print("url = \(url)")
+ URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+ guard let data = data else {return}
+ self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: data, urlString: _urlString)
+ }).resume()
+ })
+ }
+ })
+ })
+ }
+ 
+ 
+ func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
+ let tempPhoto = Photo(context: dataController.viewContext)
+ tempPhoto.imageData = data
+ tempPhoto.urlString = urlString
+ tempPhoto.index = Int32(718212)
+ tempPhoto.pin = pin
+ let testImage = UIImage(data: tempPhoto.imageData!)
+ try? dataController.viewContext.save()
+ }
+ }
+ */

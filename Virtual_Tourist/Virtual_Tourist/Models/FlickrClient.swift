@@ -49,6 +49,122 @@ class FlickrClient {
             return URL(string: toString)!
         }
     }
+    
+    
+    
+    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([Data], Error?)->Void){
+        let latitude = currentPin.latitude
+        let longitude = currentPin.longitude
+        let pageNumber = currentPin.pageNumber
+        
+        //  class func searchNearbyURLMetaData(latitude: Double, longitude: Double, count: Int, pageNumber: Int32, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
+        
+        let url = Endpoints.photosSearch(latitude, longitude, count, pageNumber).url
+        //        print("Endpoints Photo-Search-URL = \(url)")
+        
+        var array_photoID_secret = [[String: String]]()
+        var array_URLString = [String]()
+        var array_ImageData = [Data]()
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let dataObject = data, error == nil else {
+                DispatchQueue.main.async {
+                      completion([], error)
+                }
+                return
+            } ////
+            
+            do {
+                let temp = try JSONDecoder().decode(PhotosSearch.self, from: dataObject)
+                temp.photos.photo.forEach{
+                    let tempDict = [$0.id : $0.secret]
+                    array_photoID_secret.append(tempDict)
+                    
+                    let photoURL = FlickrClient.Endpoints.getOnePicture($0.id, $0.secret)
+                    let photoURLString = photoURL.toString
+                    array_URLString.append(photoURLString)
+        
+                    URLSession.shared.dataTask(with: photoURL.url, completionHandler: { (data, response, error) in
+                        if let data = data {
+                            array_ImageData.append(data)
+                        }
+                    }).resume()
+                }
+                DispatchQueue.main.async {
+                       completion(array_ImageData, nil)
+                }
+                return
+            } catch let conversionErr {
+                DispatchQueue.main.async {
+                       completion([], conversionErr)
+                }
+                return
+            }
+        }
+        task.resume()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 //    class func getPhotoURL(photoID: String, secret: String, completion: @escaping (URL?, Error?)->Void){
     class func getPhotoURL(photoID: String, secret: String, completion: @escaping (String?, Error?)->Void){
@@ -88,7 +204,7 @@ class FlickrClient {
     
     class func searchNearbyURLMetaData(latitude: Double, longitude: Double, count: Int, pageNumber: Int32, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
         let url = Endpoints.photosSearch(latitude, longitude, count, pageNumber).url
-        //        print("Endpoints Photo-Search-URL = \(url)")
+                print("Endpoints Photo-Search-URL = \(url)")
         var answer = [[String: String]]()
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let dataObject = data, error == nil else {
