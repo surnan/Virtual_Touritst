@@ -52,21 +52,22 @@ class FlickrClient {
     
     
     
-    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([Data], Error?)->Void){
+    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([String], Error?)->Void){
         let latitude = currentPin.latitude
         let longitude = currentPin.longitude
         let pageNumber = currentPin.pageNumber
         
-        //  class func searchNearbyURLMetaData(latitude: Double, longitude: Double, count: Int, pageNumber: Int32, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
         
         let url = Endpoints.photosSearch(latitude, longitude, count, pageNumber).url
         //        print("Endpoints Photo-Search-URL = \(url)")
         
         var array_photoID_secret = [[String: String]]()
         var array_URLString = [String]()
-        var array_ImageData = [Data]()
+        var array_URLString2 = [String]()
+        var count = 0
         
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            ////
             guard let dataObject = data, error == nil else {
                 DispatchQueue.main.async {
                       completion([], error)
@@ -84,16 +85,24 @@ class FlickrClient {
                     let photoURLString = photoURL.toString
                     array_URLString.append(photoURLString)
         
-                    URLSession.shared.dataTask(with: photoURL.url, completionHandler: { (data, response, error) in
-                        if let data = data {
-                            array_ImageData.append(data)
+                    
+                    getPhotoURL(photoID: $0.id, secret: $0.secret, completion: { (urlString, error) in
+                        guard let urlString = urlString else {return}
+                        array_URLString2.append(urlString)
+                        print("1 - array_URLString2 --> \(array_URLString2)")
+                        
+                        count = count + 1
+                        print("count --> \(count)")
+                        print("temp.photos.photo.count --> \(temp.photos.photo.count)")
+                        
+                        if count == temp.photos.photo.count {
+                            completion(array_URLString2, nil)
                         }
-                    }).resume()
+                        
+                    })
+                    print("2 - array_URLString2 --> \(array_URLString2)")
                 }
-                DispatchQueue.main.async {
-                       completion(array_ImageData, nil)
-                }
-                return
+                print("3 - array_URLString2 --> \(array_URLString2)")
             } catch let conversionErr {
                 DispatchQueue.main.async {
                        completion([], conversionErr)
@@ -101,72 +110,15 @@ class FlickrClient {
                 return
             }
         }
+        print("4 - array_URLString2 --> \(array_URLString2)")
         task.resume()
+        print("5 - array_URLString2 --> \(array_URLString2)")
     }
     
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
-//    class func getPhotoURL(photoID: String, secret: String, completion: @escaping (URL?, Error?)->Void){
     class func getPhotoURL(photoID: String, secret: String, completion: @escaping (String?, Error?)->Void){
         let url = Endpoints.getOnePicture(photoID, secret).url
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -180,14 +132,7 @@ class FlickrClient {
                 let temp = try JSONDecoder().decode(PhotosGetInfo.self, from: dataObject)
                 DispatchQueue.main.async {
                     let urlString = "https://farm\(temp.photo.farm).staticflickr.com/\(temp.photo.server)/\(temp.photo.id)_\(temp.photo.secret)_m.jpg"
-                    
                     completion(urlString, nil)
-                    
-//                    if let myURL = URL(string: urlString) {
-//                            completion(myURL, nil)
-//                    } else {
-//                        completion(nil, error)
-//                    }
                 }
                 return
             } catch let conversionErr {
@@ -199,6 +144,83 @@ class FlickrClient {
         }
         task.resume()
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     ////////////////////////
     

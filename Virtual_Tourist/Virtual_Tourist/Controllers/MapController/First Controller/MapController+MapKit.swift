@@ -67,20 +67,33 @@ extension MapController: MKMapViewDelegate {
         navigationController?.pushViewController(newController, animated: true)
         
         
-        _ = FlickrClient.searchNearbyURLMetaData(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: temp, completion: { (data, err) in
-            data.forEach({ (photo_secret) in
-                photo_secret.forEach{
-                    FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, err) in
-                        guard let _urlString = urlString, let url = URL(string: _urlString) else {return}
-                        print("url = \(url)")
-                        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-                            guard let data = data else {return}
-                            self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: data, urlString: _urlString)
-                        }).resume()
-                    })
-                }
-            })
-        })
+        
+        FlickrClient.searchNearbyPhotoData(currentPin: apin, fetchCount: 3) { (data, error) in
+            if let error = error {
+                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+                return
+            }
+
+            data.forEach{
+                print("URL inside loop --> \($0)")
+            }
+        }
+        
+        
+//        _ = FlickrClient.searchNearbyURLMetaData(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: temp, completion: { (data, err) in
+//            data.forEach({ (photo_secret) in
+//                photo_secret.forEach{
+//                    FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, err) in
+//                        guard let _urlString = urlString, let url = URL(string: _urlString) else {return}
+//                        print("url = \(url)")
+//                        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+//                            guard let data = data else {return}
+//                            self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: data, urlString: _urlString)
+//                        }).resume()
+//                    })
+//                }
+//            })
+//        })
     }
     
     
