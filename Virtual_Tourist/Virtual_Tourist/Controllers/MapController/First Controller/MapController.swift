@@ -29,7 +29,10 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var tapDeletesPin = false
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!
+    
     var oldCoordinates: CLLocationCoordinate2D? //Updating Pin Entity after dragging
+    var oldAnnotation: CustomAnnotation?
+    
     var mapView = MKMapView()
     
     lazy private var myLongPressGesture: UILongPressGestureRecognizer = {

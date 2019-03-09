@@ -14,78 +14,73 @@ import CoreData
 extension MapController: MKMapViewDelegate {
     
     func placeAnnotation(pin: Pin?) {
-        let newAnnotation = MKPointAnnotation()
         guard let lat = pin?.latitude, let lon = pin?.longitude else {return}
         let myNewAnnotation = CustomAnnotation(lat: lat, lon: lon)
-        newAnnotation.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lon)
         mapView.addAnnotation(myNewAnnotation)
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
+        
         guard let myAnnotation = view.annotation else {return}
-        let coord = myAnnotation.coordinate
+
         switch (newState) {
         case .starting:
             view.dragState = .dragging
             if let view = view as? MKPinAnnotationView {
                 view.pinTintColor = UIColor.green
-                oldCoordinates = coord
             }
+            oldCoordinates = myAnnotation.coordinate //class-wide variable
+            oldAnnotation = (myAnnotation as! CustomAnnotation)
+            
+            
         case .ending:
             view.dragState = .none
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
-            editExistingPin(coord)
+//            editExistingPin2(   myAnnotation)
+            editExistingPin3(myAnnotation)
+        
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
+        
         default: break
         }
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-
-        guard let selectedAnnotation = view.annotation as? CustomAnnotation else { return }
-        let coord =  selectedAnnotation.coordinate
+        guard let selectedAnnotation = view.annotation as? CustomAnnotation, let desiredPin = getCorrespondingPin(annotation: selectedAnnotation) else {return}
         
+        //1
         if tapDeletesPin {
-            if let pintToDelete = matchPinToLocation2(location: coord) {
-                dataController.viewContext.delete(pintToDelete)
+                dataController.viewContext.delete(desiredPin)
                 try? dataController.viewContext.save()
-            }
             return
         }
         
-        
-
-        guard let apin = self.matchPinToLocation2(location: coord) else {return}
-        
-        //        let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
-        //        let currentPin = matchPinToLocation2(location: coord)
-        //        let temp = currentPin?.pageNumber ?? 5
-        //
-        
-        //        newController.dataController = self.dataController
-        //        newController.pin = apin
-        //        self.delegate = newController
-        //        navigationController?.pushViewController(newController, animated: true)
-        
-
-        FlickrClient.searchNearbyPhotoData(currentPin: apin, fetchCount: 3) { (urls, error) in
+        //2
+        PushToCollectionViewController(apin: desiredPin)
+        FlickrClient.searchNearbyPhotoData(currentPin: desiredPin, fetchCount: 3) { (urls, error) in
             if let error = error {
                 print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
                 return
             }
-
             urls.forEach({ (currentURL) in
                 print("URL inside loop --> \(currentURL)")
                 URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
                     print("currentURL = \(currentURL)")
                     guard let imageData = imageData else {return}
-                    self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: imageData, urlString: "456")
+                    self.connectPhotoAndPin(dataController: self.dataController, pin:  desiredPin , data: imageData, urlString: "456")
                 }).resume()
             })
         }
     }
     
+    func PushToCollectionViewController(apin: Pin){
+        let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
+        newController.dataController = self.dataController
+        newController.pin = apin
+        self.delegate = newController
+        navigationController?.pushViewController(newController, animated: true)
+    }
     
     func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
         let tempPhoto = Photo(context: dataController.viewContext)
@@ -147,59 +142,3 @@ extension UIViewController {
         }
     }
 }
-
-/*
- func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
- 
- guard let selectedAnnotation = view.annotation as? CustomAnnotation else { return }
- let coord =  selectedAnnotation.coordinate
- 
- if tapDeletesPin {
- if let pintToDelete = matchPinToLocation2(location: coord) {
- dataController.viewContext.delete(pintToDelete)
- try? dataController.viewContext.save()
- }
- return
- }
- 
- 
- let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
- let currentPin = matchPinToLocation2(location: coord)
- let temp = currentPin?.pageNumber ?? 5
- 
- 
- guard let apin = self.matchPinToLocation2(location: coord) else {return}
- newController.dataController = self.dataController
- newController.pin = apin
- self.delegate = newController
- navigationController?.pushViewController(newController, animated: true)
- 
- 
- _ = FlickrClient.searchNearbyURLMetaData(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: temp, completion: { (data, err) in
- data.forEach({ (photo_secret) in
- photo_secret.forEach{
- FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, err) in
- guard let _urlString = urlString, let url = URL(string: _urlString) else {return}
- print("url = \(url)")
- URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
- guard let data = data else {return}
- self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: data, urlString: _urlString)
- }).resume()
- })
- }
- })
- })
- }
- 
- 
- func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
- let tempPhoto = Photo(context: dataController.viewContext)
- tempPhoto.imageData = data
- tempPhoto.urlString = urlString
- tempPhoto.index = Int32(718212)
- tempPhoto.pin = pin
- let testImage = UIImage(data: tempPhoto.imageData!)
- try? dataController.viewContext.save()
- }
- }
- */

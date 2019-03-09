@@ -12,26 +12,90 @@ import MapKit
 
 extension MapController {
     func getAllPins()->[Pin]{
-        guard let pins = myFetchController.fetchedObjects else {
-            return []
-        }
-        return pins
+        return myFetchController.fetchedObjects ?? []
     }
     
-    func matchPinToLocation2(latitude: Double, longitude: Double) -> Pin?{
+    func addNewPin(_ locationCoordinate: CLLocationCoordinate2D) {
+        let pinToAdd = Pin(context: dataController.viewContext)
+        pinToAdd.latitude = locationCoordinate.latitude
+        pinToAdd.longitude = locationCoordinate.longitude
+        try? dataController.viewContext.save()
+    }
+    
+    func editExistingPin2(_ annotation: MKAnnotation) {
+        let coord = annotation.coordinate   //class-wide variable
+        getAllPins().forEach { (aPin) in
+            if aPin.longitude == oldCoordinates?.longitude && aPin.latitude == oldCoordinates?.latitude {
+                aPin.latitude = coord.latitude
+                aPin.longitude = coord.longitude
+                try? dataController.viewContext.save()
+                oldCoordinates = nil
+            }
+        }
+    }
+    
+    func editExistingPin3(_ annotation: MKAnnotation) {
+        let coord = annotation.coordinate   //class-wide variable
+
+        
+        
+        
+        var _pinToEdit = getCorrespondingPin(annotation: annotation as! CustomAnnotation)
+        
+        guard let pinToEdit = _pinToEdit else {return}
+        
+        
+        
+        pinToEdit.latitude = annotation.coordinate.latitude
+        pinToEdit.longitude = annotation.coordinate.longitude
+        
+        try? dataController.viewContext.save()
+        
+//        getAllPins().forEach { (aPin) in
+//            if aPin.longitude == oldCoordinates?.longitude && aPin.latitude == oldCoordinates?.latitude {
+//                aPin.latitude = coord.latitude
+//                aPin.longitude = coord.longitude
+//                try? dataController.viewContext.save()
+//                oldCoordinates = nil
+//            }
+//        }
+    }
+    
+    func getCorrespondingPin(annotation: CustomAnnotation) -> Pin?{
+        let location = annotation.coordinate
         let context = dataController.viewContext
-        let fetch = NSFetchRequest<Pin>(entityName: "Pin")
-        let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [latitude, longitude])
-        fetch.predicate = predicate
+        let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
+        let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [location.latitude, location.longitude])
+        fetchRequest.predicate = predicate
         do {
-            let result = try context.fetch(fetch)
+            let result = try context.fetch(fetchRequest)
             return result.first
         } catch {
             return nil
         }
     }
     
-//    //get & update page
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//CLLocationCoordinate2D <--- works
 //    func matchPinToLocation2(location: CLLocationCoordinate2D) -> Pin?{
 //        let context = dataController.viewContext
 //        let fetch = NSFetchRequest<Pin>(entityName: "Pin")
@@ -44,82 +108,3 @@ extension MapController {
 //            return nil
 //        }
 //    }
-    
-    //CLLocationCoordinate2D
-    func matchPinToLocation2(location: CLLocationCoordinate2D) -> Pin?{
-        let context = dataController.viewContext
-        let fetch = NSFetchRequest<Pin>(entityName: "Pin")
-        let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [location.latitude, location.longitude])
-        fetch.predicate = predicate
-        do {
-            let result = try context.fetch(fetch)
-            return result.first
-        } catch {
-            return nil
-        }
-    }
-    
-    
-    
-    func addNewPin(_ locationCoordinate: CLLocationCoordinate2D) {
-        let pinToAdd = Pin(context: dataController.viewContext)
-        pinToAdd.latitude = locationCoordinate.latitude
-        pinToAdd.longitude = locationCoordinate.longitude
-        //   let index = myFetchController.fetchedObjects?.count ?? 0
-        //   pinToAdd.pageNumber = Int32(index)
-        try? dataController.viewContext.save()
-    }
-    
-    func editExistingPin(_ coord: CLLocationCoordinate2D) {
-        getAllPins().forEach { (aPin) in
-            if aPin.longitude == oldCoordinates?.longitude && aPin.latitude == oldCoordinates?.latitude {
-                aPin.latitude = coord.latitude
-                aPin.longitude = coord.longitude
-                try? dataController.viewContext.save()
-                oldCoordinates = nil
-            }
-        }
-    }
-}
-
-/*
- func matchPinToLocation(latitude: Double, longitude: Double) -> Pin?{
- let context = dataController.viewContext
- let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Pin")
- let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [latitude, longitude])
- fetch.predicate = predicate
- do {
- let result = try context.fetch(fetch)
- for data in result as! [NSManagedObject] {
- print(data.value(forKey: "latitude") as! Double)
- print(data.value(forKey: "longitude") as! Double)
- let myPin = data as! Pin
- return myPin
- }
- } catch {
- return nil
- }
- return nil
- }
- 
- func matchPinToLocation2(latitude: Double, longitude: Double) -> Pin?{
- let context = dataController.viewContext
- let fetch = NSFetchRequest<Pin>(entityName: "Pin")
- let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [latitude, longitude])
- fetch.predicate = predicate
- 
- do {
- let result = try context.fetch(fetch)
- //            print("latitude = \(result.first?.latitude)")
- //            print("longitude = \(result.first?.longitude)")
- //            for data in result as! [Pin] {
- //                print(data.value(forKey: "latitude") as! Double)
- //                print(data.value(forKey: "longitude") as! Double)
- //                let myPin = data as! Pin
- //                return myPin
- return result.first
- } catch {
- return nil
- }
- }
- */
