@@ -52,7 +52,7 @@ class FlickrClient {
     
     
     
-    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([String], Error?)->Void){
+    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([URL], Error?)->Void){
         let latitude = currentPin.latitude
         let longitude = currentPin.longitude
         let pageNumber = currentPin.pageNumber
@@ -61,6 +61,7 @@ class FlickrClient {
         let url = Endpoints.photosSearch(latitude, longitude, count, pageNumber).url
         //        print("Endpoints Photo-Search-URL = \(url)")
         
+        var array_photo_URLs = [URL]()
         var array_photoID_secret = [[String: String]]()
         var array_URLString = [String]()
         var array_URLString2 = [String]()
@@ -89,14 +90,15 @@ class FlickrClient {
                     getPhotoURL(photoID: $0.id, secret: $0.secret, completion: { (urlString, error) in
                         guard let urlString = urlString else {return}
                         array_URLString2.append(urlString)
-                        print("1 - array_URLString2 --> \(array_URLString2)")
+                        array_photo_URLs.append(URL(string: urlString)!)
                         
+                        print("1 - array_URLString2 --> \(array_URLString2)")
                         count = count + 1
                         print("count --> \(count)")
                         print("temp.photos.photo.count --> \(temp.photos.photo.count)")
                         
                         if count == temp.photos.photo.count {
-                            completion(array_URLString2, nil)
+                            completion(array_photo_URLs, nil)
                         }
                         
                     })
