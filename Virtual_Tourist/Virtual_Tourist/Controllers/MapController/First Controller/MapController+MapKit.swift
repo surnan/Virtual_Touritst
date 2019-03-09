@@ -55,45 +55,35 @@ extension MapController: MKMapViewDelegate {
         }
         
         
-        let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
-        let currentPin = matchPinToLocation2(location: coord)
-        let temp = currentPin?.pageNumber ?? 5
-        
-        
+
         guard let apin = self.matchPinToLocation2(location: coord) else {return}
-        newController.dataController = self.dataController
-        newController.pin = apin
-        self.delegate = newController
-        navigationController?.pushViewController(newController, animated: true)
         
+        //        let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
+        //        let currentPin = matchPinToLocation2(location: coord)
+        //        let temp = currentPin?.pageNumber ?? 5
+        //
         
+        //        newController.dataController = self.dataController
+        //        newController.pin = apin
+        //        self.delegate = newController
+        //        navigationController?.pushViewController(newController, animated: true)
         
-        FlickrClient.searchNearbyPhotoData(currentPin: apin, fetchCount: 3) { (data, error) in
+
+        FlickrClient.searchNearbyPhotoData(currentPin: apin, fetchCount: 3) { (urls, error) in
             if let error = error {
                 print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
                 return
             }
 
-            data.forEach{
-                print("URL inside loop --> \($0)")
-            }
+            urls.forEach({ (currentURL) in
+                print("URL inside loop --> \(currentURL)")
+                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                    print("currentURL = \(currentURL)")
+                    guard let imageData = imageData else {return}
+                    self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: imageData, urlString: "456")
+                }).resume()
+            })
         }
-        
-        
-//        _ = FlickrClient.searchNearbyURLMetaData(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: temp, completion: { (data, err) in
-//            data.forEach({ (photo_secret) in
-//                photo_secret.forEach{
-//                    FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, err) in
-//                        guard let _urlString = urlString, let url = URL(string: _urlString) else {return}
-//                        print("url = \(url)")
-//                        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-//                            guard let data = data else {return}
-//                            self.connectPhotoAndPin(dataController: self.dataController, pin:  apin , data: data, urlString: _urlString)
-//                        }).resume()
-//                    })
-//                }
-//            })
-//        })
     }
     
     
