@@ -59,16 +59,15 @@ extension MapController: MKMapViewDelegate {
         let currentPin = matchPinToLocation2(location: coord)
         let temp = currentPin?.pageNumber ?? 5
         
-        _ = FlickrClient.searchNearbyForPhotos(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: temp, completion: { (data, err) in
-            guard let apin = self.matchPinToLocation2(location: coord) else {return}
-            newController.dataController = self.dataController
-            newController.pin = apin
-            self.delegate = newController
-            
-            DispatchQueue.main.async {
-                self.navigationController?.pushViewController(newController, animated: true)
-            }
-            
+        
+        guard let apin = self.matchPinToLocation2(location: coord) else {return}
+        newController.dataController = self.dataController
+        newController.pin = apin
+        self.delegate = newController
+        navigationController?.pushViewController(newController, animated: true)
+        
+        
+        _ = FlickrClient.searchNearbyURLMetaData(latitude: coord.latitude, longitude: coord.longitude, count: 3, pageNumber: temp, completion: { (data, err) in
             data.forEach({ (photo_secret) in
                 photo_secret.forEach{
                     FlickrClient.getPhotoURL(photoID: $0.key, secret: $0.value, completion: { (urlString, err) in
