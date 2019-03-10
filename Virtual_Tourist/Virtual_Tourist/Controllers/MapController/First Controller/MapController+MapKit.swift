@@ -55,20 +55,6 @@ extension MapController: MKMapViewDelegate {
         
         //2
         PushToCollectionViewController(apin: desiredPin)
-//        FlickrClient.searchNearbyPhotoData(currentPin: desiredPin, fetchCount: fetchCount) { (urls, error) in
-//            if let error = error {
-//                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-//                return
-//            }
-//            urls.forEach({ (currentURL) in
-//                print("URL inside loop --> \(currentURL)")
-//                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-//                    print("currentURL = \(currentURL)")
-//                    guard let imageData = imageData else {return}
-//                    self.connectPhotoAndPin(dataController: self.dataController, pin:  desiredPin , data: imageData, urlString: "456")
-//                }).resume()
-//            })
-//        }
     }
     
     func PushToCollectionViewController(apin: Pin){
@@ -89,8 +75,6 @@ extension MapController: MKMapViewDelegate {
         try? dataController.viewContext.save()
     }
 }
-
-
 
 
 //GLOBAL FUNCTIONS

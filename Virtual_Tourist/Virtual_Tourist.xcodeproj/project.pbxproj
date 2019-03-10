@@ -34,7 +34,6 @@
 		84D0B464223019810048DF91 /* MapController+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B463223019810048DF91 /* MapController+CoreData.swift */; };
 		84D0B466223020D30048DF91 /* MapController+CustomClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */; };
 		84D0B46A223051F60048DF91 /* FlickrCollectionController+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */; };
-		84E42F772234A3FD00A32494 /* FlickController+Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E42F762234A3FD00A32494 /* FlickController+Fetch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,7 +66,6 @@
 		84D0B463223019810048DF91 /* MapController+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CoreData.swift"; sourceTree = "<group>"; };
 		84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CustomClasses.swift"; sourceTree = "<group>"; };
 		84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlickrCollectionController+Collection.swift"; sourceTree = "<group>"; };
-		84E42F762234A3FD00A32494 /* FlickController+Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlickController+Fetch.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,7 +159,6 @@
 				84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */,
 				8467393B223066160047C3F1 /* CollectionCell2.swift */,
 				842BEC0D2231D47D00BF35CC /* CollectionCell3.swift */,
-				84E42F762234A3FD00A32494 /* FlickController+Fetch.swift */,
 			);
 			path = "Second Controller";
 			sourceTree = "<group>";
@@ -295,7 +292,6 @@
 				8441AE00222A6905002412E0 /* flickr.photos.getSizes.swift in Sources */,
 				8488F413222DBF5A00DD8F92 /* Pin+Extensions.swift in Sources */,
 				84D0B464223019810048DF91 /* MapController+CoreData.swift in Sources */,
-				84E42F772234A3FD00A32494 /* FlickController+Fetch.swift in Sources */,
 				8488F415222DC08F00DD8F92 /* DataController.swift in Sources */,
 				84D0B46A223051F60048DF91 /* FlickrCollectionController+Collection.swift in Sources */,
 				841A55AA22261F230028A6E3 /* AppDelegate.swift in Sources */,
