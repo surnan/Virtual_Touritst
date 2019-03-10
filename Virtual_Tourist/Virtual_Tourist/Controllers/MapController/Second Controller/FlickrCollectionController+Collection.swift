@@ -27,7 +27,7 @@ extension FlickrCollectionController {
 //        cell.myPhoto = myPhoto
         
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell2
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID2, for: indexPath) as! CollectionCell2
         return cell
     }
     

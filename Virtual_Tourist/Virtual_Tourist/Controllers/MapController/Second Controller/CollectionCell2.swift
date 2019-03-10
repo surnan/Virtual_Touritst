@@ -56,4 +56,15 @@ class CollectionCell2:UICollectionViewCell{
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        //        if let temp = self.myActivityIndicatorView {
+        //
+        //        }
+        
+        self.myActivityIndicatorView.startAnimating()
+    }
 }
