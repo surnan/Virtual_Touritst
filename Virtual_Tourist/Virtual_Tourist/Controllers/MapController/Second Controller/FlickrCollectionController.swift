@@ -17,6 +17,8 @@ protocol FlickrCollectionControllerDelegate {
 
 class FlickrCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, FlickrCollectionControllerDelegate {
     let reuseID = "alksdjfhaskdjhf"
+    let reuseID2 = "alksdjfhaskdjhf"
+
     var pin: Pin!
     var dataController: DataController!
     var photoID_Secret_Dict = [[String: String]]()
@@ -69,7 +71,7 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     //UI and Swift Overloads
     override func viewDidLoad() {
         collectionView.register(CollectionCell3.self, forCellWithReuseIdentifier: reuseID)
-        collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID)
+//        collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID)
         view.backgroundColor = UIColor.red
         showNavigationController()
         setupFetchedResultsController()
