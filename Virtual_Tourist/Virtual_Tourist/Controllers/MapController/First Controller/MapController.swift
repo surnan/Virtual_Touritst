@@ -10,12 +10,15 @@ import UIKit
 import MapKit
 import CoreData
 
+let fetchCount = 21
+
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     //MARK:- UI Constraints - CONSTANTS
     let bottomUILabelHeight: CGFloat = 70
     let defaultTitleFontSize: CGFloat = 22
     let defaultFontSize: CGFloat = 18
+    
     
     //MARK:- UI Constraints - DYNAMIC
     var anchorMapTop_SafeAreaTop: NSLayoutConstraint?

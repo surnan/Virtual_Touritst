@@ -15,11 +15,13 @@ extension MapController {
         return myFetchController.fetchedObjects ?? []
     }
     
-    func addNewPin(_ locationCoordinate: CLLocationCoordinate2D) {
+    func addNewPin(_ locationCoordinate: CLLocationCoordinate2D)->Pin {
         let pinToAdd = Pin(context: dataController.viewContext)
         pinToAdd.latitude = locationCoordinate.latitude
         pinToAdd.longitude = locationCoordinate.longitude
         try? dataController.viewContext.save()
+        
+        return pinToAdd
     }
     
     func editExistingPin2(_ annotation: MKAnnotation) {

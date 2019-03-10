@@ -76,7 +76,7 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
             try fetchedResultsController.performFetch()
             collectionView.reloadData()
             
-            FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: 3) { (urls, error) in
+            FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
                 if let error = error {
                     print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
                     return

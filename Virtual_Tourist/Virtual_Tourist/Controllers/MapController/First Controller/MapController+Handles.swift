@@ -16,8 +16,26 @@ extension MapController {
         if sender.state != .ended {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
-            addNewPin(locationCoordinate)
+            let newPin = addNewPin(locationCoordinate)
+            downloadPhotosAndLinkToPin(newPin)
             return
+        }
+    }
+    
+    fileprivate func downloadPhotosAndLinkToPin(_ newPin: Pin) {
+        FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
+            if let error = error {
+                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+                return
+            }
+            urls.forEach({ (currentURL) in
+                print("URL inside loop --> \(currentURL)")
+                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                    print("currentURL = \(currentURL)")
+                    guard let imageData = imageData else {return}
+                    self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: "456")
+                }).resume()
+            })
         }
     }
     
