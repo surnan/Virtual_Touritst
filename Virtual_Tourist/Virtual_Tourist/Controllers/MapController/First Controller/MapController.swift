@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-let fetchCount = 6
+let fetchCount = 21
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     

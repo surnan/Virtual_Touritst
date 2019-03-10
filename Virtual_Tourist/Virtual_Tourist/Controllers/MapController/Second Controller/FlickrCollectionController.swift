@@ -120,6 +120,10 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
                     print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
                     return
                 }
+                
+                self.pin.photoCount = Int32(urls.count)
+                try? self.dataController.viewContext.save()
+                
                 urls.forEach({ (currentURL) in
                     print("URL inside loop --> \(currentURL)")
                     URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
