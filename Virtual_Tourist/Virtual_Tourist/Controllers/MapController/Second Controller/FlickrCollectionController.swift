@@ -25,6 +25,9 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     var myFetchController: NSFetchedResultsController<Photo>!
     
+
+    
+    
     
     //MARK:-Protocol
     func refresh() {
@@ -72,7 +75,6 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     override func viewDidLoad() {
         collectionView.register(CollectionCell3.self, forCellWithReuseIdentifier: reuseID3)
         collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID2)
-        view.backgroundColor = UIColor.red
         showNavigationController()
         setupFetchedResultsController()
     }
