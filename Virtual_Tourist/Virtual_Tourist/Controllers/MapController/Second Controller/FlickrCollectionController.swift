@@ -70,8 +70,8 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     //UI and Swift Overloads
     override func viewDidLoad() {
-        collectionView.register(CollectionCell3.self, forCellWithReuseIdentifier: reuseID)
-//        collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID)
+//        collectionView.register(CollectionCell3.self, forCellWithReuseIdentifier: reuseID)
+        collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID)
         view.backgroundColor = UIColor.red
         showNavigationController()
         setupFetchedResultsController()
