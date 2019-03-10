@@ -20,7 +20,6 @@ extension MapController {
         pinToAdd.latitude = locationCoordinate.latitude
         pinToAdd.longitude = locationCoordinate.longitude
         try? dataController.viewContext.save()
-        
         return pinToAdd
     }
     
@@ -41,7 +40,7 @@ extension MapController {
         pinToEdit.latitude = annotation.coordinate.latitude
         pinToEdit.longitude = annotation.coordinate.longitude
         try? dataController.viewContext.save()
-}
+    }
     
     func getCorrespondingPin(annotation: MKAnnotation) -> Pin?{
         let location = annotation.coordinate

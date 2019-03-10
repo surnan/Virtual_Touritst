@@ -20,9 +20,7 @@ extension MapController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
-        
         guard let myAnnotation = view.annotation else {return}
-
         switch (newState) {
         case .starting:
             view.dragState = .dragging
@@ -30,29 +28,24 @@ extension MapController: MKMapViewDelegate {
                 view.pinTintColor = UIColor.green
             }
             oldCoordinates = myAnnotation.coordinate //class-wide variable
- 
         case .ending:
             view.dragState = .none
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
             editExistingPin3(myAnnotation)
-  
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
-        
         default: break
         }
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let selectedAnnotation = view.annotation as? CustomAnnotation, let desiredPin = getCorrespondingPin(annotation: selectedAnnotation) else {return}
-        
         //1
         if tapDeletesPin {
                 dataController.viewContext.delete(desiredPin)
                 try? dataController.viewContext.save()
             return
         }
-        
         //2
         PushToCollectionViewController(apin: desiredPin)
     }
