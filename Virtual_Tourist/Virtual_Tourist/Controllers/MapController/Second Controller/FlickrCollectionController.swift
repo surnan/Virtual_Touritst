@@ -66,15 +66,30 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     @objc func handleUpdatePage(){
         pin.pageNumber = pin.pageNumber + 1
         try? dataController.viewContext.save()
-
+        
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
         
         do {
             _ = try dataController.viewContext.execute(request)
-                try fetchedResultsController.performFetch()
-                collectionView.reloadData()
+            try fetchedResultsController.performFetch()
+            collectionView.reloadData()
+            
+            FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: 3) { (urls, error) in
+                if let error = error {
+                    print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+                    return
+                }
+                urls.forEach({ (currentURL) in
+                    print("URL inside loop --> \(currentURL)")
+                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                        print("currentURL = \(currentURL)")
+                        guard let imageData = imageData else {return}
+                        self.connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
+                    }).resume()
+                })
+            }
         } catch {
             print("unable to delete \(error)")
         }
@@ -82,6 +97,15 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     }
     
     
+    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
+        let tempPhoto = Photo(context: dataController.viewContext)
+        tempPhoto.imageData = data
+        tempPhoto.urlString = urlString
+        tempPhoto.index = Int32(718212)
+        tempPhoto.pin = pin
+        let testImage = UIImage(data: tempPhoto.imageData!)
+        try? dataController.viewContext.save()
+    }
     
     @objc func handleLeftBarButton(){
         navigationController?.popViewController(animated: true)
