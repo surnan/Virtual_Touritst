@@ -57,7 +57,7 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     func showNavigationController(){
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "<custom back", style: .done, target: self, action: #selector(handleLeftBarButton))
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "refresh", style: .done, target: self, action: #selector(handleReload)),
+            UIBarButtonItem(title: "reload", style: .done, target: self, action: #selector(handleReload)),
             UIBarButtonItem(title: "Update_Page", style: .done, target: self, action: #selector(handleUpdatePage)),
         ]
     }
@@ -73,11 +73,12 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
         
         do {
             _ = try dataController.viewContext.execute(request)
-            //            NSManagedObjectContext.mergeChanges
-            collectionView.reloadData()
+                try fetchedResultsController.performFetch()
+                collectionView.reloadData()
         } catch {
             print("unable to delete \(error)")
         }
+        self.collectionView.reloadData()
     }
     
     
