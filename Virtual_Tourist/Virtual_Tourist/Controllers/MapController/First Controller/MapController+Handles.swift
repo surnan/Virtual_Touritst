@@ -22,18 +22,22 @@ extension MapController {
         }
     }
     
-    fileprivate func downloadPhotosAndLinkToPin(_ newPin: Pin) {
+    func downloadPhotosAndLinkToPin(_ newPin: Pin) {
         FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
             if let error = error {
                 print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
                 return
             }
+            
+            newPin.photoCount = Int32(urls.count)
+            try? self.dataController.viewContext.save()
+            
             urls.forEach({ (currentURL) in
                 print("URL inside loop --> \(currentURL)")
                 URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
                     print("currentURL = \(currentURL)")
                     guard let imageData = imageData else {return}
-                    self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: "456")
+                    self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
                 }).resume()
             })
         }
