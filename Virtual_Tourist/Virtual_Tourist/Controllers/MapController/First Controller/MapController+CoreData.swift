@@ -35,33 +35,13 @@ extension MapController {
     }
     
     func editExistingPin3(_ annotation: MKAnnotation) {
-        let coord = annotation.coordinate   //class-wide variable
-
-        
-        
-        
-        var _pinToEdit = getCorrespondingPin(annotation: annotation as! CustomAnnotation)
-        
-        guard let pinToEdit = _pinToEdit else {return}
-        
-        
-        
+        guard let oldCoordinates = oldCoordinates, let pinToEdit = getCorrespondingPin(coordinate: oldCoordinates) else {return}
         pinToEdit.latitude = annotation.coordinate.latitude
         pinToEdit.longitude = annotation.coordinate.longitude
-        
         try? dataController.viewContext.save()
-        
-//        getAllPins().forEach { (aPin) in
-//            if aPin.longitude == oldCoordinates?.longitude && aPin.latitude == oldCoordinates?.latitude {
-//                aPin.latitude = coord.latitude
-//                aPin.longitude = coord.longitude
-//                try? dataController.viewContext.save()
-//                oldCoordinates = nil
-//            }
-//        }
-    }
+}
     
-    func getCorrespondingPin(annotation: CustomAnnotation) -> Pin?{
+    func getCorrespondingPin(annotation: MKAnnotation) -> Pin?{
         let location = annotation.coordinate
         let context = dataController.viewContext
         let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
@@ -75,36 +55,18 @@ extension MapController {
         }
     }
     
+    
+    func getCorrespondingPin(coordinate: CLLocationCoordinate2D) -> Pin?{
+        let location = coordinate
+        let context = dataController.viewContext
+        let fetchRequest = NSFetchRequest<Pin>(entityName: "Pin")
+        let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [location.latitude, location.longitude])
+        fetchRequest.predicate = predicate
+        do {
+            let result = try context.fetch(fetchRequest)
+            return result.first
+        } catch {
+            return nil
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//CLLocationCoordinate2D <--- works
-//    func matchPinToLocation2(location: CLLocationCoordinate2D) -> Pin?{
-//        let context = dataController.viewContext
-//        let fetch = NSFetchRequest<Pin>(entityName: "Pin")
-//        let predicate = NSPredicate(format: "(latitude = %@) AND (longitude = %@)", argumentArray: [location.latitude, location.longitude])
-//        fetch.predicate = predicate
-//        do {
-//            let result = try context.fetch(fetch)
-//            return result.first
-//        } catch {
-//            return nil
-//        }
-//    }

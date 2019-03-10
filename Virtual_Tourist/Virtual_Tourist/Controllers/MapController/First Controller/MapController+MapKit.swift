@@ -30,15 +30,12 @@ extension MapController: MKMapViewDelegate {
                 view.pinTintColor = UIColor.green
             }
             oldCoordinates = myAnnotation.coordinate //class-wide variable
-            oldAnnotation = (myAnnotation as! CustomAnnotation)
-            
-            
+ 
         case .ending:
             view.dragState = .none
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
-//            editExistingPin2(   myAnnotation)
             editExistingPin3(myAnnotation)
-        
+  
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
         
@@ -92,12 +89,6 @@ extension MapController: MKMapViewDelegate {
         try? dataController.viewContext.save()
     }
 }
-
-
-
-
-
-
 
 
 

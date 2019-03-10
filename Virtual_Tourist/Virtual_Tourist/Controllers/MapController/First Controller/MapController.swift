@@ -31,7 +31,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var myFetchController: NSFetchedResultsController<Pin>!
     
     var oldCoordinates: CLLocationCoordinate2D? //Updating Pin Entity after dragging
-    var oldAnnotation: CustomAnnotation?
+    var oldAnnotation: CustomAnnotation?        //No Good.  It changes as the source assigned to it upgraded.  Like they share a memory space
     
     var mapView = MKMapView()
     
