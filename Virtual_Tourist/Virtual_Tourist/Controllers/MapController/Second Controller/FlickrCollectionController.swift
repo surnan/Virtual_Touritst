@@ -18,6 +18,9 @@ protocol FlickrCollectionControllerDelegate {
 
 class FlickrCollectionController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, FlickrCollectionControllerDelegate {
     
+    var myFetchController: NSFetchedResultsController<Photo>!
+    
+    
     func refresh() {
         do {
             print("refresh ---- * INSIDE FLICKR-CONTROLLER * ")
@@ -47,7 +50,6 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        setupFetchedResultsController()
         print("test")
     }
     
@@ -62,11 +64,20 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     
     @objc func handleUpdatePage(){
-        
-        print(pin.pageNumber)
         pin.pageNumber = pin.pageNumber + 1
         try? dataController.viewContext.save()
-        print(pin.pageNumber)
+
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+        fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        
+        do {
+            _ = try dataController.viewContext.execute(request)
+            //            NSManagedObjectContext.mergeChanges
+            collectionView.reloadData()
+        } catch {
+            print("unable to delete \(error)")
+        }
     }
     
     
@@ -80,6 +91,7 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
         view.backgroundColor = UIColor.red
         showNavigationController()
         setupFetchedResultsController()
+        
         
         print("TEST")
         
