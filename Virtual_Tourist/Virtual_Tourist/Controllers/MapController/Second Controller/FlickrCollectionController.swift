@@ -26,7 +26,18 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     var myFetchController: NSFetchedResultsController<Photo>!
     
 
+    lazy var newCollectionButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("New Collection", for: .normal)
+        button.setTitleColor(UIColor.blue, for: .normal)
+        button.backgroundColor = UIColor.lightGray
+        button.addTarget(self, action: #selector(handleUpdatePage(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
+    
+  
     
     
     //MARK:-Protocol
@@ -77,7 +88,21 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
         collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID2)
         showNavigationController()
         setupFetchedResultsController()
+        
+        setupUI()
+        
     }
+    
+    
+    func setupUI(){
+        [newCollectionButton].forEach{view.addSubview($0)}
+        NSLayoutConstraint.activate([
+            newCollectionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            newCollectionButton.widthAnchor.constraint(equalTo: view.widthAnchor),
+            newCollectionButton.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
