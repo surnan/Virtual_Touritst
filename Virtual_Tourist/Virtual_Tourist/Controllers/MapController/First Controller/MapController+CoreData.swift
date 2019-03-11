@@ -15,6 +15,7 @@ extension MapController {
         return myFetchController.fetchedObjects ?? []
     }
     
+    //HandleLongPress
     func addNewPin(_ locationCoordinate: CLLocationCoordinate2D)->Pin {
         let pinToAdd = Pin(context: dataController.viewContext)
         pinToAdd.latitude = locationCoordinate.latitude
@@ -24,25 +25,6 @@ extension MapController {
         try? dataController.viewContext.save()
         return pinToAdd
     }
-    
-//    func editExistingPin2(_ annotation: MKAnnotation) {
-//        let coord = annotation.coordinate   //class-wide variable
-//        getAllPins().forEach { (aPin) in
-//            if aPin.longitude == oldCoordinates?.longitude && aPin.latitude == oldCoordinates?.latitude {
-//                aPin.latitude = coord.latitude
-//                aPin.longitude = coord.longitude
-//                try? dataController.viewContext.save()
-//                oldCoordinates = nil
-//            }
-//        }
-//    }
-//
-//    func editExistingPin3(_ annotation: MKAnnotation) {
-//        guard let oldCoordinates = oldCoordinates, let pinToEdit = getCorrespondingPin(coordinate: oldCoordinates) else {return}
-//        pinToEdit.latitude = annotation.coordinate.latitude
-//        pinToEdit.longitude = annotation.coordinate.longitude
-//        try? dataController.viewContext.save()
-//    }
     
     func getCorrespondingPin(annotation: MKAnnotation) -> Pin?{
         let location = annotation.coordinate
@@ -57,7 +39,6 @@ extension MapController {
             return nil
         }
     }
-    
     
     func getCorrespondingPin(coordinate: CLLocationCoordinate2D) -> Pin?{
         let location = coordinate

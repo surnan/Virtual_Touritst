@@ -26,18 +26,12 @@ extension Pin: MKAnnotation {
         self.photoCount = 0
         try? viewContext.save()
     }
-    
-    
-}
 
-
-extension Pin {
+    //Executes at Pin Creation
     public override func awakeFromInsert() {
         super.awakeFromInsert()
         pageNumber = 1
+        photoCount = 0
     }
-    
-//    public func getPageNumber()-> Int32 {
-//        return pageNumber
-//    }
 }
+

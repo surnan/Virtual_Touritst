@@ -24,8 +24,6 @@ extension MapController {
     }
     
  
-    
-    
     func downloadPhotosAndLinkToPin(_ newPin: Pin) {
         FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
             if let error = error {

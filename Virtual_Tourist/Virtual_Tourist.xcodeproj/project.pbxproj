@@ -30,7 +30,6 @@
 		8488F415222DC08F00DD8F92 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F414222DC08F00DD8F92 /* DataController.swift */; };
 		8488F426222FF4BD00DD8F92 /* MapController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F425222FF4BD00DD8F92 /* MapController+UI.swift */; };
 		8488F42A222FF8A500DD8F92 /* MapController+NSFetchedResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F429222FF8A500DD8F92 /* MapController+NSFetchedResults.swift */; };
-		84D0B4622230182A0048DF91 /* Pin+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B4612230182A0048DF91 /* Pin+Extension.swift */; };
 		84D0B464223019810048DF91 /* MapController+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B463223019810048DF91 /* MapController+CoreData.swift */; };
 		84D0B466223020D30048DF91 /* MapController+CustomClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */; };
 		84D0B46A223051F60048DF91 /* FlickrCollectionController+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */; };
@@ -62,7 +61,6 @@
 		8488F414222DC08F00DD8F92 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		8488F425222FF4BD00DD8F92 /* MapController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+UI.swift"; sourceTree = "<group>"; };
 		8488F429222FF8A500DD8F92 /* MapController+NSFetchedResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+NSFetchedResults.swift"; sourceTree = "<group>"; };
-		84D0B4612230182A0048DF91 /* Pin+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+Extension.swift"; sourceTree = "<group>"; };
 		84D0B463223019810048DF91 /* MapController+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CoreData.swift"; sourceTree = "<group>"; };
 		84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CustomClasses.swift"; sourceTree = "<group>"; };
 		84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlickrCollectionController+Collection.swift"; sourceTree = "<group>"; };
@@ -178,7 +176,6 @@
 				8488F40C222DB71700DD8F92 /* Photo_Locations.xcdatamodeld */,
 				8488F414222DC08F00DD8F92 /* DataController.swift */,
 				8488F422222FF04500DD8F92 /* Entity Extensions */,
-				84D0B4612230182A0048DF91 /* Pin+Extension.swift */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -282,7 +279,6 @@
 				84601E112227AEA200A77BAD /* flickr.photos.search.swift in Sources */,
 				84601E0F2227A35B00A77BAD /* UNSYNC.swift in Sources */,
 				841A55C5222629D10028A6E3 /* MapController+Handles.swift in Sources */,
-				84D0B4622230182A0048DF91 /* Pin+Extension.swift in Sources */,
 				841A55C3222628AA0028A6E3 /* UIView+Extensions.swift in Sources */,
 				841A55AC22261F230028A6E3 /* MapController.swift in Sources */,
 				842BEC0E2231D47D00BF35CC /* CollectionCell3.swift in Sources */,
