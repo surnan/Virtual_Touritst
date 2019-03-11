@@ -17,6 +17,17 @@ extension Pin: MKAnnotation {
         let longDegrees = CLLocationDegrees(longitude)
         return CLLocationCoordinate2D(latitude: latDegrees, longitude: longDegrees)
     }
+    
+    //var backGroundContext: NSManagedObjectContext!
+    public func movePin(coordinate: CLLocationCoordinate2D, viewContext: NSManagedObjectContext){
+        self.latitude = coordinate.latitude
+        self.longitude = coordinate.longitude
+        self.pageNumber = 1
+        self.photoCount = 0
+        try? viewContext.save()
+    }
+    
+    
 }
 
 

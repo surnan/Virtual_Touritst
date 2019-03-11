@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 
+
 extension MapController {
     
     @objc func handleLongPress(sender: UILongPressGestureRecognizer){
@@ -21,6 +22,9 @@ extension MapController {
             return
         }
     }
+    
+ 
+    
     
     func downloadPhotosAndLinkToPin(_ newPin: Pin) {
         FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
@@ -42,6 +46,9 @@ extension MapController {
             })
         }
     }
+    
+    
+    
     
     @objc func handleDeleteALLButton(){
         mapView.removeAnnotations(mapView.annotations)

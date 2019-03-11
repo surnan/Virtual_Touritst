@@ -11,6 +11,22 @@ import MapKit
 import CoreData
 
 
+
+/*
+ newPin.photoCount = Int32(urls.count)
+ newPin.page = 1 //<------ RESET TO PAGE ONE
+ try? self.dataController.viewContext.save()
+ 
+ urls.forEach({ (currentURL) in
+ print("URL inside loop --> \(currentURL)")
+ URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+ print("currentURL = \(currentURL)")
+ guard let imageData = imageData else {return}
+ self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
+ }).resume()
+ })
+ */
+
 extension MapController: MKMapViewDelegate {
     
     func placeAnnotation(pin: Pin?) {
@@ -31,7 +47,23 @@ extension MapController: MKMapViewDelegate {
         case .ending:
             view.dragState = .none
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
-            editExistingPin3(myAnnotation)
+
+            
+            
+            guard let deezCoordinates = oldCoordinates else {return}
+            guard let pinToChange = getCorrespondingPin(coordinate: deezCoordinates) else {return}
+            pinToChange.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
+            
+            var fetch222 = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+            fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [pinToChange])
+            let request = NSBatchDeleteRequest(fetchRequest: fetch222)
+            try? dataController.viewContext.execute(request)
+            
+            
+            downloadPhotosAndLinkToPin(pinToChange)
+            
+            
+            
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
         default: break
