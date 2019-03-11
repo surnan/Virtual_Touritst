@@ -10,10 +10,9 @@ import UIKit
 import MapKit
 import CoreData
 
-let fetchCount = 21
+let fetchCount = 9
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
-    
     //MARK:- UI Constraints - CONSTANTS
     let bottomUILabelHeight: CGFloat = 70
     let defaultTitleFontSize: CGFloat = 22

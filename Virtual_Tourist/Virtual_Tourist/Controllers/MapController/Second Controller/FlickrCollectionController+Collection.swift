@@ -21,13 +21,37 @@ extension FlickrCollectionController {
     
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let count = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
+        
+        if indexPath.row < count {
+            let myPhoto = fetchedResultsController.object(at: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID3, for: indexPath) as! CollectionCell3
+            cell.myPhoto = myPhoto
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID2, for: indexPath) as! CollectionCell2
+            return cell
+        }
+        
+        
+        
+        
+        
+//        print("test")
+//        print("test")
+//
+//
 //        let myPhoto = fetchedResultsController.object(at: indexPath)
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID, for: indexPath) as! CollectionCell3
-//        cell.myPhoto = myPhoto
-        
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID2, for: indexPath) as! CollectionCell2
-        return cell
+//
+//        print("test")
+//        print("test")
+//
+//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID3, for: indexPath) as! CollectionCell3
+//                cell.myPhoto = myPhoto
+//
+////        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseID2, for: indexPath) as! CollectionCell2
+//        return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -39,7 +63,10 @@ extension FlickrCollectionController {
             self.collectionView.restore()
         }
         
+        
         return count
+        
+        //        return  min(count, (fetchedResultsController.fetchedObjects?.count)!) //<--- if you drop pin  app crashes prior to downloading photos, you crash without this line.  But how to reload now?
     }
     
     
