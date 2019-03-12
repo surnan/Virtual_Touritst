@@ -60,16 +60,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
             fatalError("The fetch could not be performed: \(error.localizedDescription)")
         }
     }
-    
-//    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
-//        let tempPhoto = Photo(context: dataController.viewContext)
-//        tempPhoto.imageData = data
-//        tempPhoto.urlString = urlString
-//        tempPhoto.index = Int32(999) //Random value for init
-//        tempPhoto.pin = pin
-//        let testImage = UIImage(data: tempPhoto.imageData!)
-//        try? dataController.viewContext.save()
-//    }
 
     lazy var customizedLayout: UICollectionViewFlowLayout = {
         let columnWidth: CGFloat = 10; let rowHeight: CGFloat = 10
@@ -110,27 +100,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-//    func downloadNearbyPhotosToPin(currentPin: Pin, fetchCount: Int) {
-//        //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
-//
-//        FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
-//            if let error = error {
-//                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-//                return
-//            }
-//            self.pin.photoCount = Int32(urls.count)
-//            try? self.dataController.viewContext.save()
-//            urls.forEach({ (currentURL) in
-//                print("URL inside loop --> \(currentURL)")
-//                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-//                    print("currentURL = \(currentURL)")
-//                    guard let imageData = imageData else {return}
-//                    connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
-//                }).resume()
-//            })
-//        }
-//    }
     
     @objc func handleNewLocationButton(_ sender: UIButton){
         if sender.isSelected {

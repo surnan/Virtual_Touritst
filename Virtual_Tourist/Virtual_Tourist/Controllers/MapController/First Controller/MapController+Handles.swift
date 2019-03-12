@@ -26,30 +26,6 @@ extension MapController {
         }
     }
     
- 
-//    func downloadPhotosAndLinkToPin(_ currentPin: Pin) {
-//        FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in
-//            if let error = error {
-//                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-//                return
-//            }
-//
-//            currentPin.photoCount = Int32(urls.count)
-//            try? self.dataController.viewContext.save()
-//
-//            urls.forEach({ (currentURL) in
-//                print("URL inside loop --> \(currentURL)")
-//                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-//                    print("currentURL = \(currentURL)")
-//                    guard let imageData = imageData else {return}
-//                    connectPhotoAndPin(dataController: self.dataController, pin:  currentPin , data: imageData, urlString: currentURL.absoluteString)
-//                }).resume()
-//            })
-//        }
-//    }
-    
-    
-    
     
     @objc func handleDeleteALLButton(){
         mapView.removeAnnotations(mapView.annotations)

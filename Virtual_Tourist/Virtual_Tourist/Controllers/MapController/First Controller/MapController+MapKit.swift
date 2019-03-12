@@ -62,32 +62,12 @@ extension MapController: MKMapViewDelegate {
     }
     
     func PushToCollectionViewController(apin: Pin){
-        
         let newController = FinalCollectionView()
         newController.dataController = self.dataController
         newController.pin = apin
         self.delegate = newController
         navigationController?.pushViewController(newController, animated: true)
-        
-        
-        /*
-        let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
-        newController.dataController = self.dataController
-        newController.pin = apin
-        self.delegate = newController
-        navigationController?.pushViewController(newController, animated: true)
-        */
     }
-    
-//    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
-//        let tempPhoto = Photo(context: dataController.viewContext)
-//        tempPhoto.imageData = data
-//        tempPhoto.urlString = urlString
-//        tempPhoto.index = Int32(718212)
-//        tempPhoto.pin = pin
-//        let testImage = UIImage(data: tempPhoto.imageData!)
-//        try? dataController.viewContext.save()
-//    }
 }
 
 
