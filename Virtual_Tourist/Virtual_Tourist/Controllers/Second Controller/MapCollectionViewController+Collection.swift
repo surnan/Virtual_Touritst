@@ -15,7 +15,7 @@ let idPlain = "asdf"
 let idCar = "asdfCARCAR"
 let idStreet = "asdfasdfSTREETSTREET"
 
-extension FinalCollectionView {
+extension CollectionMapViewController {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let currentPhotoCount = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}

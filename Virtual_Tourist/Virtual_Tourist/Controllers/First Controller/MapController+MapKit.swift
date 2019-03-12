@@ -62,7 +62,7 @@ extension MapController: MKMapViewDelegate {
     }
     
     func PushToCollectionViewController(apin: Pin){
-        let newController = FinalCollectionView()
+        let newController = CollectionMapViewController()
         newController.dataController = self.dataController
         newController.pin = apin
         self.delegate = newController

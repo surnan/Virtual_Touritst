@@ -18,10 +18,7 @@ extension MapController {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
             let newPin = addNewPin(locationCoordinate)
-//            downloadPhotosAndLinkToPin(newPin)
-            
             downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
-            
             return
         }
     }

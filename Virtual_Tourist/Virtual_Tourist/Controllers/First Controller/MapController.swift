@@ -27,7 +27,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     //MARK:- non-UI variables start here
     var task: URLSessionTask?
-    var delegate: FinalCollectionViewDelegate?
+    var delegate: CollectionMapViewControllerDelegate?
     
     var tapDeletesPin = false   //determines if deletionLabel
     var dataController: DataController!
