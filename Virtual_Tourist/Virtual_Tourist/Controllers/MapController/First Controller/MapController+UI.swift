@@ -31,9 +31,9 @@ extension MapController {
 
     func setupUI(){
         setupNavigationBar()
-        [mapView, bottomUILabel].forEach{view.addSubview($0)}
-        mapView.anchor(top: nil, leading: bottomUILabel.leadingAnchor, trailing: bottomUILabel.trailingAnchor, bottom: nil)
-        bottomUILabel.anchor(top: mapView.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, bottom: nil)
+        [mapView, deletionLabel].forEach{view.addSubview($0)}
+        mapView.anchor(top: nil, leading: deletionLabel.leadingAnchor, trailing: deletionLabel.trailingAnchor, bottom: nil)
+        deletionLabel.anchor(top: mapView.bottomAnchor, leading: view.safeAreaLayoutGuide.leadingAnchor, trailing: view.safeAreaLayoutGuide.trailingAnchor, bottom: nil)
         
         anchorMapTop_SafeAreaTop =  mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         anchorMapTop_ShiftMapToShowDeletionLabel = mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: -bottomUILabelHeight)

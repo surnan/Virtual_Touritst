@@ -18,14 +18,13 @@ protocol FinalCollectionViewDelegate {
 class FinalCollectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSFetchedResultsControllerDelegate, FinalCollectionViewDelegate {
     var pin: Pin!
     var dataController: DataController!
-    var photoID_Secret_Dict = [[String: String]]()
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     var myFetchController: NSFetchedResultsController<Photo>!
     
-    let reuseIDBlankCell = "afqwebvty1sdf"
-    let reuseIdLoadingCell = "asdfhewuifwefCARCAR"
-    let reuseIDCellLoaded = "asdfasdfSTasfawehwefREETSTREET"
-    let reuseIDCellIsSelected = "ahwefREETSTREET"
+    let reuseIDBlankCell = "reuseIDBlankCell"
+    let reuseIdLoadingCell = "reuseIdLoadingCell"
+    let reuseIDCellLoaded = "reuseIDCellLoaded"
+    let reuseIDCellIsSelected = "reuseIDCellIsSelected"
     
     lazy var photoMaxCount = pin.photoCount
     
@@ -34,13 +33,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
             newLocationButton.isSelected = !deleteIndexSet.isEmpty
         }
     }
-    
-    var deleteIndexSetPhoto = Set<Photo>() {
-        didSet {
-            newLocationButton.isSelected = !deleteIndexSet.isEmpty
-        }
-    }
-    
     
     //MARK:-Protocol
     func refresh() {
@@ -73,45 +65,47 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         let tempPhoto = Photo(context: dataController.viewContext)
         tempPhoto.imageData = data
         tempPhoto.urlString = urlString
-        tempPhoto.index = Int32(718212)
+        tempPhoto.index = Int32(999) //Random value for init
         tempPhoto.pin = pin
         let testImage = UIImage(data: tempPhoto.imageData!)
         try? dataController.viewContext.save()
     }
     
-//////////
-    
 
-
-    let layout: UICollectionViewFlowLayout = {
-        let temp = UICollectionViewFlowLayout()
-        temp.sectionInset = .init(top: 0, left: 0, bottom: 0, right: 0)
-        temp.itemSize = .init(width: 75, height:   75)
-        temp.scrollDirection = .vertical
-        temp.minimumLineSpacing = 10
-        temp.minimumInteritemSpacing = 10
-        return temp
+    lazy var customizedLayout: UICollectionViewFlowLayout = {
+        let columnWidth: CGFloat = 15; let rowHeight: CGFloat = 15
+        let screenWidth = view.bounds.width
+        let cellWidth = (screenWidth - 60) / 3
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = .init(top: 0, left: 0, bottom: 0, right: 0)
+//        layout.itemSize = .init(width: 75, height:   75)
+        layout.itemSize = .init(width: cellWidth, height:   cellWidth)
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = rowHeight
+        layout.minimumInteritemSpacing = columnWidth
+        return layout
     }()
     
     lazy var myCollectionView: UICollectionView = {
-        var myCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        myCollectionView.dataSource = self
-        myCollectionView.delegate = self
-        myCollectionView.register(FinalCollectionLoadingCell.self, forCellWithReuseIdentifier: reuseIdLoadingCell)
-        myCollectionView.register(FinalCollectionImageCell.self, forCellWithReuseIdentifier: reuseIDCellLoaded)
-        myCollectionView.register(FinalCollectionBlankCell.self, forCellWithReuseIdentifier: reuseIDBlankCell)
-        myCollectionView.register(FinalCollectionSelectedImageCell.self, forCellWithReuseIdentifier: reuseIDCellIsSelected)
-        
-        myCollectionView.showsVerticalScrollIndicator = false
-        myCollectionView.backgroundColor = UIColor.white
-        myCollectionView.allowsMultipleSelection = true
-        return myCollectionView
+        var collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: customizedLayout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(FinalCollectionLoadingCell.self, forCellWithReuseIdentifier: reuseIdLoadingCell)
+        collectionView.register(FinalCollectionImageCell.self, forCellWithReuseIdentifier: reuseIDCellLoaded)
+        collectionView.register(FinalCollectionBlankCell.self, forCellWithReuseIdentifier: reuseIDBlankCell)
+        collectionView.register(FinalCollectionSelectedImageCell.self, forCellWithReuseIdentifier: reuseIDCellIsSelected)
+    
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.backgroundColor = UIColor.white
+        collectionView.allowsMultipleSelection = true
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
     }()
     
     lazy var newLocationButton: UIButton = {
        let button = UIButton()
         button.setTitle("New Collection", for: .normal)
-        button.backgroundColor = UIColor.white
+        button.backgroundColor = UIColor.blue
         button.setTitleColor(UIColor.black, for: .normal)
         
         button.setTitle("Remove Selected Pictures", for: .selected)
@@ -191,11 +185,11 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     
     //MARK:- overloads  ui
     override func viewDidLoad() {
-        view.backgroundColor = UIColor.blue
+        view.backgroundColor = UIColor.purple
         setupNavigationMenu()
         setupMapView()
-        [myMapView, myCollectionView, newLocationButton].forEach{ view.addSubview($0) }
-        setupCollectionView()
+        [myMapView, myCollectionView, newLocationButton, screenBottomFiller].forEach{ view.addSubview($0) }
+        setupUI()
         setupFetchedResultsController()
     }
     
@@ -227,22 +221,19 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         myMapView.setRegion(viewRegion, animated: false)
     }
     
-    func setupCollectionView(){
-        myCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            myMapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            myMapView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
-            myMapView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
-            myMapView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
-            
-            newLocationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            newLocationButton.widthAnchor.constraint(equalTo: view.widthAnchor),
-            newLocationButton.heightAnchor.constraint(equalToConstant: 30),
-            
-            myCollectionView.topAnchor.constraint(equalTo: myMapView.bottomAnchor, constant: 10),
-            myCollectionView.bottomAnchor.constraint(equalTo: newLocationButton.topAnchor, constant: -10),
-            myCollectionView.leadingAnchor.constraint(equalTo: myMapView.leadingAnchor),
-            myCollectionView.trailingAnchor.constraint(equalTo: myMapView.trailingAnchor),
-            ])
+    var screenBottomFiller: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.red
+        return view
+    }()
+    
+    func setupUI(){
+        let safe = view.safeAreaLayoutGuide
+        myMapView.anchor(top: safe.topAnchor, leading: safe.leadingAnchor, trailing: safe.trailingAnchor)
+        myMapView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25).isActive = true
+        myCollectionView.anchor(top: myMapView.bottomAnchor, leading: myMapView.leadingAnchor, trailing: myMapView.trailingAnchor, bottom:
+            newLocationButton.topAnchor)
+        newLocationButton.anchor(leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: safe.bottomAnchor)
+        screenBottomFiller.anchor(top: newLocationButton.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor)
     }
 }

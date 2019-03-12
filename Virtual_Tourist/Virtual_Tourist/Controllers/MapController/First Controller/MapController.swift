@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-let fetchCount = 6
+let fetchCount = 21
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     //MARK:- UI Constraints - CONSTANTS
@@ -25,18 +25,11 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var anchorMapBottom_ViewBottom: NSLayoutConstraint?
     var anchorMapBottom_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
     
-    //MARK:- Var not used for Constraints
+    //MARK:- non-UI variables start here
     var task: URLSessionTask?
-    
-    
-    //////////////////////////////////////////////////////////////////////
-//    var delegate: FlickrCollectionControllerDelegate?
     var delegate: FinalCollectionViewDelegate?
-    //////////////////////////////////////////////////////////////////////
     
-    
-    
-    var tapDeletesPin = false
+    var tapDeletesPin = false   //determines if deletionLabel
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!
     
@@ -52,13 +45,12 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         return longGesture
     }()
     
-    lazy var bottomUILabel: UILabel = {
+    lazy var deletionLabel: UILabel = {
         var label = UILabel()
         label.backgroundColor = UIColor.red
         let attributes: [NSAttributedString.Key:Any] = [
             NSAttributedString.Key.font: UIFont.systemFont(ofSize: defaultTitleFontSize),
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            ]
+            NSAttributedString.Key.foregroundColor: UIColor.white]
         label.attributedText = NSAttributedString(string: "Tap Pins to Delete", attributes: attributes)
         label.textAlignment = .center
         label.heightAnchor.constraint(equalToConstant: bottomUILabelHeight).isActive = true
