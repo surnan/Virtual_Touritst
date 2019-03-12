@@ -22,6 +22,12 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     var myFetchController: NSFetchedResultsController<Photo>!
     
+    let reuseIDBlankCell = "afqwebvty1sdf"
+    let reuseIdLoadingCell = "asdfhewuifwefCARCAR"
+    let reuseIDCellLoaded = "asdfasdfSTasfawehwefREETSTREET"
+    
+    lazy var photoMaxCount = pin.photoCount
+    
     var deleteIndexSet = Set<IndexPath>() {
         didSet {
             myButton.isSelected = !deleteIndexSet.isEmpty
@@ -68,9 +74,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     
 //////////
     
-    let idPlain = "asdf"
-    let idCar = "asdfCARCAR"
-    let idStreet = "asdfasdfSTREETSTREET"
+
 
     let layout: UICollectionViewFlowLayout = {
         let temp = UICollectionViewFlowLayout()
@@ -86,9 +90,10 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         var myCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         myCollectionView.dataSource = self
         myCollectionView.delegate = self
-        myCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: idPlain)
-        myCollectionView.register(FirstCollectionCellCar.self, forCellWithReuseIdentifier: idCar)
-        myCollectionView.register(FirstCollectionCellStreet.self, forCellWithReuseIdentifier: idStreet)
+        myCollectionView.register(FinalCollectionLoadingCell.self, forCellWithReuseIdentifier: reuseIdLoadingCell)
+        myCollectionView.register(FinalCollectionImageCell.self, forCellWithReuseIdentifier: reuseIDCellLoaded)
+        myCollectionView.register(FinalCollectionBlankCell.self, forCellWithReuseIdentifier: reuseIDBlankCell)
+        
         myCollectionView.showsVerticalScrollIndicator = false
         myCollectionView.backgroundColor = UIColor.black
         myCollectionView.allowsMultipleSelection = true
@@ -134,8 +139,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         setupMapView()
         [myMapView, myCollectionView, myButton].forEach{ view.addSubview($0) }
         setupCollectionView()
-        myCollectionView.register(FirstCollectionCellStreet.self, forCellWithReuseIdentifier: idStreet)
-        myCollectionView.register(FirstCollectionCellCar.self, forCellWithReuseIdentifier: idCar)
         setupFetchedResultsController()
     }
     

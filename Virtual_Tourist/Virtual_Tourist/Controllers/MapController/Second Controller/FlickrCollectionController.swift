@@ -73,8 +73,8 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     
     //UI and Swift Overloads
     override func viewDidLoad() {
-        collectionView.register(CollectionCell3.self, forCellWithReuseIdentifier: reuseID3)
-        collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID2)
+        collectionView.register(FinalCollectionImageCell.self, forCellWithReuseIdentifier: reuseID3)
+        collectionView.register(FinalCollectionLoadingCell.self, forCellWithReuseIdentifier: reuseID2)
         
         
         ////////////////////////////////////////////////////////////////////////////////////////

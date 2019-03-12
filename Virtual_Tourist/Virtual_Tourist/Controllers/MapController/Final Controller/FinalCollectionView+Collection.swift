@@ -26,23 +26,21 @@ extension FinalCollectionView {
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        guard let count = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
-        
-        if indexPath.row < count {
-//            let myPhoto = fetchedResultsController.object(at: indexPath)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: idCar, for: indexPath) as! FirstCollectionCellCar
-            
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: idStreet, for: indexPath) as! FirstCollectionCellStreet
+        guard let currentPhotoCount = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
+    
+        if indexPath.row < currentPhotoCount {
+            let myPhoto = fetchedResultsController.object(at: indexPath)
+            let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
+            cell.myPhoto = myPhoto
             return cell
         }
+        
+        let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = Int(pin.photoCount)
-        
 //        if count == 0 {
 //            self.collectionView.setEmptyMessage("NOTHING TO SHOW")
 //        } else {

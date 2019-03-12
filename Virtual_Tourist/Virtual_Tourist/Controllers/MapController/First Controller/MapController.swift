@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-let fetchCount = 9
+let fetchCount = 30
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     //MARK:- UI Constraints - CONSTANTS

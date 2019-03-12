@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollectionCell2:UICollectionViewCell{
+class FinalCollectionLoadingCell:UICollectionViewCell{
     
     let blueBackGround: UIView = {
         let view = UIView()

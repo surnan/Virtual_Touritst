@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CollectionCell3: UICollectionViewCell {
+class FinalCollectionImageCell: UICollectionViewCell {
     
     var myPhoto: Photo! {
         didSet {
