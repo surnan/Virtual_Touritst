@@ -18,32 +18,35 @@ extension MapController {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
             let newPin = addNewPin(locationCoordinate)
-            downloadPhotosAndLinkToPin(newPin)
+//            downloadPhotosAndLinkToPin(newPin)
+            
+            downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
+            
             return
         }
     }
     
  
-    func downloadPhotosAndLinkToPin(_ newPin: Pin) {
-        FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
-            if let error = error {
-                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-                return
-            }
-            
-            newPin.photoCount = Int32(urls.count)
-            try? self.dataController.viewContext.save()
-            
-            urls.forEach({ (currentURL) in
-                print("URL inside loop --> \(currentURL)")
-                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                    print("currentURL = \(currentURL)")
-                    guard let imageData = imageData else {return}
-                    connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
-                }).resume()
-            })
-        }
-    }
+//    func downloadPhotosAndLinkToPin(_ currentPin: Pin) {
+//        FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in
+//            if let error = error {
+//                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+//                return
+//            }
+//
+//            currentPin.photoCount = Int32(urls.count)
+//            try? self.dataController.viewContext.save()
+//
+//            urls.forEach({ (currentURL) in
+//                print("URL inside loop --> \(currentURL)")
+//                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+//                    print("currentURL = \(currentURL)")
+//                    guard let imageData = imageData else {return}
+//                    connectPhotoAndPin(dataController: self.dataController, pin:  currentPin , data: imageData, urlString: currentURL.absoluteString)
+//                }).resume()
+//            })
+//        }
+//    }
     
     
     

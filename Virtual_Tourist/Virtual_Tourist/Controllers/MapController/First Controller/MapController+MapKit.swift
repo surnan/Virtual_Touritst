@@ -42,12 +42,7 @@ extension MapController: MKMapViewDelegate {
             fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [pinToChange])
             let request = NSBatchDeleteRequest(fetchRequest: fetch222)
             try? dataController.viewContext.execute(request)
-            
-            
-            downloadPhotosAndLinkToPin(pinToChange)
-            
-            
-            
+            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
         default: break

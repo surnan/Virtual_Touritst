@@ -111,26 +111,26 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         return button
     }()
     
-    fileprivate func downloadNearbyPhotosToPin() {
-        //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
-        
-        FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
-            if let error = error {
-                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-                return
-            }
-            self.pin.photoCount = Int32(urls.count)
-            try? self.dataController.viewContext.save()
-            urls.forEach({ (currentURL) in
-                print("URL inside loop --> \(currentURL)")
-                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                    print("currentURL = \(currentURL)")
-                    guard let imageData = imageData else {return}
-                    connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
-                }).resume()
-            })
-        }
-    }
+//    func downloadNearbyPhotosToPin(currentPin: Pin, fetchCount: Int) {
+//        //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
+//
+//        FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
+//            if let error = error {
+//                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+//                return
+//            }
+//            self.pin.photoCount = Int32(urls.count)
+//            try? self.dataController.viewContext.save()
+//            urls.forEach({ (currentURL) in
+//                print("URL inside loop --> \(currentURL)")
+//                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+//                    print("currentURL = \(currentURL)")
+//                    guard let imageData = imageData else {return}
+//                    connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
+//                }).resume()
+//            })
+//        }
+//    }
     
     @objc func handleNewLocationButton(_ sender: UIButton){
         if sender.isSelected {
@@ -157,8 +157,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
                 try? dataController.viewContext.save()
                 try fetchedResultsController.performFetch()
                 myCollectionView.reloadData()
-    
-                downloadNearbyPhotosToPin()
+                downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
             } catch {
                 print("unable to delete \(error)")
             }
