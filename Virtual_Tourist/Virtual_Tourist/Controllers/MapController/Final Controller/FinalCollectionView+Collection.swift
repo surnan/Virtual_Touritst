@@ -54,7 +54,13 @@ extension FinalCollectionView {
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        navigationController?.popViewController(animated: true)
+        print("Selected Cell = \(indexPath)")
+        if deleteIndexSet.contains(indexPath) {
+            deleteIndexSet.remove(indexPath)
+        } else {
+            deleteIndexSet.insert(indexPath)
+        }
+        myCollectionView.reloadItems(at: [indexPath])
     }
 }
 

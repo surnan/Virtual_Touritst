@@ -89,8 +89,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         myCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: idPlain)
         myCollectionView.register(FirstCollectionCellCar.self, forCellWithReuseIdentifier: idCar)
         myCollectionView.register(FirstCollectionCellStreet.self, forCellWithReuseIdentifier: idStreet)
-        
-        
         myCollectionView.showsVerticalScrollIndicator = false
         myCollectionView.backgroundColor = UIColor.black
         myCollectionView.allowsMultipleSelection = true
