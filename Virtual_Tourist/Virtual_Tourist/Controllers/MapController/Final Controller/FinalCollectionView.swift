@@ -25,6 +25,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     let reuseIDBlankCell = "afqwebvty1sdf"
     let reuseIdLoadingCell = "asdfhewuifwefCARCAR"
     let reuseIDCellLoaded = "asdfasdfSTasfawehwefREETSTREET"
+    let reuseIDCellIsSelected = "ahwefREETSTREET"
     
     lazy var photoMaxCount = pin.photoCount
     
@@ -93,9 +94,10 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         myCollectionView.register(FinalCollectionLoadingCell.self, forCellWithReuseIdentifier: reuseIdLoadingCell)
         myCollectionView.register(FinalCollectionImageCell.self, forCellWithReuseIdentifier: reuseIDCellLoaded)
         myCollectionView.register(FinalCollectionBlankCell.self, forCellWithReuseIdentifier: reuseIDBlankCell)
+        myCollectionView.register(FinalCollectionSelectedImageCell.self, forCellWithReuseIdentifier: reuseIDCellIsSelected)
         
         myCollectionView.showsVerticalScrollIndicator = false
-        myCollectionView.backgroundColor = UIColor.black
+        myCollectionView.backgroundColor = UIColor.white
         myCollectionView.allowsMultipleSelection = true
         return myCollectionView
     }()
@@ -167,6 +169,9 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
             
             try fetchedResultsController.performFetch()
             myCollectionView.reloadData()
+            
+            //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
+            
             FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
                 if let error = error {
                     print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")

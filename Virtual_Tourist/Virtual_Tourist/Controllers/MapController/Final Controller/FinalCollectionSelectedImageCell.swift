@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class FinalCollectionImageCell: UICollectionViewCell {
+class FinalCollectionSelectedImageCell: UICollectionViewCell {
     
     var myPhoto: Photo! {
         didSet {
@@ -20,9 +20,9 @@ class FinalCollectionImageCell: UICollectionViewCell {
     }
     
     var myImageView: UIImageView = {
-       var imageView = UIImageView()
+        var imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.alpha = 1.0
+        imageView.alpha = 0.15
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
