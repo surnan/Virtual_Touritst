@@ -29,6 +29,8 @@ extension FinalCollectionView {
         guard let currentPhotoCount = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
         
         
+        
+        
         if indexPath.row < currentPhotoCount {
             if deleteIndexSet.contains(indexPath) {
                 let myPhoto = fetchedResultsController.object(at: indexPath)

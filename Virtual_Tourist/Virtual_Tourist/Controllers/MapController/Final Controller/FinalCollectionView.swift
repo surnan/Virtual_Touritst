@@ -31,7 +31,13 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     
     var deleteIndexSet = Set<IndexPath>() {
         didSet {
-            myButton.isSelected = !deleteIndexSet.isEmpty
+            newLocationButton.isSelected = !deleteIndexSet.isEmpty
+        }
+    }
+    
+    var deleteIndexSetPhoto = Set<Photo>() {
+        didSet {
+            newLocationButton.isSelected = !deleteIndexSet.isEmpty
         }
     }
     
@@ -102,7 +108,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         return myCollectionView
     }()
     
-    lazy var myButton: UIButton = {
+    lazy var newLocationButton: UIButton = {
        let button = UIButton()
         button.setTitle("New Collection", for: .normal)
         button.backgroundColor = UIColor.white
@@ -111,12 +117,32 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         button.setTitle("Remove Selected Pictures", for: .selected)
         button.setTitleColor(UIColor.red, for: .selected)
         
-        button.addTarget(self, action: #selector(handleMyButton(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleNewLocationButton(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-
+    @objc func handleNewLocationButton(_ sender: UIButton){
+        if sender.isSelected {
+            print("-- DO NOT DELETE --")
+        } else {
+            print("DELETE")
+            
+            deleteIndexSet.forEach { (deleteIndex) in
+                
+                myCollectionView
+                
+                
+            }
+   
+            
+            
+            
+            sender.isSelected = !sender.isSelected
+        }
+    }
+    
+    
     var myMapView: MKMapView = {
        let map = MKMapView()
         map.isScrollEnabled = true
@@ -128,10 +154,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     }()
     
     
-    @objc func handleMyButton(_ sender: UIButton){
-        print("Hello World")
-        sender.isSelected = !sender.isSelected
-    }
+
     
     
     //MARK:- overloads  ui
@@ -139,7 +162,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         view.backgroundColor = UIColor.blue
         setupNavigationMenu()
         setupMapView()
-        [myMapView, myCollectionView, myButton].forEach{ view.addSubview($0) }
+        [myMapView, myCollectionView, newLocationButton].forEach{ view.addSubview($0) }
         setupCollectionView()
         setupFetchedResultsController()
     }
@@ -224,12 +247,12 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
             myMapView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
             myMapView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25),
             
-            myButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            myButton.widthAnchor.constraint(equalTo: view.widthAnchor),
-            myButton.heightAnchor.constraint(equalToConstant: 30),
+            newLocationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            newLocationButton.widthAnchor.constraint(equalTo: view.widthAnchor),
+            newLocationButton.heightAnchor.constraint(equalToConstant: 30),
             
             myCollectionView.topAnchor.constraint(equalTo: myMapView.bottomAnchor, constant: 10),
-            myCollectionView.bottomAnchor.constraint(equalTo: myButton.topAnchor, constant: -10),
+            myCollectionView.bottomAnchor.constraint(equalTo: newLocationButton.topAnchor, constant: -10),
             myCollectionView.leadingAnchor.constraint(equalTo: myMapView.leadingAnchor),
             myCollectionView.trailingAnchor.constraint(equalTo: myMapView.trailingAnchor),
             ])
