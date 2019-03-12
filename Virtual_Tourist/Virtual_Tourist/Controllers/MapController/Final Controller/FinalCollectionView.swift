@@ -146,6 +146,8 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         setupMapView()
         [myMapView, myCollectionView, myButton].forEach{ view.addSubview($0) }
         setupCollectionView()
+        myCollectionView.register(FirstCollectionCellStreet.self, forCellWithReuseIdentifier: idStreet)
+        myCollectionView.register(FirstCollectionCellCar.self, forCellWithReuseIdentifier: idCar)
         setupFetchedResultsController()
     }
     

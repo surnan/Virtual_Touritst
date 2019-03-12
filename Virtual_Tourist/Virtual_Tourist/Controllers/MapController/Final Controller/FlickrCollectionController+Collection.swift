@@ -30,12 +30,12 @@ extension FinalCollectionView {
         guard let count = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
         
         if indexPath.row < count {
-            let myPhoto = fetchedResultsController.object(at: indexPath)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: idCar, for: indexPath) as! CollectionCell3
-            cell.myPhoto = myPhoto
+//            let myPhoto = fetchedResultsController.object(at: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: idCar, for: indexPath) as! FirstCollectionCellCar
+            
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: idStreet, for: indexPath) as! CollectionCell2
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: idStreet, for: indexPath) as! FirstCollectionCellStreet
             return cell
         }
     }
