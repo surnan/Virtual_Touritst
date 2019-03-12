@@ -32,7 +32,7 @@
 		8488F42A222FF8A500DD8F92 /* MapController+NSFetchedResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F429222FF8A500DD8F92 /* MapController+NSFetchedResults.swift */; };
 		84D0B464223019810048DF91 /* MapController+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B463223019810048DF91 /* MapController+CoreData.swift */; };
 		84D0B466223020D30048DF91 /* MapController+CustomClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */; };
-		84D0B46A223051F60048DF91 /* FlickrCollectionController+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */; };
+		84D0B46A223051F60048DF91 /* FinalCollectionView+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B469223051F60048DF91 /* FinalCollectionView+Collection.swift */; };
 		84D6687B22374092008B7FEC /* FinalCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6687A22374092008B7FEC /* FinalCollectionView.swift */; };
 		84D6687E22374115008B7FEC /* FirstCollectionCellCar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6687C22374114008B7FEC /* FirstCollectionCellCar.swift */; };
 		84D6687F22374115008B7FEC /* FirstCollectionCellStreet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6687D22374115008B7FEC /* FirstCollectionCellStreet.swift */; };
@@ -66,7 +66,7 @@
 		8488F429222FF8A500DD8F92 /* MapController+NSFetchedResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+NSFetchedResults.swift"; sourceTree = "<group>"; };
 		84D0B463223019810048DF91 /* MapController+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CoreData.swift"; sourceTree = "<group>"; };
 		84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CustomClasses.swift"; sourceTree = "<group>"; };
-		84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FlickrCollectionController+Collection.swift"; sourceTree = "<group>"; };
+		84D0B469223051F60048DF91 /* FinalCollectionView+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FinalCollectionView+Collection.swift"; sourceTree = "<group>"; };
 		84D6687A22374092008B7FEC /* FinalCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinalCollectionView.swift; sourceTree = "<group>"; };
 		84D6687C22374114008B7FEC /* FirstCollectionCellCar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstCollectionCellCar.swift; sourceTree = "<group>"; };
 		84D6687D22374115008B7FEC /* FirstCollectionCellStreet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstCollectionCellStreet.swift; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 				84D6687A22374092008B7FEC /* FinalCollectionView.swift */,
 				84D6687C22374114008B7FEC /* FirstCollectionCellCar.swift */,
 				84D6687D22374115008B7FEC /* FirstCollectionCellStreet.swift */,
-				84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */,
+				84D0B469223051F60048DF91 /* FinalCollectionView+Collection.swift */,
 			);
 			path = "Final Controller";
 			sourceTree = "<group>";
@@ -309,7 +309,7 @@
 				8488F413222DBF5A00DD8F92 /* Pin+Extensions.swift in Sources */,
 				84D0B464223019810048DF91 /* MapController+CoreData.swift in Sources */,
 				8488F415222DC08F00DD8F92 /* DataController.swift in Sources */,
-				84D0B46A223051F60048DF91 /* FlickrCollectionController+Collection.swift in Sources */,
+				84D0B46A223051F60048DF91 /* FinalCollectionView+Collection.swift in Sources */,
 				841A55AA22261F230028A6E3 /* AppDelegate.swift in Sources */,
 				8467393C223066160047C3F1 /* CollectionCell2.swift in Sources */,
 				84601E0D2227A32500A77BAD /* FlickrClient.swift in Sources */,

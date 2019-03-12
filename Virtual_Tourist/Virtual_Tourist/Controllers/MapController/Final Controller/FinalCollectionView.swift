@@ -187,15 +187,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         myCollectionView.reloadData()
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     lazy var firstAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
         annotation.coordinate = pin.coordinate
