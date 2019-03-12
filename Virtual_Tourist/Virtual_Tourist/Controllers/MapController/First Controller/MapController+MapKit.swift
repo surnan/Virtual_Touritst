@@ -12,6 +12,7 @@ import CoreData
 
 extension MapController: MKMapViewDelegate {
     
+    
     func placeAnnotation(pin: Pin?) {
         guard let lat = pin?.latitude, let lon = pin?.longitude else {return}
         let myNewAnnotation = CustomAnnotation(lat: lat, lon: lon)
@@ -37,7 +38,7 @@ extension MapController: MKMapViewDelegate {
             guard let pinToChange = getCorrespondingPin(coordinate: deezCoordinates) else {return}
             pinToChange.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
             
-            var fetch222 = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+            let fetch222 = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
             fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [pinToChange])
             let request = NSBatchDeleteRequest(fetchRequest: fetch222)
             try? dataController.viewContext.execute(request)
@@ -66,11 +67,21 @@ extension MapController: MKMapViewDelegate {
     }
     
     func PushToCollectionViewController(apin: Pin){
+        
+        let newController = FinalCollectionView()
+        newController.dataController = self.dataController
+        newController.pin = apin
+        self.delegate = newController
+        navigationController?.pushViewController(newController, animated: true)
+        
+        
+        /*
         let newController = FlickrCollectionController(collectionViewLayout: UICollectionViewFlowLayout())
         newController.dataController = self.dataController
         newController.pin = apin
         self.delegate = newController
         navigationController?.pushViewController(newController, animated: true)
+        */
     }
     
     func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){

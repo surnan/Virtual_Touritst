@@ -75,7 +75,14 @@ class FlickrCollectionController: UICollectionViewController, UICollectionViewDe
     override func viewDidLoad() {
         collectionView.register(CollectionCell3.self, forCellWithReuseIdentifier: reuseID3)
         collectionView.register(CollectionCell2.self, forCellWithReuseIdentifier: reuseID2)
+        
+        
+        ////////////////////////////////////////////////////////////////////////////////////////
         showNavigationController()
+        ////////////////////////////////////////////////////////////////////////////////////////
+        
+        
+        
         setupFetchedResultsController()
     }
     

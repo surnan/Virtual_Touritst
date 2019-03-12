@@ -10,7 +10,65 @@ import UIKit
 import MapKit
 import CoreData
 
-class FinalCollectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+protocol FinalCollectionViewDelegate {
+    func refresh()
+}
+
+class FinalCollectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSFetchedResultsControllerDelegate, FinalCollectionViewDelegate {
+    //coredata stuff
+    var pin: Pin!
+    var dataController: DataController!
+    var photoID_Secret_Dict = [[String: String]]()
+    var fetchedResultsController: NSFetchedResultsController<Photo>!
+    var myFetchController: NSFetchedResultsController<Photo>!
+    
+    var deleteIndexSet = Set<IndexPath>() {
+        didSet {
+            myButton.isSelected = !deleteIndexSet.isEmpty
+        }
+    }
+    
+    
+    //MARK:-Protocol
+    func refresh() {
+        do {
+            try fetchedResultsController.performFetch()
+//            collectionView.reloadData()
+            myCollectionView.reloadData()
+        } catch {
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
+    }
+    
+    
+    //MARK:- FetchResults + CoreData
+    func setupFetchedResultsController() {
+        let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "pin == %@", pin)
+        fetchRequest.predicate = predicate
+        let sortDescriptor = NSSortDescriptor(key: "urlString", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
+    }
+    
+    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
+        let tempPhoto = Photo(context: dataController.viewContext)
+        tempPhoto.imageData = data
+        tempPhoto.urlString = urlString
+        tempPhoto.index = Int32(718212)
+        tempPhoto.pin = pin
+        let testImage = UIImage(data: tempPhoto.imageData!)
+        try? dataController.viewContext.save()
+    }
+    
+//////////
     
     let idPlain = "asdf"
     let idCar = "asdfCARCAR"
@@ -55,12 +113,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         return button
     }()
     
-    var deleteIndexSet = Set<IndexPath>() {
-        didSet {
-            myButton.isSelected = !deleteIndexSet.isEmpty
-        }
-    }
-    
 
     var myMapView: MKMapView = {
        let map = MKMapView()
@@ -81,38 +133,10 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     
     //MARK:-CollectionView
     
-    var arrayForCollectionView = ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", ]
+//    var arrayForCollectionView = ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", ]
     
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayForCollectionView.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("cell for --> \(indexPath)")
-        if deleteIndexSet.contains(indexPath){
-            let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: idCar, for: indexPath) as! FirstCollectionCellCar
-             return cell
-        } else {
-            let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: idStreet, for: indexPath) as! FirstCollectionCellStreet
-             return cell
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 20, left: 20, bottom: 20, right: 20)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected Cell = \(indexPath)")
-        
-        if deleteIndexSet.contains(indexPath) {
-            deleteIndexSet.remove(indexPath)
-        } else {
-            deleteIndexSet.insert(indexPath)
-        }
-        myCollectionView.reloadItems(at: [indexPath])
-    }
+
     
 
     //MARK:- overloads  ui
@@ -122,11 +146,63 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         setupMapView()
         [myMapView, myCollectionView, myButton].forEach{ view.addSubview($0) }
         setupCollectionView()
+        setupFetchedResultsController()
     }
     
-    func setupNavigationMenu(){
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Re-Center", style: .done, target: self, action: #selector(handleReCenter))
+    deinit {
+        fetchedResultsController = nil
     }
+    
+    
+    
+    
+    func setupNavigationMenu(){
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Re-Center", style: .done, target: self, action: #selector(handleReCenter)), UIBarButtonItem(title: "Update_Page", style: .done, target: self, action: #selector(handleUpdatePage))]
+    }
+    
+    
+    @objc func handleUpdatePage(){
+        pin.pageNumber = pin.pageNumber + 1
+        try? dataController.viewContext.save()
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+        fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        do {
+            _ = try dataController.viewContext.execute(request)
+            try fetchedResultsController.performFetch()
+            myCollectionView.reloadData()
+            FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
+                if let error = error {
+                    print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+                    return
+                }
+                
+                self.pin.photoCount = Int32(urls.count)
+                try? self.dataController.viewContext.save()
+                
+                urls.forEach({ (currentURL) in
+                    print("URL inside loop --> \(currentURL)")
+                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                        print("currentURL = \(currentURL)")
+                        guard let imageData = imageData else {return}
+                        self.connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
+                    }).resume()
+                })
+            }
+        } catch {
+            print("unable to delete \(error)")
+        }
+        myCollectionView.reloadData()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     let firstAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()

@@ -161,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				841A55BF222624170028A6E3 /* FlickrCollectionController.swift */,
-				84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */,
 				8467393B223066160047C3F1 /* CollectionCell2.swift */,
 				842BEC0D2231D47D00BF35CC /* CollectionCell3.swift */,
 			);
@@ -212,6 +211,7 @@
 				84D6687A22374092008B7FEC /* FinalCollectionView.swift */,
 				84D6687C22374114008B7FEC /* FirstCollectionCellCar.swift */,
 				84D6687D22374115008B7FEC /* FirstCollectionCellStreet.swift */,
+				84D0B469223051F60048DF91 /* FlickrCollectionController+Collection.swift */,
 			);
 			path = "Final Controller";
 			sourceTree = "<group>";
