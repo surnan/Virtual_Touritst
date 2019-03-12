@@ -137,10 +137,46 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
             try? dataController.viewContext.save()
             sender.isSelected = !sender.isSelected
         } else {
-            print("-- DO NOT DELETE --")
+            print("-- GET NEW PICTURES --")
+            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+            fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+            let request = NSBatchDeleteRequest(fetchRequest: fetch)
+            do {
+                _ = try dataController.viewContext.execute(request)
+                
+                pin.pageNumber = pin.pageNumber + 1
+                pin.photoCount = 0
+                try? dataController.viewContext.save()
+                
+                try fetchedResultsController.performFetch()
+                myCollectionView.reloadData()
+                
+                //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
+                
+                FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
+                    if let error = error {
+                        print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+                        return
+                    }
+                    
+                    self.pin.photoCount = Int32(urls.count)
+                    try? self.dataController.viewContext.save()
+                    
+                    urls.forEach({ (currentURL) in
+                        print("URL inside loop --> \(currentURL)")
+                        URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                            print("currentURL = \(currentURL)")
+                            guard let imageData = imageData else {return}
+                            self.connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
+                        }).resume()
+                    })
+                }
+            } catch {
+                print("unable to delete \(error)")
+            }
+            myCollectionView.reloadData()
         }
     }
-    
     
     var myMapView: MKMapView = {
        let map = MKMapView()
@@ -151,9 +187,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         map.translatesAutoresizingMaskIntoConstraints = false
         return map
     }()
-    
-    
-
     
     
     //MARK:- overloads  ui
@@ -170,54 +203,10 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         fetchedResultsController = nil
     }
     
-    
-    
-    
+
     func setupNavigationMenu(){
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Re-Center", style: .done, target: self, action: #selector(handleReCenter)), UIBarButtonItem(title: "Update_Page", style: .done, target: self, action: #selector(handleUpdatePage))]
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Re-Center", style: .done, target: self, action: #selector(handleReCenter))]
     }
-    
-    
-    @objc func handleUpdatePage(){
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-        fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
-        let request = NSBatchDeleteRequest(fetchRequest: fetch)
-        do {
-            _ = try dataController.viewContext.execute(request)
-            
-            pin.pageNumber = pin.pageNumber + 1
-            pin.photoCount = 0
-            try? dataController.viewContext.save()
-            
-            try fetchedResultsController.performFetch()
-            myCollectionView.reloadData()
-            
-            //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
-            
-            FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
-                if let error = error {
-                    print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-                    return
-                }
-                
-                self.pin.photoCount = Int32(urls.count)
-                try? self.dataController.viewContext.save()
-                
-                urls.forEach({ (currentURL) in
-                    print("URL inside loop --> \(currentURL)")
-                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                        print("currentURL = \(currentURL)")
-                        guard let imageData = imageData else {return}
-                        self.connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
-                    }).resume()
-                })
-            }
-        } catch {
-            print("unable to delete \(error)")
-        }
-        myCollectionView.reloadData()
-    }
-    
 
     lazy var firstAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
