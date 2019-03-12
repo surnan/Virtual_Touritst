@@ -16,7 +16,6 @@ protocol FinalCollectionViewDelegate {
 }
 
 class FinalCollectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NSFetchedResultsControllerDelegate, FinalCollectionViewDelegate {
-    //coredata stuff
     var pin: Pin!
     var dataController: DataController!
     var photoID_Secret_Dict = [[String: String]]()
@@ -34,7 +33,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     func refresh() {
         do {
             try fetchedResultsController.performFetch()
-//            collectionView.reloadData()
             myCollectionView.reloadData()
         } catch {
             fatalError("The fetch could not be performed: \(error.localizedDescription)")
@@ -131,14 +129,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     }
     
     
-    //MARK:-CollectionView
-    
-//    var arrayForCollectionView = ["1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1", ]
-    
-    
-
-    
-
     //MARK:- overloads  ui
     override func viewDidLoad() {
         view.backgroundColor = UIColor.blue
@@ -206,9 +196,9 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     
     
     
-    let firstAnnotation: MKPointAnnotation = {
+    lazy var firstAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: 40.74504362124605, longitude: -73.98898440646418)
+        annotation.coordinate = pin.coordinate
         return annotation
     }()
     
@@ -221,7 +211,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         myMapView.centerCoordinate = firstAnnotation.coordinate
         //Setting up Zoom
         let noLocation = firstAnnotation.coordinate
-        let viewRegion = MKCoordinateRegion(center: noLocation, latitudinalMeters: 200, longitudinalMeters: 200)
+        let viewRegion = MKCoordinateRegion(center: noLocation, latitudinalMeters: 500, longitudinalMeters: 500)
         myMapView.setRegion(viewRegion, animated: false)
     }
     
