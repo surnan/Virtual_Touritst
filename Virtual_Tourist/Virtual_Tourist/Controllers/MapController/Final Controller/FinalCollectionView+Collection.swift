@@ -16,21 +16,17 @@ let idCar = "asdfCARCAR"
 let idStreet = "asdfasdfSTREETSTREET"
 
 extension FinalCollectionView {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 100)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: 100, height: 100)
+//    }
+//    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+//    }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let currentPhotoCount = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
-        
-        
-        
-        
         if indexPath.row < currentPhotoCount {
             if deleteIndexSet.contains(indexPath) {
                 let myPhoto = fetchedResultsController.object(at: indexPath)
@@ -44,7 +40,6 @@ extension FinalCollectionView {
                 return cell
             }
         }
-        
         let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
         return cell
     }

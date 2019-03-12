@@ -21,7 +21,9 @@ class FinalCollectionImageCell: UICollectionViewCell {
     
     var myImageView: UIImageView = {
        var imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+//        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
         imageView.alpha = 1.0
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView

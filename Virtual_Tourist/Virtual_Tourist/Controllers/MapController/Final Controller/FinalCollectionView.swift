@@ -21,7 +21,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     var fetchedResultsController: NSFetchedResultsController<Photo>!
     var myFetchController: NSFetchedResultsController<Photo>!
     
-    let reuseIDBlankCell = "reuseIDBlankCell"
     let reuseIdLoadingCell = "reuseIdLoadingCell"
     let reuseIDCellLoaded = "reuseIDCellLoaded"
     let reuseIDCellIsSelected = "reuseIDCellIsSelected"
@@ -72,14 +71,27 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     }
     
 
+    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    //        return CGSize(width: 100, height: 100)
+    //    }
+    //
+    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    //        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+    //    }
+
     lazy var customizedLayout: UICollectionViewFlowLayout = {
-        let columnWidth: CGFloat = 15; let rowHeight: CGFloat = 15
+        let columnWidth: CGFloat = 10; let rowHeight: CGFloat = 10
         let screenWidth = view.bounds.width
+        
         let cellWidth = (screenWidth - 60) / 3
+        let cellWidth2 = (screenWidth - columnWidth * 5) / 3
+        
+        
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = .init(top: 0, left: 0, bottom: 0, right: 0)
-//        layout.itemSize = .init(width: 75, height:   75)
-        layout.itemSize = .init(width: cellWidth, height:   cellWidth)
+        layout.sectionInset = .init(top: columnWidth, left: columnWidth, bottom: columnWidth, right: columnWidth)
+        layout.itemSize = .init(width: cellWidth2, height:   cellWidth2)
+        
+        
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = rowHeight
         layout.minimumInteritemSpacing = columnWidth
@@ -92,7 +104,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         collectionView.delegate = self
         collectionView.register(FinalCollectionLoadingCell.self, forCellWithReuseIdentifier: reuseIdLoadingCell)
         collectionView.register(FinalCollectionImageCell.self, forCellWithReuseIdentifier: reuseIDCellLoaded)
-        collectionView.register(FinalCollectionBlankCell.self, forCellWithReuseIdentifier: reuseIDBlankCell)
         collectionView.register(FinalCollectionSelectedImageCell.self, forCellWithReuseIdentifier: reuseIDCellIsSelected)
     
         collectionView.showsVerticalScrollIndicator = false

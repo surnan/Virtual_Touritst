@@ -34,9 +34,6 @@
 		84D0B466223020D30048DF91 /* MapController+CustomClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */; };
 		84D0B46A223051F60048DF91 /* FinalCollectionView+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B469223051F60048DF91 /* FinalCollectionView+Collection.swift */; };
 		84D6687B22374092008B7FEC /* FinalCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6687A22374092008B7FEC /* FinalCollectionView.swift */; };
-		84D6687E22374115008B7FEC /* FirstCollectionCellCar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6687C22374114008B7FEC /* FirstCollectionCellCar.swift */; };
-		84D6687F22374115008B7FEC /* FirstCollectionCellStreet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6687D22374115008B7FEC /* FirstCollectionCellStreet.swift */; };
-		84D668812237701C008B7FEC /* FinalCollectionBlankCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D668802237701C008B7FEC /* FinalCollectionBlankCell.swift */; };
 		84D6688322378E5F008B7FEC /* FinalCollectionSelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6688222378E5F008B7FEC /* FinalCollectionSelectedImageCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -70,9 +67,6 @@
 		84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CustomClasses.swift"; sourceTree = "<group>"; };
 		84D0B469223051F60048DF91 /* FinalCollectionView+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FinalCollectionView+Collection.swift"; sourceTree = "<group>"; };
 		84D6687A22374092008B7FEC /* FinalCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinalCollectionView.swift; sourceTree = "<group>"; };
-		84D6687C22374114008B7FEC /* FirstCollectionCellCar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstCollectionCellCar.swift; sourceTree = "<group>"; };
-		84D6687D22374115008B7FEC /* FirstCollectionCellStreet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstCollectionCellStreet.swift; sourceTree = "<group>"; };
-		84D668802237701C008B7FEC /* FinalCollectionBlankCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalCollectionBlankCell.swift; sourceTree = "<group>"; };
 		84D6688222378E5F008B7FEC /* FinalCollectionSelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalCollectionSelectedImageCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,8 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				841A55BF222624170028A6E3 /* FlickrCollectionController.swift */,
-				8467393B223066160047C3F1 /* FinalCollectionLoadingCell.swift */,
-				842BEC0D2231D47D00BF35CC /* FinalCollectionImageCell.swift */,
 			);
 			path = "Second Controller";
 			sourceTree = "<group>";
@@ -213,11 +205,10 @@
 			isa = PBXGroup;
 			children = (
 				84D6687A22374092008B7FEC /* FinalCollectionView.swift */,
-				84D6687C22374114008B7FEC /* FirstCollectionCellCar.swift */,
-				84D6687D22374115008B7FEC /* FirstCollectionCellStreet.swift */,
 				84D0B469223051F60048DF91 /* FinalCollectionView+Collection.swift */,
-				84D668802237701C008B7FEC /* FinalCollectionBlankCell.swift */,
 				84D6688222378E5F008B7FEC /* FinalCollectionSelectedImageCell.swift */,
+				8467393B223066160047C3F1 /* FinalCollectionLoadingCell.swift */,
+				842BEC0D2231D47D00BF35CC /* FinalCollectionImageCell.swift */,
 			);
 			path = "Final Controller";
 			sourceTree = "<group>";
@@ -294,9 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8488F42A222FF8A500DD8F92 /* MapController+NSFetchedResults.swift in Sources */,
-				84D6687F22374115008B7FEC /* FirstCollectionCellStreet.swift in Sources */,
 				842BEC0C2231B9C600BF35CC /* UIWindowExtension.swift in Sources */,
-				84D668812237701C008B7FEC /* FinalCollectionBlankCell.swift in Sources */,
 				8488F426222FF4BD00DD8F92 /* MapController+UI.swift in Sources */,
 				84601E132227AF4A00A77BAD /* flickr.photos.getInfo.swift in Sources */,
 				84601E052227372100A77BAD /* UIColor+Extension.swift in Sources */,
@@ -307,7 +296,6 @@
 				841A55C3222628AA0028A6E3 /* UIView+Extensions.swift in Sources */,
 				841A55AC22261F230028A6E3 /* MapController.swift in Sources */,
 				842BEC0E2231D47D00BF35CC /* FinalCollectionImageCell.swift in Sources */,
-				84D6687E22374115008B7FEC /* FirstCollectionCellCar.swift in Sources */,
 				84D0B466223020D30048DF91 /* MapController+CustomClasses.swift in Sources */,
 				84D6687B22374092008B7FEC /* FinalCollectionView.swift in Sources */,
 				8488F40E222DB71700DD8F92 /* Photo_Locations.xcdatamodeld in Sources */,
