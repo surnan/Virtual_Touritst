@@ -155,13 +155,16 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     
     
     @objc func handleUpdatePage(){
-        pin.pageNumber = pin.pageNumber + 1
-        try? dataController.viewContext.save()
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
         do {
             _ = try dataController.viewContext.execute(request)
+            
+            pin.pageNumber = pin.pageNumber + 1
+            pin.photoCount = 0
+            try? dataController.viewContext.save()
+            
             try fetchedResultsController.performFetch()
             myCollectionView.reloadData()
             FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
