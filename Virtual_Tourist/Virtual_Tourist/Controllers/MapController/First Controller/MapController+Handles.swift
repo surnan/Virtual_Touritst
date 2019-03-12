@@ -39,7 +39,7 @@ extension MapController {
                 URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
                     print("currentURL = \(currentURL)")
                     guard let imageData = imageData else {return}
-                    self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
+                    connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
                 }).resume()
             })
         }

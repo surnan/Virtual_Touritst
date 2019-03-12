@@ -84,15 +84,15 @@ extension MapController: MKMapViewDelegate {
         */
     }
     
-    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
-        let tempPhoto = Photo(context: dataController.viewContext)
-        tempPhoto.imageData = data
-        tempPhoto.urlString = urlString
-        tempPhoto.index = Int32(718212)
-        tempPhoto.pin = pin
-        let testImage = UIImage(data: tempPhoto.imageData!)
-        try? dataController.viewContext.save()
-    }
+//    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
+//        let tempPhoto = Photo(context: dataController.viewContext)
+//        tempPhoto.imageData = data
+//        tempPhoto.urlString = urlString
+//        tempPhoto.index = Int32(718212)
+//        tempPhoto.pin = pin
+//        let testImage = UIImage(data: tempPhoto.imageData!)
+//        try? dataController.viewContext.save()
+//    }
 }
 
 

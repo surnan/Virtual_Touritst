@@ -61,15 +61,15 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         }
     }
     
-    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
-        let tempPhoto = Photo(context: dataController.viewContext)
-        tempPhoto.imageData = data
-        tempPhoto.urlString = urlString
-        tempPhoto.index = Int32(999) //Random value for init
-        tempPhoto.pin = pin
-        let testImage = UIImage(data: tempPhoto.imageData!)
-        try? dataController.viewContext.save()
-    }
+//    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
+//        let tempPhoto = Photo(context: dataController.viewContext)
+//        tempPhoto.imageData = data
+//        tempPhoto.urlString = urlString
+//        tempPhoto.index = Int32(999) //Random value for init
+//        tempPhoto.pin = pin
+//        let testImage = UIImage(data: tempPhoto.imageData!)
+//        try? dataController.viewContext.save()
+//    }
 
     lazy var customizedLayout: UICollectionViewFlowLayout = {
         let columnWidth: CGFloat = 10; let rowHeight: CGFloat = 10
@@ -151,7 +151,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
                         URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
                             print("currentURL = \(currentURL)")
                             guard let imageData = imageData else {return}
-                            self.connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
+                            connectPhotoAndPin(dataController: self.dataController, pin:  self.pin , data: imageData, urlString: "456")
                         }).resume()
                     })
                 }
