@@ -41,9 +41,8 @@ func showVC(){
         switch topVC {
         case is MapController:
             print("We are in side MapController")
-        case is FlickrCollectionController:
-//        case let _ as FlickrCollectionController:
-            print("We are in side FlickCollectionController")
+        case is FinalCollectionView:
+            print("We are inside FinalCollectionView")
         default:
             print("where am i?")
         }
