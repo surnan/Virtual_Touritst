@@ -21,7 +21,6 @@ class FinalCollectionImageCell: UICollectionViewCell {
     
     var myImageView: UIImageView = {
        var imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFit
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
         imageView.alpha = 1.0
@@ -32,20 +31,11 @@ class FinalCollectionImageCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(myImageView)
-        setupCell()
+        myImageView.fillSuperview()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func setupCell(){
-        NSLayoutConstraint.activate([
-            myImageView.topAnchor.constraint(equalTo: topAnchor),
-            myImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            myImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            myImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            ])
     }
 }
 

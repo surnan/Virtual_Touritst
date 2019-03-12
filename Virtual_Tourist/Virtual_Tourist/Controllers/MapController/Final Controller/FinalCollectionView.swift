@@ -25,6 +25,7 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     let reuseIDCellLoaded = "reuseIDCellLoaded"
     let reuseIDCellIsSelected = "reuseIDCellIsSelected"
     
+    
     lazy var photoMaxCount = pin.photoCount
     
     var deleteIndexSet = Set<IndexPath>() {
@@ -69,29 +70,15 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         let testImage = UIImage(data: tempPhoto.imageData!)
         try? dataController.viewContext.save()
     }
-    
-
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    //        return CGSize(width: 100, height: 100)
-    //    }
-    //
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    //        return UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-    //    }
 
     lazy var customizedLayout: UICollectionViewFlowLayout = {
         let columnWidth: CGFloat = 10; let rowHeight: CGFloat = 10
         let screenWidth = view.bounds.width
-        
         let cellWidth = (screenWidth - 60) / 3
         let cellWidth2 = (screenWidth - columnWidth * 5) / 3
-        
-        
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = .init(top: columnWidth, left: columnWidth, bottom: columnWidth, right: columnWidth)
         layout.itemSize = .init(width: cellWidth2, height:   cellWidth2)
-        
-        
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = rowHeight
         layout.minimumInteritemSpacing = columnWidth
@@ -105,7 +92,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         collectionView.register(FinalCollectionLoadingCell.self, forCellWithReuseIdentifier: reuseIdLoadingCell)
         collectionView.register(FinalCollectionImageCell.self, forCellWithReuseIdentifier: reuseIDCellLoaded)
         collectionView.register(FinalCollectionSelectedImageCell.self, forCellWithReuseIdentifier: reuseIDCellIsSelected)
-    
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = UIColor.white
         collectionView.allowsMultipleSelection = true
@@ -118,10 +104,8 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
         button.setTitle("New Collection", for: .normal)
         button.backgroundColor = UIColor.blue
         button.setTitleColor(UIColor.black, for: .normal)
-        
         button.setTitle("Remove Selected Pictures", for: .selected)
         button.setTitleColor(UIColor.red, for: .selected)
-        
         button.addTarget(self, action: #selector(handleNewLocationButton(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -130,7 +114,6 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     @objc func handleNewLocationButton(_ sender: UIButton){
         if sender.isSelected {
             print("DELETE")
-            
             var pagesToDelete: Int32 = 0
             deleteIndexSet.forEach { (deleteIndex) in
                 let photoToRemove = self.fetchedResultsController.object(at: deleteIndex)
@@ -148,14 +131,12 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
             let request = NSBatchDeleteRequest(fetchRequest: fetch)
             do {
                 _ = try dataController.viewContext.execute(request)
-                
                 pin.pageNumber = pin.pageNumber + 1
                 pin.photoCount = 0
                 try? dataController.viewContext.save()
-                
                 try fetchedResultsController.performFetch()
                 myCollectionView.reloadData()
-                
+    
                 //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
                 
                 FlickrClient.searchNearbyPhotoData(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
@@ -163,10 +144,8 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
                         print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
                         return
                     }
-                    
                     self.pin.photoCount = Int32(urls.count)
                     try? self.dataController.viewContext.save()
-                    
                     urls.forEach({ (currentURL) in
                         print("URL inside loop --> \(currentURL)")
                         URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in

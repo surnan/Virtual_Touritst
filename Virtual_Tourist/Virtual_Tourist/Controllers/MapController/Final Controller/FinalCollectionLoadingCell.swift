@@ -10,7 +10,7 @@ import UIKit
 
 class FinalCollectionLoadingCell:UICollectionViewCell{
     
-    let blueBackGround: UIView = {
+    let activityBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.blue
         view.layer.cornerRadius = 20
@@ -26,7 +26,7 @@ class FinalCollectionLoadingCell:UICollectionViewCell{
         return activityView
     }()
     
-    let myView: UIView = {
+    let cellBackGroundView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.green
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -35,30 +35,21 @@ class FinalCollectionLoadingCell:UICollectionViewCell{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(myView)
-        myView.insertSubview(myActivityIndicatorView, at: 0)
-        myView.insertSubview(blueBackGround, at: 0)
-        
-        NSLayoutConstraint.activate([
-            myView.topAnchor.constraint(equalTo: topAnchor),
-            myView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            myView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            myView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            myActivityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            myActivityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            blueBackGround.topAnchor.constraint(equalTo: topAnchor, constant: 3),
-            blueBackGround.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -3),
-            blueBackGround.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 3),
-            blueBackGround.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -3),
-            ])
+        addSubview(cellBackGroundView)
+
+        [myActivityIndicatorView, activityBackgroundView].forEach{cellBackGroundView.insertSubview($0, at: 0)}
+        cellBackGroundView.fillSuperview()
+        activityBackgroundView.fillSuperview()
+        myActivityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        myActivityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func prepareForReuse() {
+        //restarts animation when cell is refreshed
         super.prepareForReuse()
         self.myActivityIndicatorView.startAnimating()
     }
