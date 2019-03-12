@@ -10,23 +10,6 @@ import UIKit
 import MapKit
 import CoreData
 
-
-
-/*
- newPin.photoCount = Int32(urls.count)
- newPin.page = 1 //<------ RESET TO PAGE ONE
- try? self.dataController.viewContext.save()
- 
- urls.forEach({ (currentURL) in
- print("URL inside loop --> \(currentURL)")
- URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
- print("currentURL = \(currentURL)")
- guard let imageData = imageData else {return}
- self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
- }).resume()
- })
- */
-
 extension MapController: MKMapViewDelegate {
     
     func placeAnnotation(pin: Pin?) {
