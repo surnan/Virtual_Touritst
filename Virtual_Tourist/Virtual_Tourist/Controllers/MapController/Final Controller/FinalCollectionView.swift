@@ -124,21 +124,20 @@ class FinalCollectionView: UIViewController, UICollectionViewDataSource, UIColle
     
     @objc func handleNewLocationButton(_ sender: UIButton){
         if sender.isSelected {
-            print("-- DO NOT DELETE --")
-        } else {
             print("DELETE")
             
+            var pagesToDelete: Int32 = 0
             deleteIndexSet.forEach { (deleteIndex) in
-                
-                myCollectionView
-                
-                
+                let photoToRemove = self.fetchedResultsController.object(at: deleteIndex)
+                pagesToDelete = pagesToDelete + 1
+                dataController.viewContext.delete(photoToRemove)
             }
-   
-            
-            
-            
+            deleteIndexSet.removeAll()
+            pin.photoCount = pin.photoCount - pagesToDelete
+            try? dataController.viewContext.save()
             sender.isSelected = !sender.isSelected
+        } else {
+            print("-- DO NOT DELETE --")
         }
     }
     
