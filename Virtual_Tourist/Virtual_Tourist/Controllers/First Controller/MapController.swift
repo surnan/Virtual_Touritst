@@ -13,6 +13,9 @@ import CoreData
 let fetchCount = 21
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
+    
+    var pendingRequestWorkItem: DispatchWorkItem?
+    
     //MARK:- UI Constraints - CONSTANTS
     let bottomUILabelHeight: CGFloat = 70
     let defaultTitleFontSize: CGFloat = 22
@@ -26,7 +29,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var anchorMapBottom_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
     
     //MARK:- non-UI variables start here
-    var task: URLSessionTask?
+    var currentSearchTask: URLSessionTask?
     var delegate: CollectionMapViewControllerDelegate?
     
     var tapDeletesPin = false   //determines if deletionLabel

@@ -13,17 +13,28 @@ import CoreData
 
 extension MapController {
     
+    
+    
+    
     @objc func handleLongPress(sender: UILongPressGestureRecognizer){
+        
         if sender.state != .ended {
+
+            print("\n\n\n=================== CURRENTCHECK IS HERE =================== \(sender.state)\n\n\n")
+            
+            if currentSearchTask != nil {
+                return
+            }
+
+            
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
             let newPin = addNewPin(locationCoordinate)
             
-            
-            
-            
-//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
-            FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
+            currentSearchTask = FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
+                
+                print("---------------------------------------------")
+                
                 if let error = error {
                     print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
                     return
@@ -31,6 +42,13 @@ extension MapController {
                 
                 newPin.photoCount = Int32(urls.count)
                 try? self.dataController.viewContext.save()
+                
+                if newPin.photoCount == 0 {
+                    self.currentSearchTask = nil
+                    return
+                }
+                
+                let loop = urls.count
                 urls.forEach({ (currentURL) in
                     print("URL inside loop --> \(currentURL)")
                     URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
@@ -39,14 +57,18 @@ extension MapController {
                         self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
                     }).resume()
                 })
+             self.currentSearchTask = nil   //Triggered when completely download all photos
             }
-            
-            
-            
-            
-            
+            self.currentSearchTask = nil   //Triggers when photoCount = 0  and even when there's photos because this value starts @ zero
             return
         }
+        currentSearchTask = nil //Triggers when photoCount = 0  and even when there's photos because this value starts @ zero
+    }
+    
+    
+    
+    func handleSearchNearbyPhotoData(urls: [URL], error: Error?){
+        
     }
     
     
@@ -79,26 +101,6 @@ extension MapController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    
-    func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, fetchCount: Int) {
-        //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
-        FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in
-            if let error = error {
-                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-                return
-            }
-            currentPin.photoCount = Int32(urls.count)
-            try? dataController.viewContext.save()
-            urls.forEach({ (currentURL) in
-                print("URL inside loop --> \(currentURL)")
-                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                    print("currentURL = \(currentURL)")
-                    guard let imageData = imageData else {return}
-                    self.connectPhotoAndPin(dataController: dataController, pin:  currentPin , data: imageData, urlString: currentURL.absoluteString)
-                }).resume()
-            })
-        }
-    }
     
     func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
         let tempPhoto = Photo(context: dataController.viewContext)

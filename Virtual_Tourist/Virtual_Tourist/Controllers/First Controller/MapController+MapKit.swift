@@ -43,7 +43,8 @@ extension MapController: MKMapViewDelegate {
             
             
             
-//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
+            
+            
             FlickrClient.searchNearbyPhotoData(currentPin: pinToChange, fetchCount: fetchCount) { (urls, error) in
                 if let error = error {
                     print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
