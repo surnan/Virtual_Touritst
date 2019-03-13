@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 
+//var currentNetworkTask: URLSessionTask?
 
 extension MapController {
     
@@ -18,7 +19,7 @@ extension MapController {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
             let newPin = addNewPin(locationCoordinate)
-            downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
+            currentNetworkTask = downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
             return
         }
     }
