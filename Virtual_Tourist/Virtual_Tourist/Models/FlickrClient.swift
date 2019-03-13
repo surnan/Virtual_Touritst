@@ -52,7 +52,7 @@ class FlickrClient {
     
     
     
-    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([URL], Error?)->Void){
+    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([URL], Error?)->Void)->URLSessionDataTask{
         let latitude = currentPin.latitude
         let longitude = currentPin.longitude
         let pageNumber = currentPin.pageNumber
@@ -115,6 +115,7 @@ class FlickrClient {
         print("4 - array_URLString2 --> \(array_URLString2)")
         task.resume()
         print("5 - array_URLString2 --> \(array_URLString2)")
+        return task
     }
     
     

@@ -49,4 +49,7 @@ extension CollectionMapViewController {
         myMapView.centerCoordinate = firstAnnotation.coordinate
     }
     
+    
+    //////////////////////////////////////////////////////////////////////////////////
+    
 }
