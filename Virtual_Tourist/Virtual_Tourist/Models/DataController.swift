@@ -28,7 +28,6 @@ class DataController {
         viewContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
     }
     
-    
     func load(completion: (()-> Void)? = nil) {
         persistentContainer.loadPersistentStores { (persistentStoreDescription, error) in
             guard error == nil else {

@@ -23,7 +23,6 @@ func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, ur
 
 func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, fetchCount: Int) {
     //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
-    
     FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in
         if let error = error {
             print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")

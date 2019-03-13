@@ -31,9 +31,6 @@ extension MapController: MKMapViewDelegate {
         case .ending:
             view.dragState = .none
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
-
-            
-            
             guard let deezCoordinates = oldCoordinates else {return}
             guard let pinToChange = getCorrespondingPin(coordinate: deezCoordinates) else {return}
             pinToChange.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
