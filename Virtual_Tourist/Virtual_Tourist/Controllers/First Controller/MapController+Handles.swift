@@ -18,7 +18,33 @@ extension MapController {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
             let newPin = addNewPin(locationCoordinate)
-            downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
+            
+            
+            
+            
+//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
+            FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
+                if let error = error {
+                    print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+                    return
+                }
+                
+                newPin.photoCount = Int32(urls.count)
+                try? self.dataController.viewContext.save()
+                urls.forEach({ (currentURL) in
+                    print("URL inside loop --> \(currentURL)")
+                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                        print("currentURL = \(currentURL)")
+                        guard let imageData = imageData else {return}
+                        self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
+                    }).resume()
+                })
+            }
+            
+            
+            
+            
+            
             return
         }
     }
@@ -52,16 +78,7 @@ extension MapController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
-        let tempPhoto = Photo(context: dataController.viewContext)
-        tempPhoto.imageData = data
-        tempPhoto.urlString = urlString
-        tempPhoto.index = Int32(999) //Random value for init
-        tempPhoto.pin = pin
-        let testImage = UIImage(data: tempPhoto.imageData!)
-        try? dataController.viewContext.save()
-    }
+
     
     func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, fetchCount: Int) {
         //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
@@ -82,4 +99,16 @@ extension MapController {
             })
         }
     }
+    
+    func connectPhotoAndPin(dataController: DataController, pin: Pin, data: Data, urlString: String){
+        let tempPhoto = Photo(context: dataController.viewContext)
+        tempPhoto.imageData = data
+        tempPhoto.urlString = urlString
+        tempPhoto.index = Int32(999) //Random value for init
+        tempPhoto.pin = pin
+        let testImage = UIImage(data: tempPhoto.imageData!)
+        try? dataController.viewContext.save()
+    }
+    
+
 }
