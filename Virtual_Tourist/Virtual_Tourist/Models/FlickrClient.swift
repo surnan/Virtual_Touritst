@@ -52,7 +52,7 @@ class FlickrClient {
     
     
     
-    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([URL], Error?)->Void){
+    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([URL], Error?)->Void)-> URLSessionDataTask {
         let latitude = currentPin.latitude
         let longitude = currentPin.longitude
         let pageNumber = currentPin.pageNumber
@@ -87,7 +87,7 @@ class FlickrClient {
                     array_URLString.append(photoURLString)
         
                     
-                    getPhotoURL(photoID: $0.id, secret: $0.secret, completion: { (urlString, error) in
+                    FlickrClient.getPhotoURL(photoID: $0.id, secret: $0.secret, completion: { (urlString, error) in
                         guard let urlString = urlString else {return}
                         array_URLString2.append(urlString)
                         array_photo_URLs.append(URL(string: urlString)!)
@@ -115,12 +115,10 @@ class FlickrClient {
         print("4 - array_URLString2 --> \(array_URLString2)")
         task.resume()
         print("5 - array_URLString2 --> \(array_URLString2)")
+        return task
     }
     
     
-    
-    
-
     class func getPhotoURL(photoID: String, secret: String, completion: @escaping (String?, Error?)->Void){
         let url = Endpoints.getOnePicture(photoID, secret).url
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
@@ -147,85 +145,8 @@ class FlickrClient {
         task.resume()
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ////////////////////////
-    
+
+    /*
     class func searchNearbyURLMetaData(latitude: Double, longitude: Double, count: Int, pageNumber: Int32, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
         let url = Endpoints.photosSearch(latitude, longitude, count, pageNumber).url
                 print("Endpoints Photo-Search-URL = \(url)")
@@ -258,43 +179,7 @@ class FlickrClient {
         return task
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     class func getPhotoSizeWithURL(photoId: String, completion: @escaping (URL?, Error?)-> Void){
         let url = Endpoints.getPhotosGetSizes(photoId).url
         let task = URLSession.shared.dataTask(with: url) { (data, response, err) in
@@ -329,4 +214,8 @@ class FlickrClient {
         }
         task.resume()
     }
+  */
+    
 }
+
+

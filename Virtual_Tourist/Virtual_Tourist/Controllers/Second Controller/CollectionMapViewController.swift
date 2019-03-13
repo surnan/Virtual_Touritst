@@ -39,14 +39,13 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     let reuseIDCellLoaded = "reuseIDCellLoaded"
     let reuseIDCellIsSelected = "reuseIDCellIsSelected"
     let mapRegionDistanceValue: CLLocationDistance = 1500
+    var currentNetworkTask: URLSessionDataTask?
     
     var deleteIndexSet = Set<IndexPath>() {
         didSet {
             newLocationButton.isSelected = !deleteIndexSet.isEmpty
         }
     }
-    
-
     
     var screenBottomFiller: UIView = {
         let view = UIView()
