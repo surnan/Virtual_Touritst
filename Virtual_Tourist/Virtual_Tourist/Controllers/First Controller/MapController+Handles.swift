@@ -17,53 +17,48 @@ extension MapController {
         
         if sender.state != .ended {
             
-            print("inside LongPress Gesture if statement")
-            
-            myLongPressGesture.isEnabled = false
-            
-//            let group = DispatchGroup()
-//            group.enter()
-            
-            let touchLocation = sender.location(in: self.mapView)
-            let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
-            let newPin = addNewPin(locationCoordinate)
-            //            downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
-       
-            
-            /*
             //URLSessionTask?
             if currentTask != nil {
                 return
             }
-            */
             
-
-            currentTask = FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
-                if let error = error {
-                    print("E --> \(error)")
-                    return
-                }
-                newPin.photoCount = Int32(urls.count)
-                try? self.dataController.viewContext.save()
-                urls.forEach({ (currentURL) in
-                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                        guard let imageData = imageData else {return}
-                        self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
-                    }).resume()
-                    print("C")
-                })
-                print("D")
-            }
-            print("A")
-//            group.leave()
-//
-//            group.notify(queue: .main) {
-//                print("inside LongPress Gesture notify")
-//                self.myLongPressGesture.isEnabled = true
-//                self.currentTask = nil
+            myLongPressGesture.isEnabled = false
+            
+            let group = DispatchGroup()
+            group.enter()
+            
+            let touchLocation = sender.location(in: self.mapView)
+            let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
+            let newPin = addNewPin(locationCoordinate)
+            
+            
+            downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
+            
+//            currentTask = FlickrClient.searchNearbyPhotoData(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in
+//                if let error = error {
+//                    print("Error = \(error)")
+//                    return
+//                }
+//                newPin.photoCount = Int32(urls.count)
+//                try? self.dataController.viewContext.save()
+//                urls.forEach({ (currentURL) in
+//                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+//                        guard let imageData = imageData else {return}
+//                        self.connectPhotoAndPin(dataController: self.dataController, pin:  newPin , data: imageData, urlString: currentURL.absoluteString)
+//                    }).resume()
+//                })
 //            }
+            
+            
+            group.leave()
+
+            group.notify(queue: .main) {
+                print("inside LongPress Gesture notify")
+                self.myLongPressGesture.isEnabled = true
+                self.currentTask = nil
+
+            }
         }
-        print("B")
     }
     
     

@@ -92,6 +92,7 @@ extension MapController: MKMapViewDelegate {
         let newController = CollectionMapViewController()
         newController.dataController = self.dataController
         newController.pin = apin
+        print("PIN = \(apin.coordinate)")
         self.delegate = newController
         navigationController?.pushViewController(newController, animated: true)
     }
