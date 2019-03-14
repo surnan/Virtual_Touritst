@@ -13,6 +13,11 @@ import CoreData
 let fetchCount = 21
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
+    
+    var currentTask: URLSessionTask?
+    
+    
+    
     //MARK:- UI Constraints - CONSTANTS
     let bottomUILabelHeight: CGFloat = 70
     let defaultTitleFontSize: CGFloat = 22
@@ -38,7 +43,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     var mapView = MKMapView()
     
-    lazy private var myLongPressGesture: UILongPressGestureRecognizer = {
+    lazy var myLongPressGesture: UILongPressGestureRecognizer = {
         var longGesture = UILongPressGestureRecognizer()
         longGesture.minimumPressDuration = 1
         longGesture.addTarget(self, action: #selector(handleLongPress(sender:)))
