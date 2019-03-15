@@ -14,12 +14,14 @@ import CoreData
 func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, fetchCount: Int) {
     //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
     
+    //long-term background context
+    let backgroundContext = dataController.backGroundContext! //ALWAYS defined from DataController().init, so it's safe
     
-    let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+    
     let currentPinID = currentPin.objectID
     
     backgroundContext.perform {
-        let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+        let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin  //Can't use currentPin from MainQueue directly
         FlickrClient.searchNearbyPhotoData(currentPin: backgroundPin, fetchCount: fetchCount) { (urls, error) in
             if let error = error {
                 print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
@@ -40,20 +42,18 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
 }
 
 
-
 func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String){
-    let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
     let currentPinID = currentPin.objectID
-    
-    backgroundContext.perform {
-        let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-        let tempPhoto = Photo(context: backgroundContext)
+    //generates multiple background context and allows O/S to consid er parallel for performance
+    dataController.persistentContainer.performBackgroundTask { (context) in
+        let backgroundPin = context.object(with: currentPinID) as! Pin
+        let tempPhoto = Photo(context: context)
         tempPhoto.imageData = data
         tempPhoto.urlString = urlString
         tempPhoto.index = Int32(999) //Random value for init
         tempPhoto.pin = backgroundPin
         //        let testImage = UIImage(data: tempPhoto.imageData!)
-        try? backgroundContext.save()
+        try? context.save()
     }
 }
 
