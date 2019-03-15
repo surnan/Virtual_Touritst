@@ -24,7 +24,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var anchorMapTop_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
     var anchorMapBottom_ViewBottom: NSLayoutConstraint?
     var anchorMapBottom_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
-    
+    var originalPinID: NSManagedObjectID?
     
     var saveObserverToken: Any?
     

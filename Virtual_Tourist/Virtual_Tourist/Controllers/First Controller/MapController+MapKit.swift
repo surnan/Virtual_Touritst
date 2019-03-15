@@ -28,18 +28,49 @@ extension MapController: MKMapViewDelegate {
                 view.pinTintColor = UIColor.green
             }
             oldCoordinates = myAnnotation.coordinate //class-wide variable
+            originalPinID =   getCorrespondingPin(annotation: myAnnotation)?.objectID
+            
         case .ending:
             view.dragState = .none
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
-            guard let deezCoordinates = oldCoordinates else {return}
-            guard let pinToChange = getCorrespondingPin(coordinate: deezCoordinates) else {return}
-            pinToChange.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
             
-            let fetch222 = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-            fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [pinToChange])
-            let request = NSBatchDeleteRequest(fetchRequest: fetch222)
-            try? dataController.viewContext.execute(request)
-            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
+            
+            dataController.viewContext.performAndWait {
+                let pinToChange = dataController.backGroundContext.object(with: originalPinID!) as! Pin
+                let fetch222 = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+                fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [pinToChange])
+                let request = NSBatchDeleteRequest(fetchRequest: fetch222)
+                try? dataController.viewContext.execute(request)
+                
+                
+                downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
+
+            }
+//
+//
+//
+//            dataController.persistentContainer.performBackgroundTask { (context) in
+//                guard let deezCoordinates = oldCoordinates else {return}
+//                guard let pinToChange = getCorrespondingPin(coordinate: deezCoordinates) else {return}
+//                pinToChange.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
+//
+//
+//                downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
+//            }
+//
+            
+            
+            
+            
+//            guard let deezCoordinates = oldCoordinates else {return}
+//            guard let pinToChange = getCorrespondingPin(coordinate: deezCoordinates) else {return}
+//            pinToChange.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
+//
+//            let fetch222 = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+//            fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [pinToChange])
+//            let request = NSBatchDeleteRequest(fetchRequest: fetch222)
+//            try? dataController.viewContext.execute(request)
+//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.red}
         default: break
