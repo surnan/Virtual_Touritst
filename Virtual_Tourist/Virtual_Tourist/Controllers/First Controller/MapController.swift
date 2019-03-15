@@ -25,6 +25,10 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var anchorMapBottom_ViewBottom: NSLayoutConstraint?
     var anchorMapBottom_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
     
+    
+    var saveObserverToken: Any?
+    
+    
     //MARK:- non-UI variables start here
     var task: URLSessionTask?
     var delegate: CollectionMapViewControllerDelegate?
@@ -61,6 +65,14 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.yellow
+        
+        
+        self.addSaveNotifcationObserver()
+        
+        
+        
+        
+        
         mapView.delegate = self
         mapView.addGestureRecognizer(myLongPressGesture)
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
@@ -80,4 +92,10 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
         super.viewDidDisappear(animated)
 //        myFetchController = nil
     }
+    
+    
+    deinit {
+        removeSaveNotificationObserver()
+    }
+    
 }
