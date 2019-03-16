@@ -46,6 +46,7 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         }
     }
     
+    var currentTask: URLSessionTask?
 
     
     var screenBottomFiller: UIView = {

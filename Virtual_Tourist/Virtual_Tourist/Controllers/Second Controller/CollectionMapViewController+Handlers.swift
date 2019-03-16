@@ -12,35 +12,43 @@ import CoreData
 
 extension CollectionMapViewController {
     
+    func deleteSelectedPicture(_ sender: UIButton) {
+        var pagesToDelete: Int32 = 0
+        deleteIndexSet.forEach { (deleteIndex) in
+            let photoToRemove = self.fetchedResultsController.object(at: deleteIndex)
+            pagesToDelete = pagesToDelete + 1
+            dataController.viewContext.delete(photoToRemove)
+        }
+        deleteIndexSet.removeAll()
+        pin.photoCount = pin.photoCount - pagesToDelete
+        try? dataController.viewContext.save()
+        sender.isSelected = !sender.isSelected
+    }
+    
+    func downloadNewCollectionPhotos() {
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+        fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        do {
+            _ = try dataController.viewContext.execute(request)
+            pin.pageNumber = pin.pageNumber + 1
+            pin.photoCount = 0
+            try? dataController.viewContext.save()
+            try fetchedResultsController.performFetch()
+            myCollectionView.reloadData()
+            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
+        } catch {
+            print("unable to delete \(error)")
+        }
+    }
+    
     @objc func handleNewLocationButton(_ sender: UIButton){
         if sender.isSelected {
             print("DELETE")
-            var pagesToDelete: Int32 = 0
-            deleteIndexSet.forEach { (deleteIndex) in
-                let photoToRemove = self.fetchedResultsController.object(at: deleteIndex)
-                pagesToDelete = pagesToDelete + 1
-                dataController.viewContext.delete(photoToRemove)
-            }
-            deleteIndexSet.removeAll()
-            pin.photoCount = pin.photoCount - pagesToDelete
-            try? dataController.viewContext.save()
-            sender.isSelected = !sender.isSelected
+            deleteSelectedPicture(sender)
         } else {
             print("-- GET NEW PICTURES --")
-            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-            fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
-            let request = NSBatchDeleteRequest(fetchRequest: fetch)
-            do {
-                _ = try dataController.viewContext.execute(request)
-                pin.pageNumber = pin.pageNumber + 1
-                pin.photoCount = 0
-                try? dataController.viewContext.save()
-                try fetchedResultsController.performFetch()
-                myCollectionView.reloadData()
-                downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
-            } catch {
-                print("unable to delete \(error)")
-            }
+            downloadNewCollectionPhotos()
             myCollectionView.reloadData()
         }
     }

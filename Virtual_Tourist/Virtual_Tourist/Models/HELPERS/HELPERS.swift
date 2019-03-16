@@ -11,32 +11,41 @@ import CoreData
 
 //downloadNearbyPhotosToPin
 
+
+var globalTask: URLSessionTask?
+
 func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, fetchCount: Int) {
     //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
     
+    if globalTask != nil {
+        print("CANCELLED DOWNOAD")
+        return
+    }
     
     let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
     let currentPinID = currentPin.objectID
     
-    backgroundContext.perform {
-        let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-        FlickrClient.searchNearbyPhotoData(currentPin: backgroundPin, fetchCount: fetchCount) { (urls, error) in
-            if let error = error {
-                print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-                return
-            }
+    
+    globalTask = FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in //+1
+        if let error = error {
+            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+            return
+        }
+        backgroundContext.perform { //+2
+            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
             backgroundPin.photoCount = Int32(urls.count)
             try? backgroundContext.save()
-            urls.forEach({ (currentURL) in
-                print("URL inside loop --> \(currentURL)")
-                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                    print("currentURL = \(currentURL)")
-                    guard let imageData = imageData else {return}
-                    connectPhotoAndPin(dataController: dataController, currentPin:  backgroundPin , data: imageData, urlString: currentURL.absoluteString)
-                }).resume()
-            })
-        }
-    }
+        }   //-2
+        urls.forEach({ (currentURL) in
+            print("URL inside loop --> \(currentURL)")
+            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                print("currentURL = \(currentURL)")
+                guard let imageData = imageData else {return}
+                connectPhotoAndPin(dataController: dataController, currentPin:  currentPin , data: imageData, urlString: currentURL.absoluteString)
+            }).resume()
+        })
+     globalTask = nil
+    }   //-1
 }
 
 
