@@ -13,11 +13,11 @@ import CoreData
 let fetchCount = 21
 
 class MapController: UIViewController, NSFetchedResultsControllerDelegate {
+    
     //MARK:- UI Constraints - CONSTANTS
     let bottomUILabelHeight: CGFloat = 70
     let defaultTitleFontSize: CGFloat = 22
     let defaultFontSize: CGFloat = 18
-    
     
     //MARK:- UI Constraints - DYNAMIC
     var anchorMapTop_SafeAreaTop: NSLayoutConstraint?
@@ -25,9 +25,8 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var anchorMapBottom_ViewBottom: NSLayoutConstraint?
     var anchorMapBottom_ShiftMapToShowDeletionLabel: NSLayoutConstraint?
     
-    
+    var previousPinID: NSManagedObjectID?   //original coordinate prior to move
     var saveObserverToken: Any?
-    
     
     //MARK:- non-UI variables start here
     var task: URLSessionTask?
@@ -36,9 +35,6 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var tapDeletesPin = false   //determines if deletionLabel
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!
-    
-    var oldCoordinates: CLLocationCoordinate2D? //Updating Pin Entity after dragging
-    var oldAnnotation: CustomAnnotation?        //No Good.  It changes as the source assigned to it upgraded.  Like they share a memory space
     
     var mapView = MKMapView()
     
@@ -64,15 +60,10 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.yellow
-        
+        view.backgroundColor = UIColor.yellow        
         
         self.addSaveNotifcationObserver()
-        
-        
-        
-        
-        
+
         mapView.delegate = self
         mapView.addGestureRecognizer(myLongPressGesture)
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
