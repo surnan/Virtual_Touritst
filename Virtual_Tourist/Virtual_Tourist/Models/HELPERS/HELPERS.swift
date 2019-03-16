@@ -25,6 +25,9 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
     let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
     let currentPinID = currentPin.objectID
     
+    //    backgroundContext.perform { //+2
+    //        let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+    
     
     globalTask = FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in //+1
         if let error = error {
@@ -46,14 +49,15 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
         })
      globalTask = nil
     }   //-1
+    //    }   //-2
 }
 
 
 
 func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String){
+    /*
     let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
     let currentPinID = currentPin.objectID
-    
     backgroundContext.perform {
         let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
         let tempPhoto = Photo(context: backgroundContext)
@@ -63,6 +67,32 @@ func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: D
         tempPhoto.pin = backgroundPin
         //        let testImage = UIImage(data: tempPhoto.imageData!)
         try? backgroundContext.save()
+    }
+    */
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    //    let moc = NSManagedObjectContext(concurrencyType:.mainQueueConcurrencyType)
+    //    let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+    //    privateMOC.parent = moc
+    //
+    //    privateMOC.perform({
+    //        do {
+    //            try privateMOC.save()
+    //        } catch {
+    //            fatalError("Failure to save context: \(error)")
+    //        }
+    //    })
+    //
+    
+
+    let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+    
+    privateMOC.perform {
+        do {
+            try privateMOC.save()
+        } catch {
+            fatalError("Failure to save context: \(error)")
+        }
     }
 }
 
