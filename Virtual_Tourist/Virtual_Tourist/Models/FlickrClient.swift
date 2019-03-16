@@ -92,19 +92,19 @@ class FlickrClient {
                         array_URLString2.append(urlString)
                         array_photo_URLs.append(URL(string: urlString)!)
                         
-                        print("1 - array_URLString2 --> \(array_URLString2)")
+//                        print("1 - array_URLString2 --> \(array_URLString2)")
                         count = count + 1
-                        print("count --> \(count)")
-                        print("temp.photos.photo.count --> \(temp.photos.photo.count)")
+//                        print("count --> \(count)")
+//                        print("temp.photos.photo.count --> \(temp.photos.photo.count)")
                         
                         if count == temp.photos.photo.count {
                             completion(array_photo_URLs, nil)
                         }
                         
                     })
-                    print("2 - array_URLString2 --> \(array_URLString2)")
+//                    print("2 - array_URLString2 --> \(array_URLString2)")
                 }
-                print("3 - array_URLString2 --> \(array_URLString2)")
+//                print("3 - array_URLString2 --> \(array_URLString2)")
             } catch let conversionErr {
                 DispatchQueue.main.async {
                        completion([], conversionErr)
@@ -112,9 +112,9 @@ class FlickrClient {
                 return
             }
         }
-        print("4 - array_URLString2 --> \(array_URLString2)")
+//        print("4 - array_URLString2 --> \(array_URLString2)")
         task.resume()
-        print("5 - array_URLString2 --> \(array_URLString2)")
+//        print("5 - array_URLString2 --> \(array_URLString2)")
         return task
     }
     
@@ -229,7 +229,7 @@ class FlickrClient {
     
     class func searchNearbyURLMetaData(latitude: Double, longitude: Double, count: Int, pageNumber: Int32, completion: @escaping ([[String: String]], Error?)->Void )->URLSessionTask{
         let url = Endpoints.photosSearch(latitude, longitude, count, pageNumber).url
-                print("Endpoints Photo-Search-URL = \(url)")
+//                print("Endpoints Photo-Search-URL = \(url)")
         var answer = [[String: String]]()
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             guard let dataObject = data, error == nil else {
@@ -299,7 +299,7 @@ class FlickrClient {
     class func getPhotoSizeWithURL(photoId: String, completion: @escaping (URL?, Error?)-> Void){
         let url = Endpoints.getPhotosGetSizes(photoId).url
         let task = URLSession.shared.dataTask(with: url) { (data, response, err) in
-            print("\n\n\nGoing to URLSession with --> \(url)")
+//            print("\n\n\nGoing to URLSession with --> \(url)")
             if let error = err {
                 DispatchQueue.main.async {
                     completion(nil, error)

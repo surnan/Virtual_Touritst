@@ -50,7 +50,7 @@ extension CollectionMapViewController {
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Selected Cell = \(indexPath)")
+//        print("Selected Cell = \(indexPath)")
         if deleteIndexSet.contains(indexPath) {
             deleteIndexSet.remove(indexPath)
         } else {

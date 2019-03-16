@@ -71,13 +71,13 @@ extension CollectionMapViewController {
             
             
             queue.async {
-                DispatchQueue.main.async {
-                    sender.backgroundColor = UIColor.yellow
-                }
-                
                 print("-- GET NEW PICTURES --")
                 self.downloadNewCollectionPhotos()
-                self.myCollectionView.reloadData()
+                
+                DispatchQueue.main.async {
+                    sender.backgroundColor = UIColor.yellow
+                    self.myCollectionView.reloadData()
+                }
             }
 
         

@@ -40,9 +40,9 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
             try? backgroundContext.save()
         }   //-2
         urls.forEach({ (currentURL) in
-            print("URL inside loop --> \(currentURL)")
+//            print("URL inside loop --> \(currentURL)")
             URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                print("currentURL = \(currentURL)")
+//                print("currentURL = \(currentURL)")
                 guard let imageData = imageData else {return}
                 connectPhotoAndPin(dataController: dataController, currentPin:  currentPin , data: imageData, urlString: currentURL.absoluteString)
             }).resume()
@@ -55,7 +55,7 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
 
 
 func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String){
-    /*
+    
     let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
     let currentPinID = currentPin.objectID
     backgroundContext.perform {
@@ -68,7 +68,7 @@ func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: D
         //        let testImage = UIImage(data: tempPhoto.imageData!)
         try? backgroundContext.save()
     }
-    */
+ 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     //    let moc = NSManagedObjectContext(concurrencyType:.mainQueueConcurrencyType)
@@ -84,16 +84,7 @@ func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: D
     //    })
     //
     
-
-    let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
     
-    privateMOC.perform {
-        do {
-            try privateMOC.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
-    }
 }
 
 
@@ -111,9 +102,9 @@ extension MapController {
     }
     
     func handleSaveNotification(notification: Notification){
-        DispatchQueue.main.async {
-            print("Core Data Updated and UI upgraded through NSFetchResults --> 'didChange anObject'  ")
-        }
+//        DispatchQueue.main.async {
+//            print("Core Data Updated and UI upgraded through NSFetchResults --> 'didChange anObject'  ")
+//        }
     }
 }
 
