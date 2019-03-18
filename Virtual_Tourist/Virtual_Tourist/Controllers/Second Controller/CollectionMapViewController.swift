@@ -40,6 +40,8 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     let reuseIDCellIsSelected = "reuseIDCellIsSelected"
     let mapRegionDistanceValue: CLLocationDistance = 1500
     
+    var operationQueue = OperationQueue()
+    
     var deleteIndexSet = Set<IndexPath>() {
         didSet {
             newLocationButton.isSelected = !deleteIndexSet.isEmpty
