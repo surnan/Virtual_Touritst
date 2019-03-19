@@ -11,22 +11,14 @@ import CoreData
 
 //downloadNearbyPhotosToPin
 
-
-var globalTask: URLSessionTask?
-
 func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, fetchCount: Int) {
     //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
-    
-    if globalTask != nil {
-        print("CANCELLED DOWNOAD")
-        return
-    }
     
     let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
     let currentPinID = currentPin.objectID
     
     
-    globalTask = FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in //+1
+    FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in //+1
         if let error = error {
             print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
             return
@@ -36,21 +28,22 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
             backgroundPin.photoCount = Int32(urls.count)
             try? backgroundContext.save()
         }   //-2
-        urls.forEach({ (currentURL) in
-            print("URL inside loop --> \(currentURL)")
+        
+        
+        for (index, currentURL) in urls.enumerated() {
+//            print("URL inside loop --> \(currentURL)")
             URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                print("currentURL = \(currentURL)")
+//                print("currentURL = \(currentURL)")
                 guard let imageData = imageData else {return}
-                connectPhotoAndPin(dataController: dataController, currentPin:  currentPin , data: imageData, urlString: currentURL.absoluteString)
+                connectPhotoAndPin(dataController: dataController, currentPin:  currentPin , data: imageData, urlString: currentURL.absoluteString, index: index)
             }).resume()
-        })
-     globalTask = nil
+        }
     }   //-1
 }
 
 
 
-func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String){
+func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String, index: Int){
     let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
     let currentPinID = currentPin.objectID
     
@@ -59,7 +52,7 @@ func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: D
         let tempPhoto = Photo(context: backgroundContext)
         tempPhoto.imageData = data
         tempPhoto.urlString = urlString
-        tempPhoto.index = Int32(999) //Random value for init
+        tempPhoto.index = Int32(index) //Random value for init
         tempPhoto.pin = backgroundPin
         //        let testImage = UIImage(data: tempPhoto.imageData!)
         try? backgroundContext.save()
@@ -82,7 +75,7 @@ extension MapController {
     
     func handleSaveNotification(notification: Notification){
         DispatchQueue.main.async {
-            print("Core Data Updated and UI upgraded through NSFetchResults --> 'didChange anObject'  ")
+//            print("Core Data Updated and UI upgraded through NSFetchResults --> 'didChange anObject'  ")
         }
     }
 }

@@ -27,11 +27,11 @@ extension MapController {
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("")
+//        print("")
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        print("")
+//        print("")
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -48,10 +48,10 @@ extension MapController {
             guard let newPin = anObject as? Pin else {return}
             let newAnnotation = CustomAnnotation(lat: newPin.latitude, lon: newPin.longitude)
             mapView.addAnnotation(newAnnotation)
-            print("ADD-refresh ---- * INSIDE MAP-CONTROLLER * ")
+//            print("ADD-refresh ---- * INSIDE MAP-CONTROLLER * ")
             self.delegate?.refresh()
         case .update:
-            print("UPDATE-refresh ---- * INSIDE MAP-CONTROLLER * ")
+//            print("UPDATE-refresh ---- * INSIDE MAP-CONTROLLER * ")
             self.delegate?.refresh()
         default:
             break
