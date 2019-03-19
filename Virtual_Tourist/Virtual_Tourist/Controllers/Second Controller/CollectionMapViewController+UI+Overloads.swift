@@ -23,6 +23,11 @@ extension CollectionMapViewController {
     }
     
     
+    func setupViewForFade(){
+        view.addSubview(refreshingScreen)
+        refreshingScreen.addSubview(myActivityIndicatorView)
+    }
+    
     func setupNavigationMenu(){
         navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Re-Center", style: .done, target: self, action: #selector(handleReCenter))]
     }

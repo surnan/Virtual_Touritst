@@ -118,7 +118,25 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         return annotation
     }()
     
+    lazy var refreshingScreen: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    
+    let myActivityIndicatorView: UIActivityIndicatorView = {
+        let activityView = UIActivityIndicatorView()
+        activityView.style = .gray
+        activityView.translatesAutoresizingMaskIntoConstraints = false
+        return activityView
+    }()
+    
+    
+    
     deinit {
         fetchedResultsController = nil
     }
 }
+

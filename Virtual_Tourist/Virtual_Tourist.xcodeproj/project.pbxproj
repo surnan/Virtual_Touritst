@@ -17,6 +17,7 @@
 		842BEC0C2231B9C600BF35CC /* UIWindowExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BEC0B2231B9C600BF35CC /* UIWindowExtension.swift */; };
 		842BEC0E2231D47D00BF35CC /* FinalCollectionImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842BEC0D2231D47D00BF35CC /* FinalCollectionImageCell.swift */; };
 		8441AE00222A6905002412E0 /* flickr.photos.getSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8441ADFF222A6905002412E0 /* flickr.photos.getSizes.swift */; };
+		8446E89122406A290024CC14 /* CollectionMapViewController+Fade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8446E89022406A290024CC14 /* CollectionMapViewController+Fade.swift */; };
 		84601E052227372100A77BAD /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84601E042227372100A77BAD /* UIColor+Extension.swift */; };
 		84601E0D2227A32500A77BAD /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84601E0C2227A32500A77BAD /* FlickrClient.swift */; };
 		84601E0F2227A35B00A77BAD /* UNSYNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84601E0E2227A35B00A77BAD /* UNSYNC.swift */; };
@@ -53,6 +54,7 @@
 		842BEC0B2231B9C600BF35CC /* UIWindowExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIWindowExtension.swift; sourceTree = "<group>"; };
 		842BEC0D2231D47D00BF35CC /* FinalCollectionImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalCollectionImageCell.swift; sourceTree = "<group>"; };
 		8441ADFF222A6905002412E0 /* flickr.photos.getSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flickr.photos.getSizes.swift; sourceTree = "<group>"; };
+		8446E89022406A290024CC14 /* CollectionMapViewController+Fade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionMapViewController+Fade.swift"; sourceTree = "<group>"; };
 		84601E042227372100A77BAD /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		84601E0C2227A32500A77BAD /* FlickrClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 		84601E0E2227A35B00A77BAD /* UNSYNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNSYNC.swift; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 			children = (
 				84D6688A223850FF008B7FEC /* Collection_Cells */,
 				84D6687A22374092008B7FEC /* CollectionMapViewController.swift */,
+				8446E89022406A290024CC14 /* CollectionMapViewController+Fade.swift */,
 				84D6688D2238547A008B7FEC /* CollectionMapViewController+UI+Overloads.swift */,
 				84D0B469223051F60048DF91 /* MapCollectionViewController+Collection.swift */,
 				84D6688B22385279008B7FEC /* MapCollectionViewController+Map.swift */,
@@ -305,6 +308,7 @@
 				842BEC0C2231B9C600BF35CC /* UIWindowExtension.swift in Sources */,
 				8488F426222FF4BD00DD8F92 /* MapController+UI.swift in Sources */,
 				84601E132227AF4A00A77BAD /* flickr.photos.getInfo.swift in Sources */,
+				8446E89122406A290024CC14 /* CollectionMapViewController+Fade.swift in Sources */,
 				84601E052227372100A77BAD /* UIColor+Extension.swift in Sources */,
 				84601E112227AEA200A77BAD /* flickr.photos.search.swift in Sources */,
 				84601E0F2227A35B00A77BAD /* UNSYNC.swift in Sources */,
