@@ -35,3 +35,9 @@ extension Pin: MKAnnotation {
     }
 }
 
+extension Photo {
+    public override func awakeFromInsert() {
+        super.awakeFromInsert()
+        isLoaded = false
+    }
+}
