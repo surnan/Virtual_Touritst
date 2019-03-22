@@ -17,6 +17,26 @@ let idStreet = "asdfasdfSTREETSTREET"
 
 extension CollectionMapViewController {
 
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let currentPhotoCount = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
+//        if indexPath.row < currentPhotoCount {
+//            if deleteIndexSet.contains(indexPath) {
+//                let myPhoto = fetchedResultsController.object(at: indexPath)
+//                let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIDCellIsSelected, for: indexPath) as! FinalCollectionSelectedImageCell
+//                cell.myPhoto = myPhoto
+//                return cell
+//            } else {
+//                let myPhoto = fetchedResultsController.object(at: indexPath)
+//                let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
+//                cell.myPhoto = myPhoto
+//                return cell
+//            }
+//        }
+//        let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
+//        return cell
+//    }
+
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let currentPhotoCount = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
         if indexPath.row < currentPhotoCount {
@@ -34,7 +54,24 @@ extension CollectionMapViewController {
         }
         let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
         return cell
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
+    
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = Int(pin.photoCount)

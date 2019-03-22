@@ -173,6 +173,7 @@
 		8488F421222FEBC500DD8F92 /* Flickr Network Requests */ = {
 			isa = PBXGroup;
 			children = (
+				84D66887223847E0008B7FEC /* HELPERS */,
 				84601E0C2227A32500A77BAD /* FlickrClient.swift */,
 				84601E102227AEA200A77BAD /* flickr.photos.search.swift */,
 				84601E122227AF4A00A77BAD /* flickr.photos.getInfo.swift */,
@@ -184,7 +185,6 @@
 		8488F422222FF04500DD8F92 /* Entity Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				84D66887223847E0008B7FEC /* HELPERS */,
 				8488F412222DBF5A00DD8F92 /* Pin+Extensions.swift */,
 			);
 			name = "Entity Extensions";

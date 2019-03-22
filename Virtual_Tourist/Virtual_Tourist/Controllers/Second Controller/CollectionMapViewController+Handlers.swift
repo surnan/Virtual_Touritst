@@ -25,24 +25,24 @@ extension CollectionMapViewController {
         sender.isSelected = !sender.isSelected
     }
     
-    func downloadNewCollectionPhotos() {
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-        fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
-        let request = NSBatchDeleteRequest(fetchRequest: fetch)
-        do {
-            _ = try dataController.viewContext.execute(request)
-            pin.pageNumber = pin.pageNumber + 1
-            pin.photoCount = 0
-            try? dataController.viewContext.save()
-            try fetchedResultsController.performFetch()
-            DispatchQueue.main.async {
-                self.myCollectionView.reloadData()
-            }
-            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
-        } catch {
-            print("unable to delete \(error)")
-        }
-    }
+//    func downloadNewCollectionPhotos() {
+//        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+//        fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+//        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+//        do {
+//            _ = try dataController.viewContext.execute(request)
+//            pin.pageNumber = pin.pageNumber + 1
+//            pin.photoCount = 0
+//            try? dataController.viewContext.save()
+//            try fetchedResultsController.performFetch()
+//            DispatchQueue.main.async {
+//                self.myCollectionView.reloadData()
+//            }
+//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
+//        } catch {
+//            print("unable to delete \(error)")
+//        }
+//    }
     
     @objc func handleNewLocationButton(_ sender: UIButton){
         if sender.isSelected {
@@ -50,7 +50,6 @@ extension CollectionMapViewController {
             deleteSelectedPicture(sender)
         } else {
             print("-- GET NEW PICTURES --")
-            
             let block1 = BlockOperation {
                 DispatchQueue.main.async {
                     self.newLocationButton.isEnabled = false
@@ -72,12 +71,38 @@ extension CollectionMapViewController {
             block2.addDependency(block1)
             block3.addDependency(block2)
             operationQueue.addOperations([block1, block2, block3], waitUntilFinished: false)
-            
-//            operationQueue = operationQueue()
         }
     }
  
+    func downloadNewCollectionPhotos() {
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+        fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        do {
+            _ = try dataController.viewContext.execute(request)
+            pin.pageNumber = pin.pageNumber + 1
+            pin.photoCount = 0
+            try? dataController.viewContext.save()
+            try fetchedResultsController.performFetch()
+            DispatchQueue.main.async {
+                self.myCollectionView.reloadData()
+            }
+            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
+        } catch {
+            print("unable to delete \(error)")
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @objc func handleReCenter(){
         myMapView.centerCoordinate = firstAnnotation.coordinate
     }
+    
 }
