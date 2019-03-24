@@ -165,7 +165,7 @@
 			children = (
 				8488F40C222DB71700DD8F92 /* Photo_Locations.xcdatamodeld */,
 				8488F414222DC08F00DD8F92 /* DataController.swift */,
-				8488F422222FF04500DD8F92 /* Entity Extensions */,
+				8488F412222DBF5A00DD8F92 /* Pin+Extensions.swift */,
 			);
 			name = "Core Data";
 			sourceTree = "<group>";
@@ -180,14 +180,6 @@
 				8441ADFF222A6905002412E0 /* flickr.photos.getSizes.swift */,
 			);
 			name = "Flickr Network Requests";
-			sourceTree = "<group>";
-		};
-		8488F422222FF04500DD8F92 /* Entity Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				8488F412222DBF5A00DD8F92 /* Pin+Extensions.swift */,
-			);
-			name = "Entity Extensions";
 			sourceTree = "<group>";
 		};
 		84D6687922374020008B7FEC /* Second Controller */ = {

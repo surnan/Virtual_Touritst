@@ -18,12 +18,17 @@ extension Pin: MKAnnotation {
         return CLLocationCoordinate2D(latitude: latDegrees, longitude: longDegrees)
     }
     
+    public var allPhotosDownloaded: Bool {
+        return urlCount == photoCount
+    }
+    
     //var backGroundContext: NSManagedObjectContext!
     public func movePin(coordinate: CLLocationCoordinate2D, viewContext: NSManagedObjectContext){
         self.latitude = coordinate.latitude
         self.longitude = coordinate.longitude
         self.pageNumber = 1
         self.photoCount = 0
+        self.urlCount = 0
         try? viewContext.save()
     }
 
@@ -32,6 +37,7 @@ extension Pin: MKAnnotation {
         super.awakeFromInsert()
         pageNumber = 1
         photoCount = 0
+        urlCount = 0
     }
 }
 
