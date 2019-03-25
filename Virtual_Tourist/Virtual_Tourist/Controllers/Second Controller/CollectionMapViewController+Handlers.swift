@@ -55,7 +55,8 @@ extension CollectionMapViewController {
                     self.newLocationButton.isEnabled = false
                     self.newLocationButton.backgroundColor = UIColor.yellow
                 }
-                self.downloadNewCollectionPhotos()
+//                self.downloadNewCollectionPhotos()
+                self.deleteCurrentPicturesOnPin()
             }
             let block2 = BlockOperation {
                 DispatchQueue.main.async {
@@ -74,7 +75,7 @@ extension CollectionMapViewController {
         }
     }
  
-    func downloadNewCollectionPhotos() {
+    func deleteCurrentPicturesOnPin() {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
@@ -87,7 +88,6 @@ extension CollectionMapViewController {
             DispatchQueue.main.async {
                 self.myCollectionView.reloadData()
             }
-            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
         } catch {
             print("unable to delete \(error)")
         }
@@ -106,3 +106,24 @@ extension CollectionMapViewController {
     }
     
 }
+
+/*
+ func downloadNewCollectionPhotos() {
+ let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
+ fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+ let request = NSBatchDeleteRequest(fetchRequest: fetch)
+ do {
+ _ = try dataController.viewContext.execute(request)
+ pin.pageNumber = pin.pageNumber + 1
+ pin.photoCount = 0
+ try? dataController.viewContext.save()
+ try fetchedResultsController.performFetch()
+ DispatchQueue.main.async {
+ self.myCollectionView.reloadData()
+ }
+ downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
+ } catch {
+ print("unable to delete \(error)")
+ }
+ }
+ */
