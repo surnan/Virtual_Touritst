@@ -52,7 +52,7 @@ class FlickrClient {
     
     
     
-    class func searchNearbyPhotoData(currentPin: Pin, fetchCount count: Int, completion: @escaping ([URL], Error?)->Void)-> URLSessionTask?{
+    class func getAllPhotoURLs(currentPin: Pin, fetchCount count: Int, completion: @escaping ([URL], Error?)->Void)-> URLSessionTask?{
         let latitude = currentPin.latitude
         let longitude = currentPin.longitude
         let pageNumber = currentPin.pageNumber

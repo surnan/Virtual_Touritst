@@ -83,6 +83,7 @@ extension CollectionMapViewController {
             _ = try dataController.viewContext.execute(request)
             pin.pageNumber = pin.pageNumber + 1
             pin.photoCount = 0
+            pin.urlCount = 0
             try? dataController.viewContext.save()
             try fetchedResultsController.performFetch()
             DispatchQueue.main.async {
@@ -92,6 +93,17 @@ extension CollectionMapViewController {
             print("unable to delete \(error)")
         }
     }
+    
+    
+    
+    func block2andHalf(){
+        _ = FlickrClient.getAllPhotoURLs(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
+            self.pin.urlCount = Int32(urls.count)
+            try? self.dataController.viewContext.save()
+        }
+    }
+    
+    
     
     
     

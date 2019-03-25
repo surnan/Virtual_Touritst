@@ -18,7 +18,7 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
     let currentPinID = currentPin.objectID
     
     
-    FlickrClient.searchNearbyPhotoData(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in //+1
+    FlickrClient.getAllPhotoURLs(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in //+1
         if let error = error {
             print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
             return
@@ -40,6 +40,13 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
         }
     }   //-1
 }
+
+
+
+
+
+
+
 
 
 
