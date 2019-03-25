@@ -69,9 +69,19 @@ extension CollectionMapViewController {
                     self.newLocationButton.backgroundColor = UIColor.orange
                 }
             }
+            
+            let block2_3 = BlockOperation {
+                self.block2andHalf()
+            }
+            
+            
+            let block2_3_4 = BlockOperation {
+                downloadNearbyPhotosToPin(dataController: self.dataController, currentPin: self.pin, fetchCount: fetchCount)
+            }
+            
             block2.addDependency(block1)
             block3.addDependency(block2)
-            operationQueue.addOperations([block1, block2, block3], waitUntilFinished: false)
+            operationQueue.addOperations([block1, block2, block2_3, block2_3_4 , block3], waitUntilFinished: false)
         }
     }
  
@@ -93,6 +103,7 @@ extension CollectionMapViewController {
             print("unable to delete \(error)")
         }
     }
+    
     
     
     

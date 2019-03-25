@@ -25,7 +25,7 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
         }
         backgroundContext.perform { //+2
             let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-            backgroundPin.photoCount = Int32(urls.count)
+            backgroundPin.urlCount = Int32(urls.count)
             try? backgroundContext.save()
         }   //-2
         
@@ -43,19 +43,13 @@ func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, 
 
 
 
-
-
-
-
-
-
-
 func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String, index: Int){
     let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
     let currentPinID = currentPin.objectID
     
     backgroundContext.perform {
         let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+        backgroundPin.photoCount = backgroundPin.photoCount + 1
         let tempPhoto = Photo(context: backgroundContext)
         tempPhoto.imageData = data
         tempPhoto.urlString = urlString

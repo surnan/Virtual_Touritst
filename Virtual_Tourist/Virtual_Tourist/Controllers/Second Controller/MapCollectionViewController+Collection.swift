@@ -78,6 +78,8 @@ extension CollectionMapViewController {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Cell Count = \(pin.urlCount)")
+        print("Photo Count = \(pin.photoCount)")
         return Int(pin.urlCount)
     }
     
