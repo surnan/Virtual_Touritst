@@ -25,25 +25,6 @@ extension CollectionMapViewController {
         sender.isSelected = !sender.isSelected
     }
     
-//    func downloadNewCollectionPhotos() {
-//        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-//        fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
-//        let request = NSBatchDeleteRequest(fetchRequest: fetch)
-//        do {
-//            _ = try dataController.viewContext.execute(request)
-//            pin.pageNumber = pin.pageNumber + 1
-//            pin.photoCount = 0
-//            try? dataController.viewContext.save()
-//            try fetchedResultsController.performFetch()
-//            DispatchQueue.main.async {
-//                self.myCollectionView.reloadData()
-//            }
-//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
-//        } catch {
-//            print("unable to delete \(error)")
-//        }
-//    }
-    
     @objc func handleNewLocationButton(_ sender: UIButton){
         if sender.isSelected {
             print("DELETE")
@@ -104,26 +85,13 @@ extension CollectionMapViewController {
         }
     }
     
-    
-    
-    
     func block2andHalf(){
         _ = FlickrClient.getAllPhotoURLs(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
             self.pin.urlCount = Int32(urls.count)
             try? self.dataController.viewContext.save()
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     @objc func handleReCenter(){
         myMapView.centerCoordinate = firstAnnotation.coordinate
     }
