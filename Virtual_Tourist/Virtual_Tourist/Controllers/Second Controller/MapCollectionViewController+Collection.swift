@@ -17,26 +17,6 @@ let idStreet = "asdfasdfSTREETSTREET"
 
 extension CollectionMapViewController {
 
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let currentPhotoCount = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
-//        if indexPath.row < currentPhotoCount {
-//            if deleteIndexSet.contains(indexPath) {
-//                let myPhoto = fetchedResultsController.object(at: indexPath)
-//                let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIDCellIsSelected, for: indexPath) as! FinalCollectionSelectedImageCell
-//                cell.myPhoto = myPhoto
-//                return cell
-//            } else {
-//                let myPhoto = fetchedResultsController.object(at: indexPath)
-//                let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
-//                cell.myPhoto = myPhoto
-//                return cell
-//            }
-//        }
-//        let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
-//        return cell
-//    }
-
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         if pin.allPhotosDownloaded {
@@ -69,8 +49,7 @@ extension CollectionMapViewController {
         return Int(pin.urlCount)
     }
     
-    
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Selected Cell = \(indexPath)")
         if deleteIndexSet.contains(indexPath) {
@@ -99,4 +78,24 @@ extension CollectionMapViewController {
 //        //        }
 //        return count
 //        //        return  min(count, (fetchedResultsController.fetchedObjects?.count)!) //<--- if you drop pin  and app crashes prior to downloading photos, you crash without this line.
+//    }
+
+
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        guard let currentPhotoCount = fetchedResultsController.fetchedObjects?.count else {return UICollectionViewCell()}
+//        if indexPath.row < currentPhotoCount {
+//            if deleteIndexSet.contains(indexPath) {
+//                let myPhoto = fetchedResultsController.object(at: indexPath)
+//                let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIDCellIsSelected, for: indexPath) as! FinalCollectionSelectedImageCell
+//                cell.myPhoto = myPhoto
+//                return cell
+//            } else {
+//                let myPhoto = fetchedResultsController.object(at: indexPath)
+//                let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
+//                cell.myPhoto = myPhoto
+//                return cell
+//            }
+//        }
+//        let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
+//        return cell
 //    }

@@ -21,6 +21,7 @@ extension CollectionMapViewController {
         }
         deleteIndexSet.removeAll()
         pin.photoCount = pin.photoCount - pagesToDelete
+        pin.urlCount = pin.urlCount - pagesToDelete
         try? dataController.viewContext.save()
         sender.isSelected = !sender.isSelected
     }
