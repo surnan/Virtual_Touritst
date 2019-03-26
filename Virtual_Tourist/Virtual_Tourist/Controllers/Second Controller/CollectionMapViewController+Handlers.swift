@@ -38,6 +38,12 @@ extension CollectionMapViewController {
         }
     }
     
+    
+    @objc func handleRefreshButton(){
+        print("BUTTON PRESSED")
+        synchronouslyDeletePhotosAndRedownloadOnPin()
+    }
+    
     func synchronouslyDeletePhotosAndRedownloadOnPin() {
         let block1 = BlockOperation {
             DispatchQueue.main.async {

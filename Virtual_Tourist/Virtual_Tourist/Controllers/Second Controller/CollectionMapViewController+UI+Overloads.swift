@@ -14,10 +14,11 @@ import CoreData
 extension CollectionMapViewController {
     //MARK:- overloads  ui
     override func viewDidLoad() {
-        view.backgroundColor = UIColor.purple
+        view.backgroundColor = UIColor.white
         setupNavigationMenu()
         setupMapView()
-        [myMapView, myCollectionView, newLocationButton, screenBottomFiller].forEach{ view.addSubview($0) }
+        [collectionViewEmptyLabel, refreshButton].forEach{emptyCollectionStack.addArrangedSubview($0)}
+        [emptyCollectionStack, myMapView, myCollectionView, newLocationButton, screenBottomFiller].forEach{view.addSubview($0) }
         setupUI()
         setupFetchedResultsController()
     }
@@ -36,5 +37,7 @@ extension CollectionMapViewController {
             newLocationButton.topAnchor)
         newLocationButton.anchor(leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: safe.bottomAnchor)
         screenBottomFiller.anchor(top: newLocationButton.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor)
+        emptyCollectionStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        emptyCollectionStack.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 }

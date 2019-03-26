@@ -99,7 +99,7 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         collectionView.register(FinalCollectionImageCell.self, forCellWithReuseIdentifier: reuseIDCellLoaded)
         collectionView.register(FinalCollectionSelectedImageCell.self, forCellWithReuseIdentifier: reuseIDCellIsSelected)
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.backgroundColor = UIColor.white
+        collectionView.backgroundColor = UIColor.clear
         collectionView.allowsMultipleSelection = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -117,6 +117,41 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         return button
     }()
 
+
+    lazy var collectionViewEmptyLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .darkGray
+        label.numberOfLines = 0;
+        label.textAlignment = .center;
+        label.text = "No Photos on this Pin"
+        label.font = UIFont.systemFont(ofSize: 15)
+//        messageLabel.sizeToFit()
+        return label
+    }()
+    
+    lazy var refreshButton: UIButton = {
+        let button = UIButton()
+        let attribString = NSAttributedString(string: "Retry Query", attributes: [
+            NSAttributedString.Key.foregroundColor : UIColor.blue,
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16)
+            ])
+        button.setAttributedTitle(attribString, for: .normal)
+        button.addTarget(self, action: #selector(handleRefreshButton), for: .touchDown)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+
+    var emptyCollectionStack: UIStackView = {
+       let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
+    
     lazy var firstAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
         annotation.coordinate = pin.coordinate
