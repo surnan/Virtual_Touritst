@@ -37,22 +37,4 @@ extension CollectionMapViewController {
         }
         return pinView
     }
-    
-//    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-//        print("\n\nAnnotations.Count ---> \(annotations.count)")
-//        guard var _stringToURL = view.annotation?.subtitle as? String else {
-//            UIApplication.shared.open(URL(string: "https://www.google.com")!)     //MediaURL = empty.  Load google
-//            return
-//        }
-//        let backupURL = URL(string: "https://www.google.com/search?q=" + _stringToURL)!  //URL is invalid, convert string to google search query
-//        if _stringToURL._isValidURL {
-//            _stringToURL = _stringToURL._prependHTTPifNeeded()
-//            let url = URL(string: _stringToURL) ?? backupURL
-//            UIApplication.shared.open(url)
-//        } else {
-//            UIApplication.shared.open(backupURL)
-//        }
-//    }
-    
-    
 }

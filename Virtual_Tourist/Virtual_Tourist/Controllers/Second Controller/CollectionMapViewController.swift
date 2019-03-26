@@ -20,27 +20,15 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     
     //MARK:-Protocol
     func refresh() {
-        do {
-            cellsWithPhotoSet.removeAll()
-            photosIndicesDict.removeAll()
-            
-            if let items = self.pin.photos {
-                print("Index = ", terminator: "")
-                for case let item as Photo in items {
-                    print("\(item.index), ", terminator: "")
-                
-                    let indexPathToInsert = IndexPath(item: Int(item.index), section: 0)
-                    let photoObjectID = item.objectID
-                    
-                    cellsWithPhotoSet.insert([indexPathToInsert: photoObjectID])
-                    photosIndicesDict[indexPathToInsert] = photoObjectID
-                }
-                print("\n")
+        photosIndicesDict.removeAll()
+        if let items = self.pin.photos {
+            items.map{$0 as! Photo}.forEach{
+                let indexPathToInsert = IndexPath(item: Int($0.index), section: 0)
+                let photoObjectID = $0.objectID
+                photosIndicesDict[indexPathToInsert] = photoObjectID
+                try? fetchedResultsController.performFetch()
+                myCollectionView.reloadData()
             }
-            try fetchedResultsController.performFetch()
-            myCollectionView.reloadData()
-        } catch {
-            fatalError("The fetch could not be performed: \(error.localizedDescription)")
         }
     }
     
@@ -63,9 +51,6 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
             newLocationButton.isSelected = !deleteIndexSet.isEmpty
         }
     }
-    
-//    var tempIndexSet = Set<[IndexPath:NSManagedObjectID]>()
-    var cellsWithPhotoSet = Set<[IndexPath: NSManagedObjectID]>()
     
     var photosIndicesDict = [IndexPath: NSManagedObjectID]()
     
