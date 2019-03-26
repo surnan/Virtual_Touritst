@@ -26,6 +26,7 @@ extension CollectionMapViewController {
 //        sender.isSelected = !sender.isSelected
     }
     
+
     @objc func handleNewLocationButton(_ sender: UIButton){
         //TODO: Delete Pictures auto converts to "NEW COLLECTION" before hitting the if statement
         if sender.isSelected {
@@ -33,44 +34,47 @@ extension CollectionMapViewController {
             removeSelectedPicture(sender)
         } else {
             print("-- GET NEW PICTURES --")
-            let block1 = BlockOperation {
-                DispatchQueue.main.async {
-                    self.newLocationButton.isEnabled = false
-                    self.newLocationButton.backgroundColor = UIColor.yellow
-                }
-                self.deleteCurrentPicturesOnPin()
-            }
-            
-            let block2 = BlockOperation {
-                DispatchQueue.main.async {
-                    self.myCollectionView.reloadData()
-                }
-            }
-            
-            let block3 = BlockOperation {
-                self.block3Function()
-            }
-            
-            
-            let block4 = BlockOperation {
-                downloadNearbyPhotosToPin(dataController: self.dataController, currentPin: self.pin, fetchCount: fetchCount)
-            }
-            
-            let block5 = BlockOperation {
-                DispatchQueue.main.async {
-                    self.newLocationButton.isEnabled = true
-                    self.newLocationButton.backgroundColor = UIColor.orange
-                }
-            }
-            
-            block2.addDependency(block1)
-            block3.addDependency(block2)
-            block4.addDependency(block3)
-            block5.addDependency(block4)
-            operationQueue.addOperations([block1, block2, block3, block4 , block5], waitUntilFinished: false)
+            synchronouslyDeletePhotosAndRedownloadOnPin()
         }
     }
- 
+    
+    func synchronouslyDeletePhotosAndRedownloadOnPin() {
+        let block1 = BlockOperation {
+            DispatchQueue.main.async {
+                self.newLocationButton.isEnabled = false
+                self.newLocationButton.backgroundColor = UIColor.yellow
+            }
+            self.deleteCurrentPicturesOnPin()
+        }
+        
+        let block2 = BlockOperation {
+            DispatchQueue.main.async {
+                self.myCollectionView.reloadData()
+            }
+        }
+        
+        let block3 = BlockOperation {
+            self.block3Function()
+        }
+        
+        let block4 = BlockOperation {
+            downloadNearbyPhotosToPin(dataController: self.dataController, currentPin: self.pin, fetchCount: fetchCount)
+        }
+        
+        let block5 = BlockOperation {
+            DispatchQueue.main.async {
+                self.newLocationButton.isEnabled = true
+                self.newLocationButton.backgroundColor = UIColor.orange
+            }
+        }
+        
+        block2.addDependency(block1)
+        block3.addDependency(block2)
+        block4.addDependency(block3)
+        block5.addDependency(block4)
+        operationQueue.addOperations([block1, block2, block3, block4 , block5], waitUntilFinished: false)
+    }
+    
     func deleteCurrentPicturesOnPin() {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
