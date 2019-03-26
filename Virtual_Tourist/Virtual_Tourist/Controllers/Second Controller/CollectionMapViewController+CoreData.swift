@@ -28,18 +28,4 @@ extension CollectionMapViewController {
             fatalError("The fetch could not be performed: \(error.localizedDescription)")
         }
     }
-    
-    func getPhotoFromIndexPathSet(indexPath: IndexPath)->Photo?{
-        let index = Int32(indexPath.item)
-        
-        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-        let predicate = NSPredicate(format: "index == %@", index)
-        fetchRequest.predicate = predicate
-        
-        if let fetchedResults = try? dataController.viewContext.fetch(fetchRequest).first {
-            return fetchedResults
-        } else {
-            return nil
-        }
-    }
 }

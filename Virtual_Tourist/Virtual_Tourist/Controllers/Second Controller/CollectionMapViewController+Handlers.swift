@@ -38,33 +38,36 @@ extension CollectionMapViewController {
                     self.newLocationButton.isEnabled = false
                     self.newLocationButton.backgroundColor = UIColor.yellow
                 }
-//                self.downloadNewCollectionPhotos()
                 self.deleteCurrentPicturesOnPin()
             }
+            
             let block2 = BlockOperation {
                 DispatchQueue.main.async {
                     self.myCollectionView.reloadData()
                 }
             }
+            
             let block3 = BlockOperation {
+                self.block3Function()
+            }
+            
+            
+            let block4 = BlockOperation {
+                downloadNearbyPhotosToPin(dataController: self.dataController, currentPin: self.pin, fetchCount: fetchCount)
+            }
+            
+            let block5 = BlockOperation {
                 DispatchQueue.main.async {
                     self.newLocationButton.isEnabled = true
                     self.newLocationButton.backgroundColor = UIColor.orange
                 }
             }
             
-            let block2_3 = BlockOperation {
-                self.block2andHalf()
-            }
-            
-            
-            let block2_3_4 = BlockOperation {
-                downloadNearbyPhotosToPin(dataController: self.dataController, currentPin: self.pin, fetchCount: fetchCount)
-            }
-            
             block2.addDependency(block1)
             block3.addDependency(block2)
-            operationQueue.addOperations([block1, block2, block2_3, block2_3_4 , block3], waitUntilFinished: false)
+            block4.addDependency(block3)
+            block5.addDependency(block4)
+            operationQueue.addOperations([block1, block2, block3, block4 , block5], waitUntilFinished: false)
         }
     }
  
@@ -87,7 +90,7 @@ extension CollectionMapViewController {
         }
     }
     
-    func block2andHalf(){
+    func block3Function(){
         _ = FlickrClient.getAllPhotoURLs(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
             self.pin.urlCount = Int32(urls.count)
             try? self.dataController.viewContext.save()
@@ -97,26 +100,5 @@ extension CollectionMapViewController {
     @objc func handleReCenter(){
         myMapView.centerCoordinate = firstAnnotation.coordinate
     }
-    
 }
 
-/*
- func downloadNewCollectionPhotos() {
- let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
- fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
- let request = NSBatchDeleteRequest(fetchRequest: fetch)
- do {
- _ = try dataController.viewContext.execute(request)
- pin.pageNumber = pin.pageNumber + 1
- pin.photoCount = 0
- try? dataController.viewContext.save()
- try fetchedResultsController.performFetch()
- DispatchQueue.main.async {
- self.myCollectionView.reloadData()
- }
- downloadNearbyPhotosToPin(dataController: dataController, currentPin: pin, fetchCount: fetchCount)
- } catch {
- print("unable to delete \(error)")
- }
- }
- */
