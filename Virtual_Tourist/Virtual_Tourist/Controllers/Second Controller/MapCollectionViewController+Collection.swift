@@ -33,10 +33,17 @@ extension CollectionMapViewController {
             }
         }
 
-        if indexPath.row >= pin.urlCount {
-            let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
-            return cell
+
+        if let photoID = photosIndicesDict[indexPath] {
+                let currentPhoto = self.dataController.viewContext.object(with: photoID) as! Photo
+                let cell2 = self.myCollectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
+                cell2.myPhoto = currentPhoto
+                return cell2
         }
+        
+        
+        
+        
         
         let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
         return cell
@@ -44,7 +51,8 @@ extension CollectionMapViewController {
 
  
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("Cell Count = \(pin.urlCount)")
+        
+        print("\nCell Count = \(pin.urlCount)")
         print("Photo Count = \(pin.photoCount)")
         return Int(pin.urlCount)
     }

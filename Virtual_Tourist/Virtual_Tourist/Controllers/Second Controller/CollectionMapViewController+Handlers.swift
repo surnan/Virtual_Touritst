@@ -12,7 +12,7 @@ import CoreData
 
 extension CollectionMapViewController {
     
-    func deleteSelectedPicture(_ sender: UIButton) {
+    func removeSelectedPicture(_ sender: UIButton) {
         var pagesToDelete: Int32 = 0
         deleteIndexSet.forEach { (deleteIndex) in
             let photoToRemove = self.fetchedResultsController.object(at: deleteIndex)
@@ -23,13 +23,14 @@ extension CollectionMapViewController {
         pin.photoCount = pin.photoCount - pagesToDelete
         pin.urlCount = pin.urlCount - pagesToDelete
         try? dataController.viewContext.save()
-        sender.isSelected = !sender.isSelected
+//        sender.isSelected = !sender.isSelected
     }
     
     @objc func handleNewLocationButton(_ sender: UIButton){
+        //TODO: Delete Pictures auto converts to "NEW COLLECTION" before hitting the if statement
         if sender.isSelected {
             print("DELETE")
-            deleteSelectedPicture(sender)
+            removeSelectedPicture(sender)
         } else {
             print("-- GET NEW PICTURES --")
             let block1 = BlockOperation {

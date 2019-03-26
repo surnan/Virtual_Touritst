@@ -21,6 +21,22 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     //MARK:-Protocol
     func refresh() {
         do {
+            cellsWithPhotoSet.removeAll()
+            photosIndicesDict.removeAll()
+            
+            if let items = self.pin.photos {
+                print("Index = ", terminator: "")
+                for case let item as Photo in items {
+                    print("\(item.index), ", terminator: "")
+                
+                    let indexPathToInsert = IndexPath(item: Int(item.index), section: 0)
+                    let photoObjectID = item.objectID
+                    
+                    cellsWithPhotoSet.insert([indexPathToInsert: photoObjectID])
+                    photosIndicesDict[indexPathToInsert] = photoObjectID
+                }
+                print("\n")
+            }
             try fetchedResultsController.performFetch()
             myCollectionView.reloadData()
         } catch {
@@ -48,8 +64,12 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         }
     }
     
+//    var tempIndexSet = Set<[IndexPath:NSManagedObjectID]>()
+    var cellsWithPhotoSet = Set<[IndexPath: NSManagedObjectID]>()
+    
+    var photosIndicesDict = [IndexPath: NSManagedObjectID]()
+    
     var currentTask: URLSessionTask?
-
     
     var screenBottomFiller: UIView = {
         let view = UIView()
