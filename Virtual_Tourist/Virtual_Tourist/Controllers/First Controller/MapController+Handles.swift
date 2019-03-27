@@ -17,42 +17,39 @@ extension MapController {
         if sender.state != .ended {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
-            let newPin = addNewPin(locationCoordinate)
-//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: newPin, fetchCount: fetchCount)
-            
-            let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
-            let currentPinID = newPin.objectID
-            
-            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount) { (urls, error) in //+1
-                if let error = error {
-                    print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-                    return
-                }
-                backgroundContext.perform { //+2
-                    let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-                    backgroundPin.urlCount = Int32(urls.count)
-                    try? backgroundContext.save()
-                }   //-2
-                
-                
-                for (index, currentURL) in urls.enumerated() {
-                    //            print("URL inside loop --> \(currentURL)")
-                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                        //                print("currentURL = \(currentURL)")
-                        guard let imageData = imageData else {return}
-                        connectPhotoAndPin(dataController: self.dataController, currentPin:  newPin , data: imageData, urlString: currentURL.absoluteString, index: index)
-                    }).resume()
-                }
-            }
-            
-            
-            
-            
-            
-            
+            newPin = addNewPin(locationCoordinate)
+            currentPinID = newPin.objectID
+            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(urls:error:))
             return
         }
     }
+    
+    
+    func handleGetAllPhotoURLs(urls: [URL], error: Error?){
+        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+        
+        if let error = error {
+            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+            return
+        }
+        
+        backgroundContext.perform {
+            let backgroundPin = backgroundContext.object(with: self.currentPinID) as! Pin
+            backgroundPin.urlCount = Int32(urls.count)
+            try? backgroundContext.save()
+        }
+        
+        for (index, currentURL) in urls.enumerated() {
+            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                guard let imageData = imageData else {return}
+                connectPhotoAndPin(dataController: self.dataController, currentPin:  self.newPin , data: imageData, urlString: currentURL.absoluteString, index: index)
+            }).resume()
+        }
+    }
+    
+    
+    
+    
     
     
     @objc func handleDeleteALLButton(){

@@ -36,6 +36,9 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var dataController: DataController!
     var myFetchController: NSFetchedResultsController<Pin>!
     
+    var currentPinID: NSManagedObjectID!
+    var newPin: Pin!
+    
     var mapView = MKMapView()
     
     lazy private var myLongPressGesture: UILongPressGestureRecognizer = {

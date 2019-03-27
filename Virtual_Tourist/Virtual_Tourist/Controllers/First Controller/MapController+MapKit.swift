@@ -33,47 +33,18 @@ extension MapController: MKMapViewDelegate {
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.black}
             
             guard let _previousPin = previousPinID  else {return}
-            let pinToChange = dataController.viewContext.object(with: _previousPin) as! Pin
+            newPin = dataController.viewContext.object(with: _previousPin) as? Pin
             
             let fetch222 = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
-            fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [pinToChange])
+            fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [newPin])
             let request = NSBatchDeleteRequest(fetchRequest: fetch222)
-            try? dataController.viewContext.execute(request)
+            _ = try? dataController.viewContext.execute(request)
             
-            pinToChange.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
+            newPin.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
             previousPinID = nil
-//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
-            
-            
-            
-            
-            let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
-            let currentPinID = pinToChange.objectID
-            
-            FlickrClient.getAllPhotoURLs(currentPin: pinToChange, fetchCount: fetchCount) { (urls, error) in //+1
-                if let error = error {
-                    print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-                    return
-                }
-                backgroundContext.perform { //+2
-                    let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-                    backgroundPin.urlCount = Int32(urls.count)
-                    try? backgroundContext.save()
-                }   //-2
-                
-                
-                for (index, currentURL) in urls.enumerated() {
-                    //            print("URL inside loop --> \(currentURL)")
-                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                        //                print("currentURL = \(currentURL)")
-                        guard let imageData = imageData else {return}
-                        connectPhotoAndPin(dataController: self.dataController, currentPin:  pinToChange , data: imageData, urlString: currentURL.absoluteString, index: index)
-                    }).resume()
-                }
-            }
-            
-            
-            
+
+            currentPinID = newPin.objectID
+            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(urls:error:))
             
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.black}
