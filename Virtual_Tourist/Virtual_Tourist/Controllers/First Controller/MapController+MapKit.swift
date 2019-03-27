@@ -42,7 +42,39 @@ extension MapController: MKMapViewDelegate {
             
             pinToChange.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
             previousPinID = nil
-            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
+//            downloadNearbyPhotosToPin(dataController: dataController, currentPin: pinToChange, fetchCount: fetchCount)
+            
+            
+            
+            
+            let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+            let currentPinID = pinToChange.objectID
+            
+            FlickrClient.getAllPhotoURLs(currentPin: pinToChange, fetchCount: fetchCount) { (urls, error) in //+1
+                if let error = error {
+                    print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+                    return
+                }
+                backgroundContext.perform { //+2
+                    let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+                    backgroundPin.urlCount = Int32(urls.count)
+                    try? backgroundContext.save()
+                }   //-2
+                
+                
+                for (index, currentURL) in urls.enumerated() {
+                    //            print("URL inside loop --> \(currentURL)")
+                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                        //                print("currentURL = \(currentURL)")
+                        guard let imageData = imageData else {return}
+                        connectPhotoAndPin(dataController: self.dataController, currentPin:  pinToChange , data: imageData, urlString: currentURL.absoluteString, index: index)
+                    }).resume()
+                }
+            }
+            
+            
+            
+            
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.black}
         default: break

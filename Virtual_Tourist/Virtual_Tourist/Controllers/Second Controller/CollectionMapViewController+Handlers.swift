@@ -64,7 +64,29 @@ extension CollectionMapViewController {
         }
         
         let block4 = BlockOperation {
-            downloadNearbyPhotosToPin(dataController: self.dataController, currentPin: self.pin, fetchCount: fetchCount)
+//            downloadNearbyPhotosToPin(dataController: self.dataController, currentPin: self.pin, fetchCount: fetchCount)
+            let backgroundContext: NSManagedObjectContext! = self.dataController.backGroundContext
+            let currentPinID = self.pin.objectID
+            
+            FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount) { (urls, error) in //+1
+                if let error = error {
+                    print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+                    return
+                }
+                backgroundContext.perform { //+2
+                    let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+                    backgroundPin.urlCount = Int32(urls.count)
+                    try? backgroundContext.save()
+                }   //-2
+                for (index, currentURL) in urls.enumerated() {
+                    //            print("URL inside loop --> \(currentURL)")
+                    URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                        //                print("currentURL = \(currentURL)")
+                        guard let imageData = imageData else {return}
+                        connectPhotoAndPin(dataController: self.dataController, currentPin:  self.pin , data: imageData, urlString: currentURL.absoluteString, index: index)
+                    }).resume()
+                }
+            }   //-1
         }
         
         let block5 = BlockOperation {
@@ -80,7 +102,7 @@ extension CollectionMapViewController {
         block5.addDependency(block4)
         operationQueue.addOperations([block1, block2, block3, block4 , block5], waitUntilFinished: false)
     }
-    
+
     func deleteCurrentPicturesOnPin() {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])

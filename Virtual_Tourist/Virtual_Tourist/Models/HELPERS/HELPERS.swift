@@ -11,35 +11,35 @@ import CoreData
 
 //downloadNearbyPhotosToPin
 
-func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, fetchCount: Int) {
-    //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
-    
-    let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
-    let currentPinID = currentPin.objectID
-    
-    
-    FlickrClient.getAllPhotoURLs(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in //+1
-        if let error = error {
-            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-            return
-        }
-        backgroundContext.perform { //+2
-            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-            backgroundPin.urlCount = Int32(urls.count)
-            try? backgroundContext.save()
-        }   //-2
-        
-        
-        for (index, currentURL) in urls.enumerated() {
-//            print("URL inside loop --> \(currentURL)")
-            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-//                print("currentURL = \(currentURL)")
-                guard let imageData = imageData else {return}
-                connectPhotoAndPin(dataController: dataController, currentPin:  currentPin , data: imageData, urlString: currentURL.absoluteString, index: index)
-            }).resume()
-        }
-    }   //-1
-}
+//func downloadNearbyPhotosToPin(dataController: DataController, currentPin: Pin, fetchCount: Int) {
+//    //TODO: User should get an indicator that cell count = zero because download incoming?  Loading cells don't show here
+//    
+//    let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+//    let currentPinID = currentPin.objectID
+//    
+//    
+//    FlickrClient.getAllPhotoURLs(currentPin: currentPin, fetchCount: fetchCount) { (urls, error) in //+1
+//        if let error = error {
+//            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+//            return
+//        }
+//        backgroundContext.perform { //+2
+//            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+//            backgroundPin.urlCount = Int32(urls.count)
+//            try? backgroundContext.save()
+//        }   //-2
+//        
+//        
+//        for (index, currentURL) in urls.enumerated() {
+////            print("URL inside loop --> \(currentURL)")
+//            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+////                print("currentURL = \(currentURL)")
+//                guard let imageData = imageData else {return}
+//                connectPhotoAndPin(dataController: dataController, currentPin:  currentPin , data: imageData, urlString: currentURL.absoluteString, index: index)
+//            }).resume()
+//        }
+//    }   //-1
+//}
 
 
 
