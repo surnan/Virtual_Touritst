@@ -28,6 +28,7 @@
 		8488F415222DC08F00DD8F92 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F414222DC08F00DD8F92 /* DataController.swift */; };
 		8488F426222FF4BD00DD8F92 /* MapController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F425222FF4BD00DD8F92 /* MapController+UI.swift */; };
 		8488F42A222FF8A500DD8F92 /* MapController+NSFetchedResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8488F429222FF8A500DD8F92 /* MapController+NSFetchedResults.swift */; };
+		848FD503224B069B006285EF /* MapController+NotificationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FD502224B069B006285EF /* MapController+NotificationObserver.swift */; };
 		84D0B464223019810048DF91 /* MapController+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B463223019810048DF91 /* MapController+CoreData.swift */; };
 		84D0B466223020D30048DF91 /* MapController+CustomClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */; };
 		84D0B46A223051F60048DF91 /* MapCollectionViewController+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B469223051F60048DF91 /* MapCollectionViewController+Collection.swift */; };
@@ -64,6 +65,7 @@
 		8488F414222DC08F00DD8F92 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		8488F425222FF4BD00DD8F92 /* MapController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+UI.swift"; sourceTree = "<group>"; };
 		8488F429222FF8A500DD8F92 /* MapController+NSFetchedResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+NSFetchedResults.swift"; sourceTree = "<group>"; };
+		848FD502224B069B006285EF /* MapController+NotificationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+NotificationObserver.swift"; sourceTree = "<group>"; };
 		84D0B463223019810048DF91 /* MapController+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CoreData.swift"; sourceTree = "<group>"; };
 		84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CustomClasses.swift"; sourceTree = "<group>"; };
 		84D0B469223051F60048DF91 /* MapCollectionViewController+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapCollectionViewController+Collection.swift"; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			children = (
 				84D66893223860B7008B7FEC /* Custom Class */,
 				841A55AB22261F230028A6E3 /* MapController.swift */,
+				848FD502224B069B006285EF /* MapController+NotificationObserver.swift */,
 				84D0B463223019810048DF91 /* MapController+CoreData.swift */,
 				841A55C4222629D10028A6E3 /* MapController+Handles.swift */,
 				841A55CA222655D90028A6E3 /* MapController+MapKit.swift */,
@@ -299,6 +302,7 @@
 				84601E132227AF4A00A77BAD /* flickr.photos.getInfo.swift in Sources */,
 				84601E052227372100A77BAD /* UIColor+Extension.swift in Sources */,
 				84601E112227AEA200A77BAD /* flickr.photos.search.swift in Sources */,
+				848FD503224B069B006285EF /* MapController+NotificationObserver.swift in Sources */,
 				84601E0F2227A35B00A77BAD /* UNSYNC.swift in Sources */,
 				841A55C5222629D10028A6E3 /* MapController+Handles.swift in Sources */,
 				841A55C3222628AA0028A6E3 /* UIView+Extensions.swift in Sources */,
