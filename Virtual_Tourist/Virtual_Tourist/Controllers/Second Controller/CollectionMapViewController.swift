@@ -46,6 +46,10 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     
     var operationQueue = OperationQueue()
     
+    var currentPinID: NSManagedObjectID!
+    var newPin: Pin!
+    
+    
     var deleteIndexSet = Set<IndexPath>() {
         didSet {
             newLocationButton.isSelected = !deleteIndexSet.isEmpty
