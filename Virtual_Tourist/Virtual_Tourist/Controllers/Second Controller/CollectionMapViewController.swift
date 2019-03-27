@@ -49,6 +49,8 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     var currentPinID: NSManagedObjectID!
     var newPin: Pin!
     
+    var currentNetworkTask: URLSessionTask?
+    
     
     var deleteIndexSet = Set<IndexPath>() {
         didSet {
@@ -151,6 +153,7 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
        let stack = UIStackView()
         stack.axis = .vertical
         stack.spacing = 10
+        stack.isHidden = true
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -161,6 +164,16 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         annotation.coordinate = pin.coordinate
         return annotation
     }()
+    
+    
+    lazy var activityView: UIActivityIndicatorView = {
+       let activityVC = UIActivityIndicatorView()
+        activityVC.hidesWhenStopped = true
+        activityVC.style = .gray
+        activityVC.translatesAutoresizingMaskIntoConstraints = false
+        return activityVC
+    }()
+    
     
     deinit {
         fetchedResultsController = nil

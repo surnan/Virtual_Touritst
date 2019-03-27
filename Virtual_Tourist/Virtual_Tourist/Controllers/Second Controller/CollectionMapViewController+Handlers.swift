@@ -47,8 +47,10 @@ extension CollectionMapViewController {
     func synchronouslyDeletePhotosAndRedownloadOnPin() {
         let block1 = BlockOperation {
             DispatchQueue.main.async {
+                self.activityView.startAnimating()
                 self.newLocationButton.isEnabled = false
                 self.newLocationButton.backgroundColor = UIColor.yellow
+                self.emptyCollectionStack.isHidden = true
             }
             self.deleteCurrentPicturesOnPin()
         }
@@ -65,13 +67,16 @@ extension CollectionMapViewController {
         
         let block4 = BlockOperation {
             self.currentPinID = self.pin.objectID
-            FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(urls:error:))
+            self.currentNetworkTask = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(urls:error:))
         }
         
         let block5 = BlockOperation {
             DispatchQueue.main.async {
                 self.newLocationButton.isEnabled = true
                 self.newLocationButton.backgroundColor = UIColor.orange
+//                self.activityView.stopAnimating()
+//                self.emptyCollectionStack.isHidden = self.pin.urlCount == 0 ? false : true
+                print("pin.urlCount = \(self.pin.urlCount)")
             }
         }
         

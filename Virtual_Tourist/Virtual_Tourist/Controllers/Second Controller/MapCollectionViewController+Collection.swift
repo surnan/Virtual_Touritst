@@ -53,8 +53,11 @@ extension CollectionMapViewController {
         
         if itemCount == 0 {
             print("NO MORE PICTURES")
+            
+        } else {
+            activityView.stopAnimating()
+//            emptyCollectionStack.isHidden = self.pin.urlCount == 0 ? false : true
         }
-        
         return itemCount
     }
     

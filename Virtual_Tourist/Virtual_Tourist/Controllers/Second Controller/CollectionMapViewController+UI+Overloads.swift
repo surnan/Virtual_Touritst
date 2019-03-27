@@ -18,9 +18,13 @@ extension CollectionMapViewController {
         setupNavigationMenu()
         setupMapView()
         [collectionViewEmptyLabel, refreshButton].forEach{emptyCollectionStack.addArrangedSubview($0)}
-        [emptyCollectionStack, myMapView, myCollectionView, newLocationButton, screenBottomFiller].forEach{view.addSubview($0) }
+        [emptyCollectionStack, myMapView, myCollectionView, newLocationButton, screenBottomFiller, activityView].forEach{view.addSubview($0) }
         setupUI()
         setupFetchedResultsController()
+        
+        if pin.urlCount == 0 {
+            emptyCollectionStack.isHidden = false
+        }
     }
     
     
@@ -39,5 +43,7 @@ extension CollectionMapViewController {
         screenBottomFiller.anchor(top: newLocationButton.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, bottom: view.bottomAnchor)
         emptyCollectionStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         emptyCollectionStack.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 }
