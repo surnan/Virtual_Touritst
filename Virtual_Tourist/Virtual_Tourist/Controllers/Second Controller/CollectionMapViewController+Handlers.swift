@@ -67,7 +67,7 @@ extension CollectionMapViewController {
         
         let block4 = BlockOperation {
             self.currentPinID = self.pin.objectID
-            self.currentNetworkTask = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(urls:error:))
+            self.currentNetworkTask = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
         }
         
         let block5 = BlockOperation {
@@ -87,7 +87,7 @@ extension CollectionMapViewController {
         operationQueue.addOperations([block1, block2, block3, block4 , block5], waitUntilFinished: false)
     }
 
-    func handleGetAllPhotoURLs(urls: [URL], error: Error?){
+    func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
         
         if let error = error {
@@ -130,10 +130,10 @@ extension CollectionMapViewController {
     }
     
     func block3Function(){
-        _ = FlickrClient.getAllPhotoURLs(currentPin: pin, fetchCount: fetchCount) { (urls, error) in
+        _ = FlickrClient.getAllPhotoURLs(currentPin: pin, fetchCount: fetchCount, completion: { (pin, urls, error) in
             self.pin.urlCount = Int32(urls.count)
             try? self.dataController.viewContext.save()
-        }
+        })
     }
 
     @objc func handleReCenter(){

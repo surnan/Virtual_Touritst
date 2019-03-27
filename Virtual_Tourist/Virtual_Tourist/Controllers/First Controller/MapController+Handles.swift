@@ -17,15 +17,16 @@ extension MapController {
         if sender.state != .ended {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
-            newPin = addNewPin(locationCoordinate)
+            let newPin = addNewPin(locationCoordinate)
             currentPinID = newPin.objectID
-            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(urls:error:))
+            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
             return
         }
     }
     
+
     
-    func handleGetAllPhotoURLs(urls: [URL], error: Error?){
+    func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
         
         if let error = error {
@@ -42,14 +43,10 @@ extension MapController {
         for (index, currentURL) in urls.enumerated() {
             URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
                 guard let imageData = imageData else {return}
-                connectPhotoAndPin(dataController: self.dataController, currentPin:  self.newPin , data: imageData, urlString: currentURL.absoluteString, index: index)
+                connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index)
             }).resume()
         }
     }
-    
-    
-    
-    
     
     
     @objc func handleDeleteALLButton(){

@@ -39,12 +39,11 @@ extension MapController: MKMapViewDelegate {
             fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [newPin])
             let request = NSBatchDeleteRequest(fetchRequest: fetch222)
             _ = try? dataController.viewContext.execute(request)
-            
+
             newPin.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
             previousPinID = nil
-
             currentPinID = newPin.objectID
-            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(urls:error:))
+            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
             
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.black}
