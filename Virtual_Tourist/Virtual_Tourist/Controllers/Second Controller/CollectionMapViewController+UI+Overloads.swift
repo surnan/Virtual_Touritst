@@ -19,8 +19,10 @@ extension CollectionMapViewController {
         setupMapView()
         [collectionViewEmptyLabel, refreshButton].forEach{emptyCollectionStack.addArrangedSubview($0)}
         [emptyCollectionStack, myMapView, myCollectionView, newLocationButton, screenBottomFiller, activityView].forEach{view.addSubview($0) }
+        
         setupUI()
         setupFetchedResultsController()
+        refresh()
         
         if pin.urlCount == 0 {
             emptyCollectionStack.isHidden = false

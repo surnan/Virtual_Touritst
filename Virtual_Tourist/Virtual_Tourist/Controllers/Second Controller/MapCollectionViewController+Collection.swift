@@ -34,13 +34,17 @@ extension CollectionMapViewController {
         }
 
         if let photoID = photosIndicesDict[indexPath] {
-                let currentPhoto = self.dataController.viewContext.object(with: photoID) as! Photo
-                let cell2 = self.myCollectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
-                cell2.myPhoto = currentPhoto
-                return cell2
+            let currentPhoto = self.dataController.viewContext.object(with: photoID) as! Photo
+            let cell2 = self.myCollectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
+            cell2.myPhoto = currentPhoto
+            
+            print("indexPath = \(indexPath) .... photoID found")
+            
+            return cell2
         }
         
         let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
+        print("indexPath = \(indexPath)")
         return cell
     }
 
@@ -53,7 +57,6 @@ extension CollectionMapViewController {
         
         if itemCount == 0 {
             print("NO MORE PICTURES")
-            
         } else {
             activityView.stopAnimating()
 //            emptyCollectionStack.isHidden = self.pin.urlCount == 0 ? false : true

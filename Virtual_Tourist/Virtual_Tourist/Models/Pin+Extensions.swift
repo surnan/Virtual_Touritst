@@ -19,7 +19,7 @@ extension Pin: MKAnnotation {
     }
     
     public var allPhotosDownloaded: Bool {
-        return urlCount == photoCount
+        return urlCount <= photoCount
     }
     
     //var backGroundContext: NSManagedObjectContext!

@@ -69,6 +69,7 @@ extension MapController: MKMapViewDelegate {
         newController.dataController = self.dataController
         newController.pin = apin
         self.delegate = newController
+        print("lat/lon ---> \(apin.coordinate)")
         navigationController?.pushViewController(newController, animated: true)
     }
 }
