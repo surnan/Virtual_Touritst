@@ -62,16 +62,13 @@ extension CollectionMapViewController {
                 self.myCollectionView.reloadData()
             }
         }
+    
         
         let block3 = BlockOperation {
-            self.block3Function()
-        }
-        
-        let block4 = BlockOperation {
             _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
         }
         
-        let block5 = BlockOperation {
+        let block4 = BlockOperation {
             DispatchQueue.main.async {
                 self.newLocationButton.isEnabled = true
                 self.newLocationButton.backgroundColor = UIColor.orange
@@ -84,8 +81,7 @@ extension CollectionMapViewController {
         block2.addDependency(block1)
         block3.addDependency(block2)
         block4.addDependency(block3)
-        block5.addDependency(block4)
-        operationQueue.addOperations([block1, block2, block3, block4 , block5], waitUntilFinished: false)
+        operationQueue.addOperations([block1, block2, block3 , block4], waitUntilFinished: false)
     }
 
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){

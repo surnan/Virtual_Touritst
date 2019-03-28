@@ -52,16 +52,12 @@ extension CollectionMapViewController {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("\nCell Count = \(pin.urlCount)")
         print("Photo Count = \(pin.photoCount)")
-        
-        let itemCount = Int(pin.urlCount)
-        
-        if itemCount == 0 {
-            print("NO MORE PICTURES")
-        } else {
+    
+        if pin.urlCount != 0 {
             activityView.stopAnimating()
-//            emptyCollectionStack.isHidden = self.pin.urlCount == 0 ? false : true
         }
-        return itemCount
+        
+        return Int(pin.urlCount)
     }
     
 
