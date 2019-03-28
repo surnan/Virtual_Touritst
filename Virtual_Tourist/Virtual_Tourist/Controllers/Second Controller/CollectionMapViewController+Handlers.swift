@@ -92,25 +92,82 @@ extension CollectionMapViewController {
             return
         }
         
-        
-        let operationQueue = OperationQueue()
-        
-        
-        backgroundContext.perform {
-            let currentPinID = pin.objectID
-            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-            backgroundPin.urlCount = Int32(urls.count)
-            self.activiateUI(backgroundPin)
-            try? backgroundContext.save()
-        }
 
+//        let operationQueue = OperationQueue()
         
-        for (index, currentURL) in urls.enumerated() {
-            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                guard let imageData = imageData else {return}
-                connectPhotoAndPin(dataController: self.dataController, currentPin:  self.pin , data: imageData, urlString: currentURL.absoluteString, index: index)
-            }).resume()
-        }
+//        let block1 = BlockOperation {
+            for (index, currentURL) in urls.enumerated() {
+                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                    guard let imageData = imageData else {return}
+                    
+                    let operationQueue = OperationQueue()
+                    
+                    let block11 = BlockOperation {
+                        connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index)
+                    }
+                    
+                    let block22 = BlockOperation {
+                        if pin.photoCount != 0 {
+                            self.activityView.stopAnimating()
+                        }
+                    }
+                    
+                    block22.addDependency(block11)
+                    operationQueue.addOperations([block11, block22], waitUntilFinished: false)
+                    
+                }).resume()
+            }
+//        }
+        
+        
+        
+
+//        let block2 = BlockOperation {
+//
+//            if pin.photoCount == 0 {
+//                self.activityView.stopAnimating()
+//                self.emptyCollectionStack.isHidden = false
+//                self.newLocationButton.isEnabled = true
+//                self.newLocationButton.backgroundColor = UIColor.orange
+//            }
+//            //  self.activiateUI(pin)
+//        }
+//
+//        block2.addDependency(block1)
+//
+//        operationQueue.addOperations([block1], waitUntilFinished: false)
+        
+        
+//        let operationQueue = OperationQueue()
+//
+//
+//
+//        let block1 = BlockOperation{
+//            backgroundContext.perform {
+//                let currentPinID = pin.objectID
+//                let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+//                backgroundPin.urlCount = Int32(urls.count)
+////                self.activiateUI(backgroundPin)
+//                try? backgroundContext.save()
+//            }
+//        }
+//
+//
+//        let block2 = BlockOperation {
+//            for (index, currentURL) in urls.enumerated() {
+//                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+//                    guard let imageData = imageData else {return}
+//                    connectPhotoAndPin(dataController: self.dataController, currentPin:  self.pin , data: imageData, urlString: currentURL.absoluteString, index: index)
+//                }).resume()
+//            }
+//        }
+//
+////        let block3 = BlockOperation {
+////
+////        }
+//
+//        operationQueue.addOperations([block1, block2], waitUntilFinished: false)
+        
     }
     
     
