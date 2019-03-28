@@ -34,23 +34,15 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     
     
     //MARK:-  Var
-    var pin: Pin!
-    var dataController: DataController!
+    var pin: Pin!   //injected from MapController
+    var dataController: DataController! //injected from MapController
+
     var fetchedResultsController: NSFetchedResultsController<Photo>!
-    var myFetchController: NSFetchedResultsController<Photo>!
     
     let reuseIdLoadingCell = "reuseIdLoadingCell"
     let reuseIDCellLoaded = "reuseIDCellLoaded"
     let reuseIDCellIsSelected = "reuseIDCellIsSelected"
     let mapRegionDistanceValue: CLLocationDistance = 1500
-    
-    var operationQueue = OperationQueue()
-    
-    var currentPinID: NSManagedObjectID!
-    var newPin: Pin!
-    
-    var currentNetworkTask: URLSessionTask?
-    
     
     var deleteIndexSet = Set<IndexPath>() {
         didSet {
@@ -59,8 +51,6 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     }
     
     var photosIndicesDict = [IndexPath: NSManagedObjectID]()
-    
-    var currentTask: URLSessionTask?
     
     var screenBottomFiller: UIView = {
         let view = UIView()
@@ -132,7 +122,6 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         label.textAlignment = .center;
         label.text = "No Photos on this Pin"
         label.font = UIFont.systemFont(ofSize: 15)
-//        messageLabel.sizeToFit()
         return label
     }()
     

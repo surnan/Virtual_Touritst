@@ -45,6 +45,8 @@ extension CollectionMapViewController {
     }
     
     func synchronouslyDeletePhotosAndRedownloadOnPin() {
+        let operationQueue = OperationQueue()
+        
         let block1 = BlockOperation {
             DispatchQueue.main.async {
                 self.activityView.startAnimating()
@@ -66,8 +68,7 @@ extension CollectionMapViewController {
         }
         
         let block4 = BlockOperation {
-            self.currentPinID = self.pin.objectID
-            self.currentNetworkTask = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
+            _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
         }
         
         let block5 = BlockOperation {
@@ -96,7 +97,9 @@ extension CollectionMapViewController {
         }
         
         backgroundContext.perform {
-            let backgroundPin = backgroundContext.object(with: self.currentPinID) as! Pin
+            
+            let currentPinID = pin.objectID
+            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
             backgroundPin.urlCount = Int32(urls.count)
             try? backgroundContext.save()
         }

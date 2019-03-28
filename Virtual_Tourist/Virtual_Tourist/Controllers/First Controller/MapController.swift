@@ -32,12 +32,10 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var task: URLSessionTask?
     var delegate: CollectionMapViewControllerDelegate?
     
-    var tapDeletesPin = false   //determines if deletionLabel
-    var dataController: DataController!
+    var tapDeletesPin = false   //determines if deletionLabel is shown in UI
+    var dataController: DataController! //injected from AppDelegate
     var myFetchController: NSFetchedResultsController<Pin>!
     
-//    var currentPinID: NSManagedObjectID!
-//    var newPin: Pin!
     
     var mapView = MKMapView()
     
