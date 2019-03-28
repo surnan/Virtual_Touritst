@@ -30,8 +30,8 @@ extension MapController: MKMapViewDelegate {
             previousPinID = getCorrespondingPin(annotation: myAnnotation)?.objectID
         case .ending:
             view.dragState = .none
+
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.black}
-            
             guard let _previousPin = previousPinID  else {return}
             newPin = dataController.viewContext.object(with: _previousPin) as? Pin
             
@@ -42,9 +42,9 @@ extension MapController: MKMapViewDelegate {
 
             newPin.movePin(coordinate: myAnnotation.coordinate, viewContext: dataController.viewContext)
             previousPinID = nil
-            currentPinID = newPin.objectID
+//            currentPinID = newPin.objectID
             FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
-            
+
         case .canceling:
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.black}
         default: break

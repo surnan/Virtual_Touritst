@@ -18,7 +18,7 @@ extension MapController {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
             let newPin = addNewPin(locationCoordinate)
-            currentPinID = newPin.objectID
+//            currentPinID = newPin.objectID
             FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
             return
         }
@@ -34,8 +34,12 @@ extension MapController {
             return
         }
         
+        
+        let pinId = pin.objectID
+        
+        
         backgroundContext.perform {
-            let backgroundPin = backgroundContext.object(with: self.currentPinID) as! Pin
+            let backgroundPin = backgroundContext.object(with: pinId) as! Pin
             backgroundPin.urlCount = Int32(urls.count)
             try? backgroundContext.save()
         }
