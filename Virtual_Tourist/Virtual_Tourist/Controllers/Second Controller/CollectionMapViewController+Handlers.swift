@@ -68,23 +68,9 @@ extension CollectionMapViewController {
             _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
         }
         
-//        let block4 = BlockOperation {
-//            DispatchQueue.main.async {
-//                //TODO:- THIS NEEDS TO BE MOVED.  It gets enabled and block3 is still running asynchronously
-//                self.newLocationButton.isEnabled = true
-//                self.newLocationButton.backgroundColor = UIColor.orange
-//                print("pin.urlCount = \(self.pin.urlCount)")
-//            }
-//        }
-        
         block2.addDependency(block1)
         block3.addDependency(block2)
-//        block4.addDependency(block3)
-//        operationQueue.addOperations([block1, block2, block3 , block4], waitUntilFinished: false)
-        
         operationQueue.addOperations([block1, block2, block3], waitUntilFinished: false)
-        
-        
     }
 
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){

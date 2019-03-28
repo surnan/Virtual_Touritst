@@ -55,6 +55,7 @@ extension CollectionMapViewController {
     
         if pin.urlCount != 0 {
             activityView.stopAnimating()
+            emptyCollectionStack.isHidden = true
         }
         
         return Int(pin.urlCount)
