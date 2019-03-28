@@ -32,8 +32,8 @@ extension MapController: MKMapViewDelegate {
             view.dragState = .none
 
             if let view = view as? MKPinAnnotationView {view.pinTintColor = UIColor.black}
-            guard let _previousPin = previousPinID  else {return}
-            newPin = dataController.viewContext.object(with: _previousPin) as? Pin
+            guard let _previousPin = previousPinID, let newPin = dataController.viewContext.object(with: _previousPin) as? Pin  else {return}
+//            let newPin = dataController.viewContext.object(with: _previousPin) as? Pin
             
             let fetch222 = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
             fetch222.predicate = NSPredicate(format: "pin = %@", argumentArray: [newPin])
