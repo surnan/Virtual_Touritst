@@ -73,6 +73,17 @@ extension CollectionMapViewController {
         operationQueue.addOperations([block1, block2, block3], waitUntilFinished: false)
     }
 
+    fileprivate func activiateUI(_ backgroundPin: Pin) {
+        DispatchQueue.main.async {
+            if backgroundPin.urlCount == 0 {
+                self.activityView.stopAnimating()
+                self.emptyCollectionStack.isHidden = false
+                self.newLocationButton.isEnabled = true
+                self.newLocationButton.backgroundColor = UIColor.orange
+            }
+        }
+    }
+    
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
         
@@ -81,18 +92,15 @@ extension CollectionMapViewController {
             return
         }
         
+        
+        let operationQueue = OperationQueue()
+        
+        
         backgroundContext.perform {
             let currentPinID = pin.objectID
             let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
             backgroundPin.urlCount = Int32(urls.count)
-            DispatchQueue.main.async {
-                if backgroundPin.urlCount == 0 {
-                    self.activityView.stopAnimating()
-                    self.emptyCollectionStack.isHidden = false
-                    self.newLocationButton.isEnabled = true
-                    self.newLocationButton.backgroundColor = UIColor.orange
-                }
-            }
+            self.activiateUI(backgroundPin)
             try? backgroundContext.save()
         }
 
