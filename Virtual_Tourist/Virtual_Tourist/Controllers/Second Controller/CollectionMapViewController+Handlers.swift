@@ -73,6 +73,17 @@ extension CollectionMapViewController {
         operationQueue.addOperations([block1, block2, block3], waitUntilFinished: false)
     }
 
+    
+    
+//    DispatchQueue.main.async {
+//    if backgroundPin.urlCount == 0 {
+//    self.activityView.stopAnimating()
+//    self.emptyCollectionStack.isHidden = false
+//    self.newLocationButton.isEnabled = true
+//    self.newLocationButton.backgroundColor = UIColor.orange
+//    }
+//    }
+    
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
         
@@ -81,26 +92,20 @@ extension CollectionMapViewController {
             return
         }
         
+        //Setting pin.urlCount
         backgroundContext.perform {
             let currentPinID = pin.objectID
             let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
             backgroundPin.urlCount = Int32(urls.count)
-            DispatchQueue.main.async {
-                if backgroundPin.urlCount == 0 {
-                    self.activityView.stopAnimating()
-                    self.emptyCollectionStack.isHidden = false
-                    self.newLocationButton.isEnabled = true
-                    self.newLocationButton.backgroundColor = UIColor.orange
-                }
-            }
             try? backgroundContext.save()
         }
 
         
+        
         for (index, currentURL) in urls.enumerated() {
             URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
                 guard let imageData = imageData else {return}
-                connectPhotoAndPin(dataController: self.dataController, currentPin:  self.pin , data: imageData, urlString: currentURL.absoluteString, index: index)
+                connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index)
             }).resume()
         }
     }
