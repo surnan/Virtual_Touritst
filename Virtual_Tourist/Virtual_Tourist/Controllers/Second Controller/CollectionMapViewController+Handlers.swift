@@ -125,12 +125,6 @@ extension CollectionMapViewController {
         }
     }
     
-    func block3Function(){
-        _ = FlickrClient.getAllPhotoURLs(currentPin: pin, fetchCount: fetchCount, completion: { (pin, urls, error) in
-            self.pin.urlCount = Int32(urls.count)
-            try? self.dataController.viewContext.save()
-        })
-    }
 
     @objc func handleReCenter(){
         myMapView.centerCoordinate = firstAnnotation.coordinate
