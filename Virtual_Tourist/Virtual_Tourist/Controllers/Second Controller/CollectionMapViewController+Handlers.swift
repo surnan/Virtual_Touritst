@@ -70,10 +70,9 @@ extension CollectionMapViewController {
         
         let block4 = BlockOperation {
             DispatchQueue.main.async {
+                //TODO:- THIS NEEDS TO BE MOVED.  It gets enabled and block3 is still running asynchronously
                 self.newLocationButton.isEnabled = true
                 self.newLocationButton.backgroundColor = UIColor.orange
-//                self.activityView.stopAnimating()
-//                self.emptyCollectionStack.isHidden = self.pin.urlCount == 0 ? false : true
                 print("pin.urlCount = \(self.pin.urlCount)")
             }
         }
@@ -93,12 +92,18 @@ extension CollectionMapViewController {
         }
         
         backgroundContext.perform {
-            
             let currentPinID = pin.objectID
             let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
             backgroundPin.urlCount = Int32(urls.count)
+            DispatchQueue.main.async {
+                if backgroundPin.urlCount == 0 {
+                    self.activityView.stopAnimating()
+                    self.emptyCollectionStack.isHidden = false
+                }
+            }
             try? backgroundContext.save()
         }
+
         
         for (index, currentURL) in urls.enumerated() {
             URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in

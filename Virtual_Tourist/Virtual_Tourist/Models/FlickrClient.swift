@@ -104,6 +104,11 @@ class FlickrClient {
                     })
 //                    print("2 - array_URLString2 --> \(array_URLString2)")
                 }
+                
+                completion(currentPin, [], nil)
+                return
+                
+                
 //                print("3 - array_URLString2 --> \(array_URLString2)")
             } catch let conversionErr {
                 DispatchQueue.main.async {
