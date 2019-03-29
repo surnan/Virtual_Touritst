@@ -57,20 +57,15 @@ extension CollectionMapViewController {
             self.deleteCurrentPicturesOnPin()
         }
         
-        let block2 = BlockOperation {
-            DispatchQueue.main.async {
-                self.myCollectionView.reloadData()
-            }
-        }
-    
         
-        let block3 = BlockOperation {
+        let block2 = BlockOperation {
             _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
         }
         
+
         block2.addDependency(block1)
-        block3.addDependency(block2)
-        operationQueue.addOperations([block1, block2, block3], waitUntilFinished: false)
+        operationQueue.addOperations([block1, block2], waitUntilFinished: false)
+        
     }
 
     
@@ -92,6 +87,10 @@ extension CollectionMapViewController {
             return
         }
         
+        
+       
+        
+        
         //Setting pin.urlCount
         backgroundContext.perform {
             let currentPinID = pin.objectID
@@ -99,14 +98,39 @@ extension CollectionMapViewController {
             backgroundPin.urlCount = Int32(urls.count)
             try? backgroundContext.save()
         }
-
         
+        if urls.count == 0 {
+            DispatchQueue.main.async {
+                self.newLocationButton.backgroundColor = UIColor.orange
+                self.newLocationButton.isEnabled = true
+                self.emptyCollectionStack.isHidden = false
+                self.activityView.stopAnimating()
+            }
+            return
+        }
+
+        let grp = DispatchGroup()
         
         for (index, currentURL) in urls.enumerated() {
+            grp.enter()
             URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
                 guard let imageData = imageData else {return}
                 connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index)
+                grp.leave()
             }).resume()
+            
+            grp.notify(queue: DispatchQueue.main) {
+                self.newLocationButton.backgroundColor = UIColor.orange
+                self.newLocationButton.isEnabled = true
+                self.activityView.stopAnimating()
+                
+                print("pin.urlCount = \(pin.urlCount)")
+//                if pin.urlCount == 0 {
+//                    self.emptyCollectionStack.isHidden = false
+//                }
+            }
+            
+            
         }
     }
     
@@ -121,10 +145,7 @@ extension CollectionMapViewController {
             pin.photoCount = 0
             pin.urlCount = 0
             try? dataController.viewContext.save()
-            try fetchedResultsController.performFetch()
-            DispatchQueue.main.async {
-                self.myCollectionView.reloadData()
-            }
+//            try fetchedResultsController.performFetch()
         } catch {
             print("unable to delete \(error)")
         }
