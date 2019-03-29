@@ -25,7 +25,7 @@ extension CollectionMapViewController {
         refresh()
         
         if pin.urlCount == 0 {
-            emptyCollectionStack.isHidden = false
+//            emptyCollectionStack.isHidden = false
         }
         
         //TODO: Verify that pin.PhotoCount correctly matches how many photos are attached.  When this value is out of sync, app crashes

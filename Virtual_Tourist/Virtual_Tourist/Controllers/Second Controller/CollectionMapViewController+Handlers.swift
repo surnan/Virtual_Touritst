@@ -68,28 +68,13 @@ extension CollectionMapViewController {
         
     }
 
-    
-    
-//    DispatchQueue.main.async {
-//    if backgroundPin.urlCount == 0 {
-//    self.activityView.stopAnimating()
-//    self.emptyCollectionStack.isHidden = false
-//    self.newLocationButton.isEnabled = true
-//    self.newLocationButton.backgroundColor = UIColor.orange
-//    }
-//    }
-    
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
-        
+    
         if let error = error {
             print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
             return
         }
-        
-        
-       
-        
         
         //Setting pin.urlCount
         backgroundContext.perform {
@@ -99,15 +84,15 @@ extension CollectionMapViewController {
             try? backgroundContext.save()
         }
         
-        if urls.count == 0 {
-            DispatchQueue.main.async {
-                self.newLocationButton.backgroundColor = UIColor.orange
-                self.newLocationButton.isEnabled = true
-                self.emptyCollectionStack.isHidden = false
-                self.activityView.stopAnimating()
-            }
-            return
-        }
+//        if urls.count == 0 && !pin.isDownloading {
+//            DispatchQueue.main.async {
+//                self.newLocationButton.backgroundColor = UIColor.orange
+//                self.newLocationButton.isEnabled = true
+//                self.emptyCollectionStack.isHidden = false
+//                self.activityView.stopAnimating()
+//            }
+//            return
+//        }
 
         let grp = DispatchGroup()
         
@@ -125,9 +110,9 @@ extension CollectionMapViewController {
                 self.activityView.stopAnimating()
                 
                 print("pin.urlCount = \(pin.urlCount)")
-//                if pin.urlCount == 0 {
-//                    self.emptyCollectionStack.isHidden = false
-//                }
+                if pin.urlCount == 0 && !pin.isDownloading {
+                    self.emptyCollectionStack.isHidden = false
+                }
             }
             
             
@@ -144,8 +129,8 @@ extension CollectionMapViewController {
             pin.pageNumber = pin.pageNumber + 1
             pin.photoCount = 0
             pin.urlCount = 0
+            pin.isDownloading = true
             try? dataController.viewContext.save()
-//            try fetchedResultsController.performFetch()
         } catch {
             print("unable to delete \(error)")
         }

@@ -29,6 +29,7 @@ extension Pin: MKAnnotation {
         self.pageNumber = 1
         self.photoCount = 0
         self.urlCount = 0
+        self.isDownloading = false //Not so sure about this
         try? viewContext.save()
     }
 
@@ -38,6 +39,7 @@ extension Pin: MKAnnotation {
         pageNumber = 1
         photoCount = 0
         urlCount = 0
+        isDownloading = false
     }
 }
 
