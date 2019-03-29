@@ -31,10 +31,10 @@
 		848FD503224B069B006285EF /* MapController+NotificationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FD502224B069B006285EF /* MapController+NotificationObserver.swift */; };
 		84D0B464223019810048DF91 /* MapController+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B463223019810048DF91 /* MapController+CoreData.swift */; };
 		84D0B466223020D30048DF91 /* MapController+CustomClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */; };
-		84D0B46A223051F60048DF91 /* MapCollectionViewController+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B469223051F60048DF91 /* MapCollectionViewController+Collection.swift */; };
+		84D0B46A223051F60048DF91 /* CollectionMapViewController+Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0B469223051F60048DF91 /* CollectionMapViewController+Collection.swift */; };
 		84D6687B22374092008B7FEC /* CollectionMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6687A22374092008B7FEC /* CollectionMapViewController.swift */; };
 		84D6688322378E5F008B7FEC /* FinalCollectionSelectedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6688222378E5F008B7FEC /* FinalCollectionSelectedImageCell.swift */; };
-		84D6688C22385279008B7FEC /* MapCollectionViewController+Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6688B22385279008B7FEC /* MapCollectionViewController+Map.swift */; };
+		84D6688C22385279008B7FEC /* CollectionMapViewController+Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6688B22385279008B7FEC /* CollectionMapViewController+Map.swift */; };
 		84D6688E2238547A008B7FEC /* CollectionMapViewController+UI+Overloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6688D2238547A008B7FEC /* CollectionMapViewController+UI+Overloads.swift */; };
 		84D668902238552B008B7FEC /* CollectionMapViewController+Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D6688F2238552B008B7FEC /* CollectionMapViewController+Handlers.swift */; };
 		84D66892223855B8008B7FEC /* CollectionMapViewController+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D66891223855B8008B7FEC /* CollectionMapViewController+CoreData.swift */; };
@@ -67,10 +67,10 @@
 		848FD502224B069B006285EF /* MapController+NotificationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+NotificationObserver.swift"; sourceTree = "<group>"; };
 		84D0B463223019810048DF91 /* MapController+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CoreData.swift"; sourceTree = "<group>"; };
 		84D0B465223020D30048DF91 /* MapController+CustomClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapController+CustomClasses.swift"; sourceTree = "<group>"; };
-		84D0B469223051F60048DF91 /* MapCollectionViewController+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapCollectionViewController+Collection.swift"; sourceTree = "<group>"; };
+		84D0B469223051F60048DF91 /* CollectionMapViewController+Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionMapViewController+Collection.swift"; sourceTree = "<group>"; };
 		84D6687A22374092008B7FEC /* CollectionMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMapViewController.swift; sourceTree = "<group>"; };
 		84D6688222378E5F008B7FEC /* FinalCollectionSelectedImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalCollectionSelectedImageCell.swift; sourceTree = "<group>"; };
-		84D6688B22385279008B7FEC /* MapCollectionViewController+Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapCollectionViewController+Map.swift"; sourceTree = "<group>"; };
+		84D6688B22385279008B7FEC /* CollectionMapViewController+Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionMapViewController+Map.swift"; sourceTree = "<group>"; };
 		84D6688D2238547A008B7FEC /* CollectionMapViewController+UI+Overloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionMapViewController+UI+Overloads.swift"; sourceTree = "<group>"; };
 		84D6688F2238552B008B7FEC /* CollectionMapViewController+Handlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionMapViewController+Handlers.swift"; sourceTree = "<group>"; };
 		84D66891223855B8008B7FEC /* CollectionMapViewController+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionMapViewController+CoreData.swift"; sourceTree = "<group>"; };
@@ -188,8 +188,8 @@
 				84D6688A223850FF008B7FEC /* Collection_Cells */,
 				84D6687A22374092008B7FEC /* CollectionMapViewController.swift */,
 				84D6688D2238547A008B7FEC /* CollectionMapViewController+UI+Overloads.swift */,
-				84D0B469223051F60048DF91 /* MapCollectionViewController+Collection.swift */,
-				84D6688B22385279008B7FEC /* MapCollectionViewController+Map.swift */,
+				84D0B469223051F60048DF91 /* CollectionMapViewController+Collection.swift */,
+				84D6688B22385279008B7FEC /* CollectionMapViewController+Map.swift */,
 				84D66891223855B8008B7FEC /* CollectionMapViewController+CoreData.swift */,
 				84D6688F2238552B008B7FEC /* CollectionMapViewController+Handlers.swift */,
 			);
@@ -307,8 +307,8 @@
 				84D6688322378E5F008B7FEC /* FinalCollectionSelectedImageCell.swift in Sources */,
 				84D0B464223019810048DF91 /* MapController+CoreData.swift in Sources */,
 				8488F415222DC08F00DD8F92 /* DataController.swift in Sources */,
-				84D0B46A223051F60048DF91 /* MapCollectionViewController+Collection.swift in Sources */,
-				84D6688C22385279008B7FEC /* MapCollectionViewController+Map.swift in Sources */,
+				84D0B46A223051F60048DF91 /* CollectionMapViewController+Collection.swift in Sources */,
+				84D6688C22385279008B7FEC /* CollectionMapViewController+Map.swift in Sources */,
 				84D6688E2238547A008B7FEC /* CollectionMapViewController+UI+Overloads.swift in Sources */,
 				841A55AA22261F230028A6E3 /* AppDelegate.swift in Sources */,
 				8467393C223066160047C3F1 /* FinalCollectionLoadingCell.swift in Sources */,
