@@ -163,7 +163,6 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         return activityVC
     }()
     
-    
     deinit {
         fetchedResultsController = nil
     }

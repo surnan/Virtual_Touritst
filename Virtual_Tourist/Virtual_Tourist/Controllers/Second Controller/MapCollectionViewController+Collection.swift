@@ -38,26 +38,25 @@ extension CollectionMapViewController {
             let cell2 = self.myCollectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
             cell2.myPhoto = currentPhoto
             
-            print("indexPath = \(indexPath) .... photoID found")
+//            print("indexPath = \(indexPath) .... photoID found")
             
             return cell2
         }
         
         let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
-        print("indexPath = \(indexPath)")
+//        print("indexPath = \(indexPath)")
         return cell
     }
 
  
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("\nCell Count = \(pin.urlCount)")
-        print("Photo Count = \(pin.photoCount)")
+//        print("\nCell Count = \(pin.urlCount)")
+//        print("Photo Count = \(pin.photoCount)")
     
         if pin.urlCount != 0 {
             activityView.stopAnimating()
-            emptyCollectionStack.isHidden = true
         }
-        
+         
         return Int(pin.urlCount)
     }
     

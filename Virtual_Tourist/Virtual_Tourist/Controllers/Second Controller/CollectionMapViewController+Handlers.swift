@@ -84,31 +84,65 @@ extension CollectionMapViewController {
 //    }
 //    }
     
+    
+    
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
-        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
         
         if let error = error {
             print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
             return
         }
         
-        //Setting pin.urlCount
-        backgroundContext.perform {
-            let currentPinID = pin.objectID
-            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-            backgroundPin.urlCount = Int32(urls.count)
-            try? backgroundContext.save()
-        }
-
+        let myQueue = OperationQueue()
         
-        
-        for (index, currentURL) in urls.enumerated() {
-            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                guard let imageData = imageData else {return}
-                connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index)
-            }).resume()
+        let blockOne = BlockOperation {
+            print("***   BLOCK 1   ***")
+            //Setting pin.urlCount
+            let backgroundContext: NSManagedObjectContext! = self.dataController.backGroundContext
+            backgroundContext.perform {
+                let currentPinID = pin.objectID
+                let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+                backgroundPin.urlCount = Int32(urls.count)
+                try? backgroundContext.save()
+            }
         }
+        
+        let blockTwo = BlockOperation {
+            print("***   BLOCK 2   --- urls.count --> \(urls.count)")
+            for (index, currentURL) in urls.enumerated() {
+                URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in  //1
+                    guard let imageData = imageData else {return}
+                    connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index) //2
+                }).resume()
+            }
+        }
+        
+        let blockThree = BlockOperation {
+            print("***   BLOCK 3   ***")
+            DispatchQueue.main.async {
+                self.activityView.stopAnimating()
+                self.newLocationButton.isEnabled = true
+                if pin.photoCount == 0 {                            //3
+                    print("SHOWING")
+                    self.emptyCollectionStack.isHidden = false
+                } else {
+                    print("HIDING")
+                    self.emptyCollectionStack.isHidden = true
+                }
+            }
+        }
+        
+        blockTwo.addDependency(blockOne)
+        blockThree.addDependency(blockTwo)
+        myQueue.addOperations([blockOne, blockTwo, blockThree], waitUntilFinished: true)
     }
+    
+    
+    
+    
+//    self.newLocationButton.isEnabled = true
+//    self.newLocationButton.backgroundColor = UIColor.orange
+    
     
     
     func deleteCurrentPicturesOnPin() {
