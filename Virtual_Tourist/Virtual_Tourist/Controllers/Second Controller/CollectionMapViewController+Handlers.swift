@@ -40,60 +40,50 @@ extension CollectionMapViewController {
     }
     
     
-    func getNewPhotosFromNextURLs(){
+    func handleGetAllPhotoURLs2(pin: Pin, urls: [URL], error: Error?){
+        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
         
-        let operationQueue = OperationQueue()
-        
-        let block1 = BlockOperation {
-            DispatchQueue.main.async {
-                self.activityView.startAnimating()
-                self.newLocationButton.isEnabled = false
-                self.newLocationButton.backgroundColor = UIColor.yellow
-                self.emptyCollectionStack.isHidden = true
-            }
-//            self.deleteCurrentPicturesOnPin()
+        if let error = error {
+            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+            return
         }
-
+        let pinId = pin.objectID
+        backgroundContext.perform {
+            let backgroundPin = backgroundContext.object(with: pinId) as! Pin
+            backgroundPin.urlCount = Int32(urls.count)
+            try? backgroundContext.save()
+        }
         
+        for (index, currentURL) in urls.enumerated() {
+            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
+                guard let imageData = imageData else {return}
+                connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index)
+            }).resume()
+        }
+    }
+    
+    func getNewPhotosFromNextURLs(){
+        self.activityView.startAnimating()
+        self.newLocationButton.isEnabled = false
+        self.newLocationButton.backgroundColor = UIColor.yellow
+        self.emptyCollectionStack.isHidden = true
         
         if let items = self.pin.next {
             items.map{$0 as! NextPinURLs}.forEach{
-                guard let _urlString = $0.urlString  else {
-                    return
-                }
-                print("---- \(_urlString)")
+                guard let _urlString = $0.urlString, let _url = URL(string: _urlString)  else {return}
+                //                print("... \(_urlString)")
+                newURLStringArray.append(_urlString)
+                newURLArray.append(_url)
             }
         }
+
         
+        handleGetAllPhotoURLs(pin: pin, urls: newURLArray, error: nil)
         
-        
-        
-        
-//        block2.addDependency(block1)
-//        operationQueue.addOperations([block1], waitUntilFinished: false)
-        
+        print("test")
     }
     
-    
-    
-    
-//    func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String, index: Int){
-//        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
-//        let currentPinID = currentPin.objectID
-//
-//        backgroundContext.perform {
-//            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-//            backgroundPin.photoCount = backgroundPin.photoCount + 1
-//            let tempPhoto = Photo(context: backgroundContext)
-//            tempPhoto.imageData = data
-//            tempPhoto.urlString = urlString
-//            tempPhoto.index = Int32(index) //Random value for init
-//            tempPhoto.pin = backgroundPin
-//            tempPhoto.isLoaded = true
-//            //        let testImage = UIImage(data: tempPhoto.imageData!)
-//            try? backgroundContext.save()
-//        }
-//    }
+
 
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
@@ -120,32 +110,8 @@ extension CollectionMapViewController {
             }
             return
         }
-
-        let grp = DispatchGroup()
-        
-        for (index, currentURL) in urls.enumerated() {
-            grp.enter()
-            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                guard let imageData = imageData else {return}
-                connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index)
-                grp.leave()
-            }).resume()
-            
-            grp.notify(queue: DispatchQueue.main) {
-                self.newLocationButton.backgroundColor = UIColor.orange
-                self.newLocationButton.isEnabled = true
-                self.activityView.stopAnimating()
-                
-                print("pin.urlCount = \(pin.urlCount)")
-//                if pin.urlCount == 0 {
-//                    self.emptyCollectionStack.isHidden = false
-//                }
-            }
-            
-            
-        }
     }
-    
+
     
     func deleteCurrentPicturesOnPin() {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
@@ -208,5 +174,26 @@ extension CollectionMapViewController {
         operationQueue.addOperations([block1, block2], waitUntilFinished: false)
         
     }
+    
+    
+    //    func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String, index: Int){
+    //        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+    //        let currentPinID = currentPin.objectID
+    //
+    //        backgroundContext.perform {
+    //            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+    //            backgroundPin.photoCount = backgroundPin.photoCount + 1
+    //            let tempPhoto = Photo(context: backgroundContext)
+    //            tempPhoto.imageData = data
+    //            tempPhoto.urlString = urlString
+    //            tempPhoto.index = Int32(index) //Random value for init
+    //            tempPhoto.pin = backgroundPin
+    //            tempPhoto.isLoaded = true
+    //            //        let testImage = UIImage(data: tempPhoto.imageData!)
+    //            try? backgroundContext.save()
+    //        }
+    //    }
+    
+    
 }
 
