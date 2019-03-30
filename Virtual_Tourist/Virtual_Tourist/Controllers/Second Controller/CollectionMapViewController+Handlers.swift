@@ -34,17 +34,14 @@ extension CollectionMapViewController {
             removeSelectedPicture(sender)
         } else {
             print("-- GET NEW PICTURES --")
-            synchronouslyDeletePhotosAndRedownloadOnPin()
+//            synchronouslyDeletePhotosAndRedownloadOnPin()
+            getNewPhotosFromNextURLs()
         }
     }
     
     
-    @objc func handleRefreshButton(){
-        print("BUTTON PRESSED")
-        synchronouslyDeletePhotosAndRedownloadOnPin()
-    }
-    
-    func synchronouslyDeletePhotosAndRedownloadOnPin() {
+    func getNewPhotosFromNextURLs(){
+        
         let operationQueue = OperationQueue()
         
         let block1 = BlockOperation {
@@ -54,31 +51,50 @@ extension CollectionMapViewController {
                 self.newLocationButton.backgroundColor = UIColor.yellow
                 self.emptyCollectionStack.isHidden = true
             }
-            self.deleteCurrentPicturesOnPin()
+//            self.deleteCurrentPicturesOnPin()
         }
-        
-        
-        let block2 = BlockOperation {
-            _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
-        }
-        
 
-        block2.addDependency(block1)
-        operationQueue.addOperations([block1, block2], waitUntilFinished: false)
+        
+        
+        if let items = self.pin.next {
+            items.map{$0 as! NextPinURLs}.forEach{
+                guard let _urlString = $0.urlString  else {
+                    return
+                }
+                print("---- \(_urlString)")
+            }
+        }
+        
+        
+        
+        
+        
+//        block2.addDependency(block1)
+//        operationQueue.addOperations([block1], waitUntilFinished: false)
         
     }
+    
+    
+    
+    
+//    func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String, index: Int){
+//        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+//        let currentPinID = currentPin.objectID
+//
+//        backgroundContext.perform {
+//            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
+//            backgroundPin.photoCount = backgroundPin.photoCount + 1
+//            let tempPhoto = Photo(context: backgroundContext)
+//            tempPhoto.imageData = data
+//            tempPhoto.urlString = urlString
+//            tempPhoto.index = Int32(index) //Random value for init
+//            tempPhoto.pin = backgroundPin
+//            tempPhoto.isLoaded = true
+//            //        let testImage = UIImage(data: tempPhoto.imageData!)
+//            try? backgroundContext.save()
+//        }
+//    }
 
-    
-    
-//    DispatchQueue.main.async {
-//    if backgroundPin.urlCount == 0 {
-//    self.activityView.stopAnimating()
-//    self.emptyCollectionStack.isHidden = false
-//    self.newLocationButton.isEnabled = true
-//    self.newLocationButton.backgroundColor = UIColor.orange
-//    }
-//    }
-    
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
         
@@ -86,10 +102,6 @@ extension CollectionMapViewController {
             print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
             return
         }
-        
-        
-       
-        
         
         //Setting pin.urlCount
         backgroundContext.perform {
@@ -153,6 +165,48 @@ extension CollectionMapViewController {
 
     @objc func handleReCenter(){
         myMapView.centerCoordinate = firstAnnotation.coordinate
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @objc func handleRefreshButton(){
+        print("BUTTON PRESSED")
+        synchronouslyDeletePhotosAndRedownloadOnPin()
+    }
+    
+    func synchronouslyDeletePhotosAndRedownloadOnPin() {
+        let operationQueue = OperationQueue()
+        
+        let block1 = BlockOperation {
+            DispatchQueue.main.async {
+                self.activityView.startAnimating()
+                self.newLocationButton.isEnabled = false
+                self.newLocationButton.backgroundColor = UIColor.yellow
+                self.emptyCollectionStack.isHidden = true
+            }
+            self.deleteCurrentPicturesOnPin()
+        }
+        
+        
+        let block2 = BlockOperation {
+            _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
+        }
+        
+        
+        block2.addDependency(block1)
+        operationQueue.addOperations([block1, block2], waitUntilFinished: false)
+        
     }
 }
 
