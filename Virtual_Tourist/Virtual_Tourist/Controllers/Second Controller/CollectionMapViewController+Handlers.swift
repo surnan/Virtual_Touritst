@@ -34,33 +34,13 @@ extension CollectionMapViewController {
             removeSelectedPicture(sender)
         } else {
             print("-- GET NEW PICTURES --")
-//            synchronouslyDeletePhotosAndRedownloadOnPin()
-            getNewPhotosFromNextURLs()
+            synchronouslyDeletePhotosAndRedownloadOnPin()
+//            getNewPhotosFromNextURLs()
         }
     }
     
     
-    func handleGetAllPhotoURLs2(pin: Pin, urls: [URL], error: Error?){
-        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
-        
-        if let error = error {
-            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
-            return
-        }
-        let pinId = pin.objectID
-        backgroundContext.perform {
-            let backgroundPin = backgroundContext.object(with: pinId) as! Pin
-            backgroundPin.urlCount = Int32(urls.count)
-            try? backgroundContext.save()
-        }
-        
-        for (index, currentURL) in urls.enumerated() {
-            URLSession.shared.dataTask(with: currentURL, completionHandler: { (imageData, response, error) in
-                guard let imageData = imageData else {return}
-                connectPhotoAndPin(dataController: self.dataController, currentPin:  pin , data: imageData, urlString: currentURL.absoluteString, index: index)
-            }).resume()
-        }
-    }
+
     
     func getNewPhotosFromNextURLs(){
         self.activityView.startAnimating()
@@ -76,10 +56,7 @@ extension CollectionMapViewController {
                 newURLArray.append(_url)
             }
         }
-
-        
         handleGetAllPhotoURLs(pin: pin, urls: newURLArray, error: nil)
-        
         print("test")
     }
     
@@ -113,7 +90,46 @@ extension CollectionMapViewController {
     }
 
     
-    func deleteCurrentPicturesOnPin() {
+    func synchronouslyDeletePhotosAndRedownloadOnPin() {
+        let operationQueue = OperationQueue()
+        let block1 = BlockOperation {
+            DispatchQueue.main.async {
+                self.activityView.startAnimating()
+                self.newLocationButton.isEnabled = false
+                self.newLocationButton.backgroundColor = UIColor.yellow
+                self.emptyCollectionStack.isHidden = true
+            }
+            self.deleteAllPhotosOnPin()
+        }
+        
+        let block2 = BlockOperation {
+            _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
+        }
+        
+        block2.addDependency(block1)
+        operationQueue.addOperations([block1, block2], waitUntilFinished: false)
+    }
+    
+    func updatePinWithNewPhotos() {
+        let operationQueue = OperationQueue()
+        let block1 = BlockOperation {
+            DispatchQueue.main.async {
+                self.activityView.startAnimating()
+                self.newLocationButton.isEnabled = false
+                self.newLocationButton.backgroundColor = UIColor.yellow
+                self.emptyCollectionStack.isHidden = true
+            }
+            self.deleteAllPhotosOnPin()
+        }
+        
+        let block2 = BlockOperation {
+            _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
+        }
+        block2.addDependency(block1)
+        operationQueue.addOperations([block1, block2], waitUntilFinished: false)
+    }
+    
+    func deleteAllPhotosOnPin() {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
@@ -128,6 +144,35 @@ extension CollectionMapViewController {
         }
     }
     
+    func handleGetAllPhotoURLsNEXT(pin: Pin, urls: [URL], error: Error?){
+        //Delete All nextURL and download more
+        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+        
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "NextPinURLs")
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        do {
+            try dataController.viewContext.execute(request)
+            try dataController.viewContext.save()   //maybe it should be commented
+        } catch {
+            print ("There was an error")
+        }
+        
+        if let error = error {
+            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+            return
+        }
+        
+        let objectID = pin.objectID
+        let backgroundPin = dataController.backGroundContext.object(with: objectID) as! Pin
+        
+        urls.forEach{
+            let nextPinURLToAdd = NextPinURLs(context: backgroundContext)
+            nextPinURLToAdd.urlString = $0.absoluteString
+            nextPinURLToAdd.pin = backgroundPin
+        }
+        
+        try? backgroundContext.save()
+    }
 
     @objc func handleReCenter(){
         myMapView.centerCoordinate = firstAnnotation.coordinate
@@ -151,48 +196,19 @@ extension CollectionMapViewController {
         synchronouslyDeletePhotosAndRedownloadOnPin()
     }
     
-    func synchronouslyDeletePhotosAndRedownloadOnPin() {
-        let operationQueue = OperationQueue()
-        
-        let block1 = BlockOperation {
-            DispatchQueue.main.async {
-                self.activityView.startAnimating()
-                self.newLocationButton.isEnabled = false
-                self.newLocationButton.backgroundColor = UIColor.yellow
-                self.emptyCollectionStack.isHidden = true
-            }
-            self.deleteCurrentPicturesOnPin()
-        }
-        
-        
-        let block2 = BlockOperation {
-            _ = FlickrClient.getAllPhotoURLs(currentPin: self.pin, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLs(pin:urls:error:))
-        }
-        
-        
-        block2.addDependency(block1)
-        operationQueue.addOperations([block1, block2], waitUntilFinished: false)
-        
-    }
+
     
     
-    //    func connectPhotoAndPin(dataController: DataController, currentPin: Pin, data: Data, urlString: String, index: Int){
-    //        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
-    //        let currentPinID = currentPin.objectID
-    //
-    //        backgroundContext.perform {
-    //            let backgroundPin = backgroundContext.object(with: currentPinID) as! Pin
-    //            backgroundPin.photoCount = backgroundPin.photoCount + 1
-    //            let tempPhoto = Photo(context: backgroundContext)
-    //            tempPhoto.imageData = data
-    //            tempPhoto.urlString = urlString
-    //            tempPhoto.index = Int32(index) //Random value for init
-    //            tempPhoto.pin = backgroundPin
-    //            tempPhoto.isLoaded = true
-    //            //        let testImage = UIImage(data: tempPhoto.imageData!)
-    //            try? backgroundContext.save()
-    //        }
-    //    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
 }
