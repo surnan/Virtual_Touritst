@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="NextPinURLs" representedClassName="NextPinURLs" syncable="YES" codeGenerationType="class">
+        <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="pin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Pin" inverseName="next" inverseEntity="Pin" syncable="YES"/>
+    </entity>
     <entity name="Photo" representedClassName="Photo" syncable="YES" codeGenerationType="class">
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
@@ -13,10 +17,12 @@
         <attribute name="pageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="photoCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="urlCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="next" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NextPinURLs" inverseName="pin" inverseEntity="NextPinURLs" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="pin" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Photo" positionX="-309.5078125" positionY="-62.75390625" width="128" height="120"/>
-        <element name="Pin" positionX="-566.85546875" positionY="-134.22265625" width="128" height="135"/>
+        <element name="Photo" positionX="-112.5390625" positionY="-195.171875" width="128" height="120"/>
+        <element name="Pin" positionX="-492.00390625" positionY="-337.44921875" width="128" height="148"/>
+        <element name="NextPinURLs" positionX="-741.1796875" positionY="-114.8125" width="128" height="73"/>
     </elements>
 </model>
