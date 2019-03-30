@@ -145,7 +145,6 @@ extension CollectionMapViewController {
             pin.photoCount = 0
             pin.urlCount = 0
             try? dataController.viewContext.save()
-//            try fetchedResultsController.performFetch()
         } catch {
             print("unable to delete \(error)")
         }

@@ -38,6 +38,7 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     
     
     var mapView = MKMapView()
+    var nextPage = false //Passed into Flickr.  False, retrieve url for pin.page.  True, retrieve url for pin.page+1
     
     lazy private var myLongPressGesture: UILongPressGestureRecognizer = {
         var longGesture = UILongPressGestureRecognizer()

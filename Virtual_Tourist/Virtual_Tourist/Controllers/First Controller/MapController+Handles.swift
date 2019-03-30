@@ -18,12 +18,71 @@ extension MapController {
             let touchLocation = sender.location(in: self.mapView)
             let locationCoordinate = self.mapView.convert(touchLocation,toCoordinateFrom: self.mapView)
             let newPin = addNewPin(locationCoordinate)
-            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
+//            _ = FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
+            
+            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, getNext: false, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
+            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, getNext: true, fetchCount: fetchCount, completion: handleGetAllPhotoURLsNEXT(pin:urls:error:))
             return
         }
     }
     
 
+//    func addNewPin(_ locationCoordinate: CLLocationCoordinate2D)->Pin {
+//        let pinToAdd = Pin(context: dataController.viewContext)
+//        pinToAdd.latitude = locationCoordinate.latitude
+//        pinToAdd.longitude = locationCoordinate.longitude
+//        pinToAdd.pageNumber = 1
+//        pinToAdd.photoCount = 0
+//        try? dataController.viewContext.save()
+//        return pinToAdd
+//    }
+    
+    func handleGetAllPhotoURLsNEXT(pin: Pin, urls: [URL], error: Error?){
+        
+        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+        
+        
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "NextPinURLs")
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        do {
+            try dataController.viewContext.execute(request)
+            try dataController.viewContext.save()   //maybe it should be commented
+        } catch {
+            print ("There was an error")
+        }
+        
+        
+        
+        if let error = error {
+            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+            return
+        }
+        
+        let objectID = pin.objectID
+        let backgroundPin = dataController.backGroundContext.object(with: objectID) as! Pin
+        
+        urls.forEach{
+            let nextPinURLToAdd = NextPinURLs(context: backgroundContext)
+            nextPinURLToAdd.urlString = $0.absoluteString
+            nextPinURLToAdd.pin = backgroundPin
+        }
+        
+        try? backgroundContext.save()
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     func handleGetAllPhotoURLs(pin: Pin, urls: [URL], error: Error?){
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
