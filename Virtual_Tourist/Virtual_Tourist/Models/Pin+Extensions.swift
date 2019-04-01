@@ -22,7 +22,13 @@ extension Pin: MKAnnotation {
         return urlCount <= photoCount
     }
     
-    
+    public var _urlCount: Int {
+        return photos?.count ?? 0
+    }
+
+    public var _photoCount: Int {
+        return photos?.count ?? 0
+    }
     
     
     
