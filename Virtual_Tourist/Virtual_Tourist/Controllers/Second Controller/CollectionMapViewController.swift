@@ -164,6 +164,8 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
     }()
     
     
+    var urlArray = [URL]()
+    
     deinit {
         fetchedResultsController = nil
     }

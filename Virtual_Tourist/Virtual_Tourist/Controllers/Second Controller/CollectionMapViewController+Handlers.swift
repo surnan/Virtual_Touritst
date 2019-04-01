@@ -41,36 +41,48 @@ extension CollectionMapViewController {
     
     
     func getNewPhotosFromNextURLs(){
-        
-        let operationQueue = OperationQueue()
-        
-        let block1 = BlockOperation {
-            DispatchQueue.main.async {
-                self.activityView.startAnimating()
-                self.newLocationButton.isEnabled = false
-                self.newLocationButton.backgroundColor = UIColor.yellow
-                self.emptyCollectionStack.isHidden = true
-            }
-//            self.deleteCurrentPicturesOnPin()
-        }
-
-        
-        
+        //Load up 'urlArray' with url from "Pin.Next"
         if let items = self.pin.next {
             items.map{$0 as! NextPinURLs}.forEach{
-                guard let _urlString = $0.urlString  else {
+                guard let _urlString = $0.urlString, let _url = URL(string: _urlString)  else {
                     return
                 }
+                urlArray.append(_url)
                 print("---- \(_urlString)")
             }
         }
         
+        let operationQueue = OperationQueue()
         
+        //        let block1 = BlockOperation {
+        //            DispatchQueue.main.async {
+        self.activityView.startAnimating()
+        self.newLocationButton.isEnabled = false
+        self.newLocationButton.backgroundColor = UIColor.yellow
+        self.emptyCollectionStack.isHidden = true
+        //            }
+        self.deleteCurrentPicturesOnPin()
+        //        }
         
+        print("testmp")
         
-        
-//        block2.addDependency(block1)
-//        operationQueue.addOperations([block1], waitUntilFinished: false)
+        for (index, currentURL) in urlArray.enumerated() {
+            
+            URLSession.shared.dataTask(with: currentURL) { (data, response, err) in
+                
+                if err != nil {
+                    return
+                }
+                
+                guard let _data = data else {return}
+                
+                connectPhotoAndPin(dataController: self.dataController, currentPin: self.pin, data: _data, urlString: currentURL.absoluteString, index: index)
+                
+                
+                }.resume()
+        }
+        //        block2.addDependency(block1)
+        //        operationQueue.addOperations([block1], waitUntilFinished: false)
         
     }
     

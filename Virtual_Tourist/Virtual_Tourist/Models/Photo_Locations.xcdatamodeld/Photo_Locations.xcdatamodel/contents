@@ -17,12 +17,12 @@
         <attribute name="pageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="photoCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="urlCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="next" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="NextPinURLs" inverseName="pin" inverseEntity="NextPinURLs" syncable="YES"/>
+        <relationship name="next" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="NextPinURLs" inverseName="pin" inverseEntity="NextPinURLs" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Photo" inverseName="pin" inverseEntity="Photo" syncable="YES"/>
     </entity>
     <elements>
+        <element name="NextPinURLs" positionX="-741.1796875" positionY="-114.8125" width="128" height="73"/>
         <element name="Photo" positionX="-112.5390625" positionY="-195.171875" width="128" height="120"/>
         <element name="Pin" positionX="-492.00390625" positionY="-337.44921875" width="128" height="148"/>
-        <element name="NextPinURLs" positionX="-741.1796875" positionY="-114.8125" width="128" height="73"/>
     </elements>
 </model>
