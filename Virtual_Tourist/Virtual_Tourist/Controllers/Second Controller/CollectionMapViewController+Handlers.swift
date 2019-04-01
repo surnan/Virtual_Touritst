@@ -23,10 +23,10 @@ extension CollectionMapViewController {
         pin.photoCount = pin.photoCount - pagesToDelete
         pin.urlCount = pin.urlCount - pagesToDelete
         try? dataController.viewContext.save()
-//        sender.isSelected = !sender.isSelected
+        //        sender.isSelected = !sender.isSelected
     }
     
-
+    
     @objc func handleNewLocationButton(_ sender: UIButton){
         //TODO: Delete Pictures auto converts to "NEW COLLECTION" before hitting the if statement
         if sender.isSelected {
@@ -34,7 +34,7 @@ extension CollectionMapViewController {
             removeSelectedPicture(sender)
         } else {
             print("-- GET NEW PICTURES --")
-//            synchronouslyDeletePhotosAndRedownloadOnPin()
+            //            synchronouslyDeletePhotosAndRedownloadOnPin()
             getNewPhotosFromNextURLs()
         }
     }
@@ -42,7 +42,6 @@ extension CollectionMapViewController {
     
     func getNewPhotosFromNextURLs(){
         //Load up 'urlArray' with url from "Pin.Next"
-        
         if let items = self.pin.next {
             items.map{$0 as! NextPinURLs}.forEach{
                 guard let _urlString = $0.urlString, let _url = URL(string: _urlString)  else {
@@ -52,57 +51,47 @@ extension CollectionMapViewController {
                 print("---- \(_urlString)")
             }
         }
-
-        let operationQueue = OperationQueue()
         
-        let block1 = BlockOperation {
-            DispatchQueue.main.async {
-                self.activityView.startAnimating()
-                self.newLocationButton.isEnabled = false
-                self.newLocationButton.backgroundColor = UIColor.yellow
-            }
-            self.deleteCurrentPicturesOnPin()
+        
+        activityView.startAnimating()
+        newLocationButton.isEnabled = false
+        newLocationButton.backgroundColor = UIColor.yellow
+        
+        deleteCurrentPicturesOnPin()
+        
+        let backgroundContext: NSManagedObjectContext! = self.dataController.backGroundContext
+        let pinId = pin.objectID
+        backgroundContext.perform {
+            let backgroundPin = backgroundContext.object(with: pinId) as! Pin
+            backgroundPin.urlCount = Int32(self.urlArray.count)
+            try? backgroundContext.save()
         }
         
-        let block2 = BlockOperation {
-            let backgroundContext: NSManagedObjectContext! = self.dataController.backGroundContext
-            let pinId = self.pin.objectID
-            backgroundContext.perform {
-                let backgroundPin = backgroundContext.object(with: pinId) as! Pin
-                backgroundPin.urlCount = Int32(self.urlArray.count)
-                try? backgroundContext.save()
-            }
-        }
+        let grp = DispatchGroup()
         
-        
-        let block3 = BlockOperation {
-            for (index, currentURL) in self.urlArray.enumerated() {
-                URLSession.shared.dataTask(with: currentURL) { (data, response, err) in
-                    if err != nil {
-                        return
-                    }
-                    guard let _data = data else {return}
-                    connectPhotoAndPin(dataController: self.dataController, currentPin: self.pin, data: _data, urlString: currentURL.absoluteString, index: index)
-                    }.resume()
-            }
-        }
-        
-        let block4 = BlockOperation {
-            DispatchQueue.main.async {
-                self.activityView.stopAnimating()
-                self.newLocationButton.isEnabled = true
-                self.newLocationButton.backgroundColor = UIColor.orange
-            }
+        for (index, currentURL) in urlArray.enumerated() {
+            grp.enter()
+            URLSession.shared.dataTask(with: currentURL) { (data, response, err) in
+                if err != nil {
+                    return
+                }
+                guard let _data = data else {return}
+                connectPhotoAndPin(dataController: self.dataController, currentPin: self.pin, data: _data, urlString: currentURL.absoluteString, index: index)
+                grp.leave()
+                }.resume()
         }
         
         
-        block2.addDependency(block1)
-        block3.addDependency(block2)
-        block4.addDependency(block3)
-        operationQueue.addOperations([block1, block2, block3, block4], waitUntilFinished: false)
+        
+        grp.notify(queue: DispatchQueue.main) {
+            self.activityView.stopAnimating()
+            self.newLocationButton.isEnabled = true
+            self.newLocationButton.backgroundColor = UIColor.orange
+            print("---NOTIFIY---")
+        }
         
     }
-
+    
     func deleteCurrentPicturesOnPin() {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
@@ -118,7 +107,7 @@ extension CollectionMapViewController {
         }
     }
     
-
+    
     @objc func handleReCenter(){
         myMapView.centerCoordinate = firstAnnotation.coordinate
     }
@@ -141,7 +130,7 @@ extension CollectionMapViewController {
                 self.activityView.startAnimating()
                 self.newLocationButton.isEnabled = false
                 self.newLocationButton.backgroundColor = UIColor.yellow
-//                self.emptyCollectionStack.isHidden = true
+                //                self.emptyCollectionStack.isHidden = true
             }
             self.deleteCurrentPicturesOnPin()
         }
@@ -155,7 +144,7 @@ extension CollectionMapViewController {
                 self.activityView.stopAnimating()
                 self.newLocationButton.isEnabled = true
                 self.newLocationButton.backgroundColor = UIColor.orange
-//                self.emptyCollectionStack.isHidden = true
+                //                self.emptyCollectionStack.isHidden = true
             }
             self.deleteCurrentPicturesOnPin()
         }
