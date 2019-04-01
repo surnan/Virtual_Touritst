@@ -20,8 +20,8 @@ extension MapController {
             let newPin = addNewPin(locationCoordinate)
 //            _ = FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
             
-            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, getNext: false, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
-            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, getNext: true, fetchCount: fetchCount, completion: handleGetAllPhotoURLsNEXT(pin:urls:error:))
+            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, samePage: false, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
+            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, samePage: true, fetchCount: fetchCount, completion: handleGetAllPhotoURLsNEXT(pin:urls:error:))
             return
         }
     }
@@ -36,6 +36,9 @@ extension MapController {
 //        try? dataController.viewContext.save()
 //        return pinToAdd
 //    }
+    
+    
+    
     
     func handleGetAllPhotoURLsNEXT(pin: Pin, urls: [URL], error: Error?){
         

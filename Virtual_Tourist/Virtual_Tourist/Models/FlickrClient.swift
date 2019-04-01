@@ -52,13 +52,13 @@ class FlickrClient {
     
     
     
-    class func getAllPhotoURLsNEXT(currentPin: Pin, getNext: Bool, fetchCount count: Int, completion: @escaping (Pin, [URL], Error?)->Void)-> URLSessionTask?{
+    class func getAllPhotoURLsNEXT(currentPin: Pin, samePage: Bool, fetchCount count: Int, completion: @escaping (Pin, [URL], Error?)->Void)-> URLSessionTask?{
         let latitude = currentPin.latitude
         let longitude = currentPin.longitude
         
         
 //        let pageNumber = currentPin.pageNumber
-        let pageNumber = getNext ? currentPin.pageNumber : currentPin.pageNumber + 1
+        let pageNumber = samePage ? currentPin.pageNumber : currentPin.pageNumber + 1
         
         let url = Endpoints.photosSearch(latitude, longitude, count, pageNumber).url
         //        print("Endpoints Photo-Search-URL = \(url)")

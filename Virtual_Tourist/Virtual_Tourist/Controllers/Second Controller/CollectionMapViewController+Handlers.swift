@@ -42,6 +42,7 @@ extension CollectionMapViewController {
     
     func getNewPhotosFromNextURLs(){
         //Load up 'urlArray' with url from "Pin.Next"
+        urlArray.removeAll()
         if let items = self.pin.next {
             items.map{$0 as! NextPinURLs}.forEach{
                 guard let _urlString = $0.urlString, let _url = URL(string: _urlString)  else {
@@ -57,15 +58,13 @@ extension CollectionMapViewController {
         newLocationButton.isEnabled = false
         newLocationButton.backgroundColor = UIColor.yellow
         
-        deleteCurrentPicturesOnPin()
+        deletePinPhotosUpdatePinPage()
         
-        let backgroundContext: NSManagedObjectContext! = self.dataController.backGroundContext
-        let pinId = pin.objectID
-        backgroundContext.perform {
-            let backgroundPin = backgroundContext.object(with: pinId) as! Pin
-            backgroundPin.urlCount = Int32(self.urlArray.count)
-            try? backgroundContext.save()
-        }
+//        FlickrClient.getAllPhotoURLsNEXT(currentPin: self.pin, samePage: false, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLsNEXT(pin:urls:error:))
+//        _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, samePage: false, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
+        _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: pin, samePage: true, fetchCount: fetchCount, completion: handleGetAllPhotoURLsNEXT(pin:urls:error:))
+        
+        
         
         let grp = DispatchGroup()
         
@@ -88,11 +87,48 @@ extension CollectionMapViewController {
             self.newLocationButton.isEnabled = true
             self.newLocationButton.backgroundColor = UIColor.orange
             print("---NOTIFIY---")
+//            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: pin, samePage: true, fetchCount: fetchCount, completion: handleGetAllPhotoURLsNEXT(pin:urls:error:))
+            
         }
         
     }
     
-    func deleteCurrentPicturesOnPin() {
+    
+    func handleGetAllPhotoURLsNEXT(pin: Pin, urls: [URL], error: Error?){
+        
+        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+        
+        
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "NextPinURLs")
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        do {
+            try dataController.viewContext.execute(request)
+            try dataController.viewContext.save()   //maybe it should be commented
+        } catch {
+            print ("There was an error")
+        }
+        
+        
+        
+        if let error = error {
+            print("func mapView(_ mapView: MKMapView, didSelect... \n\(error)")
+            return
+        }
+        
+        let objectID = pin.objectID
+        let backgroundPin = dataController.backGroundContext.object(with: objectID) as! Pin
+        
+        urls.forEach{
+            let nextPinURLToAdd = NextPinURLs(context: backgroundContext)
+            nextPinURLToAdd.urlString = $0.absoluteString
+            nextPinURLToAdd.pin = backgroundPin
+        }
+        
+        try? backgroundContext.save()
+    }
+    
+    
+    func deletePinPhotosUpdatePinPage() {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Photo")
         fetch.predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
@@ -100,7 +136,8 @@ extension CollectionMapViewController {
             _ = try dataController.viewContext.execute(request)
             pin.pageNumber = pin.pageNumber + 1
             pin.photoCount = 0
-            pin.urlCount = 0
+//            pin.urlCount = 0
+            pin.urlCount = Int32(urlArray.count)
             try? dataController.viewContext.save()
         } catch {
             print("unable to delete \(error)")
@@ -132,7 +169,7 @@ extension CollectionMapViewController {
                 self.newLocationButton.backgroundColor = UIColor.yellow
                 //                self.emptyCollectionStack.isHidden = true
             }
-            self.deleteCurrentPicturesOnPin()
+            self.deletePinPhotosUpdatePinPage()
         }
         
         let block2 = BlockOperation {
@@ -146,7 +183,7 @@ extension CollectionMapViewController {
                 self.newLocationButton.backgroundColor = UIColor.orange
                 //                self.emptyCollectionStack.isHidden = true
             }
-            self.deleteCurrentPicturesOnPin()
+            self.deletePinPhotosUpdatePinPage()
         }
         
         

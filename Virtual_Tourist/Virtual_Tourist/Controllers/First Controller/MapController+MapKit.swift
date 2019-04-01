@@ -44,8 +44,8 @@ extension MapController: MKMapViewDelegate {
             previousPinID = nil
             
 //            FlickrClient.getAllPhotoURLs(currentPin: newPin, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
-            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, getNext: false, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
-            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, getNext: true, fetchCount: fetchCount, completion: handleGetAllPhotoURLsNEXT(pin:urls:error:))
+            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, samePage: false, fetchCount: fetchCount, completion: handleGetAllPhotoURLs(pin:urls:error:))
+            _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: newPin, samePage: true, fetchCount: fetchCount, completion: handleGetAllPhotoURLsNEXT(pin:urls:error:))
             
 
         case .canceling:
