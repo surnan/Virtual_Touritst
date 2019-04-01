@@ -60,8 +60,6 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
 
 
     //MARK:- Lazy Var
-    lazy var photoMaxCount = pin.photoCount
-    
     lazy var myMapView: MKMapView = {
         let map = MKMapView()
         map.delegate = self
@@ -113,7 +111,6 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         return button
     }()
 
-
     lazy var collectionViewEmptyLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -147,13 +144,11 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         return stack
     }()
     
-    
     lazy var firstAnnotation: MKPointAnnotation = {
         let annotation = MKPointAnnotation()
         annotation.coordinate = pin.coordinate
         return annotation
     }()
-    
     
     lazy var activityView: UIActivityIndicatorView = {
        let activityVC = UIActivityIndicatorView()
@@ -162,7 +157,6 @@ class CollectionMapViewController: UIViewController, UICollectionViewDataSource,
         activityVC.translatesAutoresizingMaskIntoConstraints = false
         return activityVC
     }()
-    
     
     var urlArray = [URL]()
     
