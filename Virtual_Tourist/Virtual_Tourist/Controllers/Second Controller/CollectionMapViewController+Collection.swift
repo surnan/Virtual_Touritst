@@ -36,12 +36,10 @@ extension CollectionMapViewController {
             let currentPhoto = self.dataController.viewContext.object(with: photoID) as! Photo
             let cell2 = self.myCollectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
             cell2.myPhoto = currentPhoto
-//            print("indexPath = \(indexPath) .... photoID found")
             return cell2
         }
         
         let cell = myCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdLoadingCell, for: indexPath) as! FinalCollectionLoadingCell
-//        print("indexPath = \(indexPath)")
         return cell
     }
 

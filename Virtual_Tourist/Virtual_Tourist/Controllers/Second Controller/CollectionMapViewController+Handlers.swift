@@ -52,7 +52,6 @@ extension CollectionMapViewController {
                     return
                 }
                 urlArray.append(_url)
-//                print("---- \(_urlString)")
             }
         }
         
