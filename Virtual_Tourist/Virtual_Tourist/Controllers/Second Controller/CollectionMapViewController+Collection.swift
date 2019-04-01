@@ -18,7 +18,6 @@ let idStreet = "asdfasdfSTREETSTREET"
 extension CollectionMapViewController {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         if pin.allPhotosDownloaded {
             if deleteIndexSet.contains(indexPath) {
                 let myPhoto = fetchedResultsController.object(at: indexPath)
@@ -37,9 +36,7 @@ extension CollectionMapViewController {
             let currentPhoto = self.dataController.viewContext.object(with: photoID) as! Photo
             let cell2 = self.myCollectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIDCellLoaded, for: indexPath) as! FinalCollectionImageCell
             cell2.myPhoto = currentPhoto
-            
 //            print("indexPath = \(indexPath) .... photoID found")
-            
             return cell2
         }
         
@@ -50,14 +47,6 @@ extension CollectionMapViewController {
 
  
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        print("\nCell Count = \(pin.urlCount)")
-//        print("Photo Count = \(pin.photoCount)")
-    
-//        if pin.urlCount != 0 {
-//            activityView.stopAnimating()
-//            emptyCollectionStack.isHidden = true
-//        }
-        
         return Int(pin.urlCount)
     }
     
