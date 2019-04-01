@@ -52,38 +52,31 @@ extension CollectionMapViewController {
             }
         }
         
-        let operationQueue = OperationQueue()
-        
-        //        let block1 = BlockOperation {
-        //            DispatchQueue.main.async {
         self.activityView.startAnimating()
         self.newLocationButton.isEnabled = false
         self.newLocationButton.backgroundColor = UIColor.yellow
         self.emptyCollectionStack.isHidden = true
-        //            }
         self.deleteCurrentPicturesOnPin()
-        //        }
+        
+        let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
+        let pinId = pin.objectID
+        backgroundContext.perform {
+            let backgroundPin = backgroundContext.object(with: pinId) as! Pin
+            backgroundPin.urlCount = Int32(self.urlArray.count)
+            try? backgroundContext.save()
+        }
         
         print("testmp")
         
         for (index, currentURL) in urlArray.enumerated() {
-            
             URLSession.shared.dataTask(with: currentURL) { (data, response, err) in
-                
                 if err != nil {
                     return
                 }
-                
                 guard let _data = data else {return}
-                
                 connectPhotoAndPin(dataController: self.dataController, currentPin: self.pin, data: _data, urlString: currentURL.absoluteString, index: index)
-                
-                
                 }.resume()
         }
-        //        block2.addDependency(block1)
-        //        operationQueue.addOperations([block1], waitUntilFinished: false)
-        
     }
     
     
