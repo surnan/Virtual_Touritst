@@ -45,6 +45,13 @@ extension CollectionMapViewController {
 
  
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+//        if pin.urlCount == 0  && pin.next?.count == 0 {
+//            emptyCollectionStack.isHidden = false
+//        } else {
+//            emptyCollectionStack.isHidden = true
+//        }
+        
         return Int(pin.urlCount)
     }
     

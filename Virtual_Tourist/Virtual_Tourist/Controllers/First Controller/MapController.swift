@@ -36,7 +36,6 @@ class MapController: UIViewController, NSFetchedResultsControllerDelegate {
     var dataController: DataController! //injected from AppDelegate
     var myFetchController: NSFetchedResultsController<Pin>!
     
-    
     var mapView = MKMapView()
     var nextPage = false //Passed into Flickr.  False, retrieve url for pin.page.  True, retrieve url for pin.page+1
     

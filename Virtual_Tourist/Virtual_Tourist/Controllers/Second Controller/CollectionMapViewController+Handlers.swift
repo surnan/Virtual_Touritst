@@ -55,9 +55,11 @@ extension CollectionMapViewController {
             }
         }
         
+        emptyCollectionStack.isHidden = true
         activityView.startAnimating()
         newLocationButton.isEnabled = false
         newLocationButton.backgroundColor = UIColor.yellow
+        
         
         deletePinPhotosUpdatePinPage()
         
@@ -82,6 +84,13 @@ extension CollectionMapViewController {
             self.newLocationButton.backgroundColor = UIColor.orange
             print("---NOTIFIY---")
             _ = FlickrClient.getAllPhotoURLsNEXT(currentPin: self.pin, samePage: true, fetchCount: fetchCount, completion: self.handleGetAllPhotoURLsNEXT(pin:urls:error:))
+            
+            if self.pin.urlCount == 0  && self.pin.next?.count == 0 {
+                self.emptyCollectionStack.isHidden = false
+            } else {
+                self.emptyCollectionStack.isHidden = true
+            }
+            
         }
     }
     
@@ -90,6 +99,8 @@ extension CollectionMapViewController {
         let backgroundContext: NSManagedObjectContext! = dataController.backGroundContext
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "NextPinURLs")
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        
+        
         do {
             try dataController.viewContext.execute(request)
             try dataController.viewContext.save()   //maybe it should be commented
@@ -220,10 +231,13 @@ extension CollectionMapViewController {
                 self.newLocationButton.isEnabled = true
                 self.activityView.stopAnimating()
                 
-                print("pin.urlCount = \(pin.urlCount)")
-                //                if pin.urlCount == 0 {
-                //                    self.emptyCollectionStack.isHidden = false
-                //                }
+                print("pin.urlCount = \(pin.urlCount) .... pin.next?.count = \(pin.next?.count)")
+
+                
+
+                
+                
+                
             }
         }
     }
