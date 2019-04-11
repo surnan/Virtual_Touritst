@@ -55,7 +55,11 @@ extension MapController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let selectedAnnotation = view.annotation as? CustomAnnotation, let desiredPin = getCorrespondingPin(annotation: selectedAnnotation) else {return}
+        guard let selectedAnnotation = view.annotation as? CustomAnnotation,
+            let desiredPin = getCorrespondingPin(annotation: selectedAnnotation) else {
+                return
+        }
+        
         //1
         if tapDeletesPin {
                 dataController.viewContext.delete(desiredPin)
